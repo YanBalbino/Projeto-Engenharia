@@ -25,7 +25,7 @@ import lombok.ToString;
 @Setter
 @Getter
 @ToString
-public class MediaModel implements Serializable {
+public abstract class MediaModel implements Serializable {
 	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.UUID)
@@ -34,28 +34,30 @@ public class MediaModel implements Serializable {
 	private int anoProducao;
 	private String genero;
 	private int duracao; // em minutos
-	
+
 	@ElementCollection
 	@CollectionTable(name = "media_subtitles", joinColumns = @JoinColumn(name = "film_id"))
 	@Column(name = "subtitles")
 	private List<String> legendasDisponiveis;
-	
+
 	@ElementCollection
 	@CollectionTable(name = "media_audios", joinColumns = @JoinColumn(name = "film_id"))
 	@Column(name = "audios")
 	private List<String> audiosDisponiveis;
-	
+
 	private String descricao;
-	
+
 	@ElementCollection
 	@CollectionTable(name = "media_actors", joinColumns = @JoinColumn(name = "film_id"))
 	@Column(name = "actors")
 	private List<String> atores;
-	
+
 	private String diretor;
-	
+
 	@ManyToOne
 	@JoinColumn(name = "catalog_id")
 	private CatalogModel catalog;
+
+	private String videoUrl;
 
 }

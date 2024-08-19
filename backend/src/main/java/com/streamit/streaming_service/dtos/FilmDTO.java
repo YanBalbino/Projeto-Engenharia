@@ -19,7 +19,7 @@ import lombok.ToString;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-public class CreateFilmDTO {
+public class FilmDTO {
     
     @NotBlank(message = "O título não pode ser vazio")
     private String titulo;
