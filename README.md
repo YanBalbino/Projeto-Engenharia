@@ -11,7 +11,7 @@ StreamIt é uma aplicação completa para gerenciar e distribuir conteúdo audio
 # Diagrama de Classes (Domínio da API)
 ```mermaid
 classDiagram
-    class UserModel {
+    class User {
         -UUID id
         -String nome
         -String email
@@ -20,21 +20,21 @@ classDiagram
         -LocalDate dataCadastro
     }
 
-    class ProfileModel {
+    class Profile {
         -UUID id
         -String nome
         -boolean perfilInfantil
         -List<String> generosPreferidos
     }
 
-    class SubscriptionModel {
+    class Subscription {
         -UUID id
         -LocalDate dataInicio
         -LocalDate dataTermino
         -boolean statusAtivo
     }
 
-    class MediaModel {
+    class Media {
         -UUID id
         -String titulo
         -int anoProducao
@@ -48,25 +48,25 @@ classDiagram
         -String videoUrl
     }
 
-    class SeriesModel {
+    class Series {
         -int numeroTemporadas
         -int numeroEpisodios
     }
 
-    class FilmModel
+    class Film
 
-    class CatalogModel {
+    class Catalog {
         -UUID id
     }
 
-    UserModel "1" -- "1..*" ProfileModel : "has"
-    UserModel "1" -- "1..1" SubscriptionModel : "has"
-    SubscriptionModel "1" -- "1" UserModel : "belongs to"
+    User "1" -- "1..*" Profile : "has"
+    User "1" -- "1..1" Subscription : "has"
+    Subscription "1" -- "1" User : "belongs to"
 
-    CatalogModel "1" -- "0..*" FilmModel : "includes"
-    CatalogModel "1" -- "0..*" SeriesModel : "includes"
+    Catalog "1" -- "0..*" Film : "includes"
+    Catalog "1" -- "0..*" Series : "includes"
 
-    MediaModel "1" -- "1" CatalogModel : "belongs to"
+    Media "1" -- "1" Catalog : "belongs to"
 
-    SeriesModel "1" -- "1" MediaModel : "is a"
-    FilmModel "1" -- "1" MediaModel : "is a"
+    Series "1" -- "1" Media : "is a"
+    Film "1" -- "1" Media : "is a"
