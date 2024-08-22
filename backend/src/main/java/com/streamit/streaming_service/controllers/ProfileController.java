@@ -31,6 +31,7 @@ public class ProfileController {
     @PostMapping("/user/{idUser}")
     public ResponseEntity<ReturnProfileDTO> createProfile(@Valid @RequestBody CreateProfileDTO profileDto, @PathVariable UUID idUser) {
     	ReturnProfileDTO createdProfile = profileService.create(profileDto, idUser);
+    	
         return new ResponseEntity<>(createdProfile, HttpStatus.CREATED);
     }
 

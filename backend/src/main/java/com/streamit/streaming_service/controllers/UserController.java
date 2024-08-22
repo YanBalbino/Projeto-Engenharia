@@ -15,8 +15,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.streamit.streaming_service.constants.ApiConstants;
 import com.streamit.streaming_service.dtos.CreateUserWithPaymentDTO;
 import com.streamit.streaming_service.dtos.ReturnUserDTO;
+import com.streamit.streaming_service.response.ApiResponse;
+import com.streamit.streaming_service.response.ResponseUtil;
 import com.streamit.streaming_service.services.IUserService;
 
 import jakarta.validation.Valid;
@@ -32,9 +35,10 @@ public class UserController {
 	private final IUserService userService;
 
 	@PostMapping
-	public ResponseEntity<ReturnUserDTO> createUser(@Valid @RequestBody CreateUserWithPaymentDTO userPaymentDto) {
+	public ResponseEntity<ApiResponse<ReturnUserDTO>> createUser(@Valid @RequestBody CreateUserWithPaymentDTO userPaymentDto) {
 		ReturnUserDTO createdUser = userService.create(userPaymentDto);
-		return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
+		ApiResponse<ReturnUserDTO> response = ResponseUtil.success(createdUser, ApiConstants.MESSAGE_RESOURCE_CREATED, ApiConstants.HTTP_STATUS_CREATED, ApiConstants.PATH_USERS);
+		return new ResponseEntity<>(response, HttpStatus.CREATED);
 	}
 
 	@GetMapping("/{id}")
