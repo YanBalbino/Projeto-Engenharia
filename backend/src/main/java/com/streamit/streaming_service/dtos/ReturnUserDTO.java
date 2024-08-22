@@ -22,5 +22,5 @@ public class ReturnUserDTO {
     
     private String email;
     
-    private List<ProfileDTO> perfis;
+    private List<ReturnProfileDTO> perfis;
 }

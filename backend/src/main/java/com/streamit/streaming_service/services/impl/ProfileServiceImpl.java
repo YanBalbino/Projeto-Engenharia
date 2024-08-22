@@ -1,12 +1,13 @@
 package com.streamit.streaming_service.services.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
-import com.streamit.streaming_service.dtos.ProfileDTO;
-import com.streamit.streaming_service.dtos.UpdateProfileDTO;
+import com.streamit.streaming_service.dtos.CreateProfileDTO;
+import com.streamit.streaming_service.dtos.ReturnProfileDTO;
 import com.streamit.streaming_service.exceptions.ResourceNotFoundException;
 import com.streamit.streaming_service.mappers.ProfileMapper;
 import com.streamit.streaming_service.model.ProfileModel;
@@ -24,7 +25,7 @@ public class ProfileServiceImpl implements IProfileService {
 	private UserServiceImpl userServiceImpl;
 
 	@Override
-	public ProfileDTO create(ProfileDTO profile, UUID idUser) {
+	public ReturnProfileDTO create(CreateProfileDTO profile, UUID idUser) {
 		UserModel user = userServiceImpl.findUserModelById(idUser);
 		ProfileModel entity = ProfileMapper.toModel(profile, user);
 		ProfileModel entitySaved = profileRepository.save(entity);
@@ -32,7 +33,7 @@ public class ProfileServiceImpl implements IProfileService {
 	}
 
 	@Override
-	public ProfileDTO findProfileDtoById(UUID id) {
+	public ReturnProfileDTO findProfileDtoById(UUID id) {
 		ProfileModel entity = findProfileModelById(id);
 		return ProfileMapper.toDTO(entity);
 	}
@@ -43,35 +44,38 @@ public class ProfileServiceImpl implements IProfileService {
 	}
 
 	@Override
-	public List<ProfileDTO> findProfileDetailsByUser(UUID idUser) {
-		List<ProfileDTO> profiles = profileRepository.findProfileDetailsByUser(idUser);
+	public List<ReturnProfileDTO> findProfileDetailsByUser(UUID idUser) {
+		List<ProfileModel> entities = profileRepository.findProfileDetailsByUser(idUser);
+		List<ReturnProfileDTO> profiles = new ArrayList<>();
+		for(ProfileModel entity : entities) {
+			profiles.add(ProfileMapper.toDTO(entity));
+		}
 		return profiles;
 	}
 
 	@Override
-	public boolean updateProfile(UpdateProfileDTO updateProfileDTO, UUID idUser) {
-	    ProfileModel entity = findProfileModelById(idUser);
+	public boolean updateProfile(CreateProfileDTO profileDTO, UUID id) {
+	    ProfileModel entity = findProfileModelById(id);
 	    
-	    if (updateProfileDTO.getNome() != null) {
-	        entity.setNome(updateProfileDTO.getNome());
+	    if (profileDTO.getNome() != null) {
+	        entity.setNome(profileDTO.getNome());
 	    }
 	    
-	    if (updateProfileDTO.getIconUrl() != null) {
-	        entity.setIconUrl(updateProfileDTO.getIconUrl());
+	    if (profileDTO.getIconUrl() != null) {
+	        entity.setIconUrl(profileDTO.getIconUrl());
 	    }
 	    
-	    if (updateProfileDTO.getGenerosPreferidos() != null) {
-	        entity.setGenerosPreferidos(updateProfileDTO.getGenerosPreferidos());
+	    if (profileDTO.getGenerosPreferidos() != null) {
+	        entity.setGenerosPreferidos(profileDTO.getGenerosPreferidos());
 	    }
 	    
-	    if (updateProfileDTO.getPerfilInfantil() != null) {
-	        entity.setPerfilInfantil(updateProfileDTO.getPerfilInfantil());
+	    if (profileDTO.getPerfilInfantil() != null) {
+	        entity.setPerfilInfantil(profileDTO.getPerfilInfantil());
 	    }
 
 	    profileRepository.save(entity);
 	    return true;
 	}
-
 
 	@Override
 	public boolean delete(UUID id) {

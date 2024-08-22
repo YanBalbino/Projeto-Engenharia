@@ -7,8 +7,8 @@ import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
+import com.streamit.streaming_service.dtos.CreateProfileDTO;
 import com.streamit.streaming_service.dtos.CreateUserWithPaymentDTO;
-import com.streamit.streaming_service.dtos.ProfileDTO;
 import com.streamit.streaming_service.dtos.ReturnUserDTO;
 import com.streamit.streaming_service.exceptions.ResourceAlreadyExistsException;
 import com.streamit.streaming_service.exceptions.ResourceNotFoundException;
@@ -50,11 +50,11 @@ public class UserServiceImpl implements IUserService {
         entity.setSenha(userPaymentDto.getSenha());
         entity.setDataCadastro(currentDate);
         
-        List<ProfileDTO> profiles = userPaymentDto.getPerfis();
+        List<CreateProfileDTO> profiles = userPaymentDto.getPerfis();
         List<ProfileModel> profilesModel = new ArrayList<>();
         
         // cria os perfis
-        for(ProfileDTO profile : profiles) {
+        for(CreateProfileDTO profile : profiles) {
         	ProfileModel model = new ProfileModel();
         	model.setNome(profile.getNome());
         	model.setGenerosPreferidos(profile.getGenerosPreferidos());

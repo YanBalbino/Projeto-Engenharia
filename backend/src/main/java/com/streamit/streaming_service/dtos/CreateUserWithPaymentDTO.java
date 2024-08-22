@@ -35,7 +35,7 @@ public class CreateUserWithPaymentDTO {
     private String senha;
     
     @Size(max = 4, message = "Um usuário pode ter no máximo 4 perfis")
-    private List<ProfileDTO> perfis;
+    private List<CreateProfileDTO> perfis;
     
     private String metodoPagamento; 
     
