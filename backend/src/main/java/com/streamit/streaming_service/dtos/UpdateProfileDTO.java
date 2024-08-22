@@ -15,7 +15,7 @@ import lombok.ToString;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-public class ProfileDTO {
+public class UpdateProfileDTO {
     
     @NotBlank(message = "Nome do perfil é obrigatório")
     private String nome;
@@ -26,6 +26,5 @@ public class ProfileDTO {
     private Boolean perfilInfantil;
     
     private List<String> generosPreferidos;
-
 }
 

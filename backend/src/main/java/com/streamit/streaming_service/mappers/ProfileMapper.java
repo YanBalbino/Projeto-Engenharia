@@ -27,9 +27,9 @@ public class ProfileMapper {
 
         ProfileDTO dto = new ProfileDTO();
         dto.setNome(model.getNome());
+        dto.setIconUrl(model.getIconUrl());
         dto.setPerfilInfantil(model.isPerfilInfantil());
         dto.setGenerosPreferidos(model.getGenerosPreferidos());
-        dto.setUserId(model.getUser().getId());
 
         return dto;
     }

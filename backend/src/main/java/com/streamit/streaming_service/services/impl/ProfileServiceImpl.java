@@ -6,6 +6,7 @@ import java.util.UUID;
 import org.springframework.stereotype.Service;
 
 import com.streamit.streaming_service.dtos.ProfileDTO;
+import com.streamit.streaming_service.dtos.UpdateProfileDTO;
 import com.streamit.streaming_service.exceptions.ResourceNotFoundException;
 import com.streamit.streaming_service.mappers.ProfileMapper;
 import com.streamit.streaming_service.model.ProfileModel;
@@ -48,40 +49,29 @@ public class ProfileServiceImpl implements IProfileService {
 	}
 
 	@Override
-	public boolean updateProfileName(String name, UUID idUser) {
-		ProfileModel entity = findProfileModelById(idUser);
-		entity.setNome(name);
-		profileRepository.save(entity);
-		return true;
+	public boolean updateProfile(UpdateProfileDTO updateProfileDTO, UUID idUser) {
+	    ProfileModel entity = findProfileModelById(idUser);
+	    
+	    if (updateProfileDTO.getNome() != null) {
+	        entity.setNome(updateProfileDTO.getNome());
+	    }
+	    
+	    if (updateProfileDTO.getIconUrl() != null) {
+	        entity.setIconUrl(updateProfileDTO.getIconUrl());
+	    }
+	    
+	    if (updateProfileDTO.getGenerosPreferidos() != null) {
+	        entity.setGenerosPreferidos(updateProfileDTO.getGenerosPreferidos());
+	    }
+	    
+	    if (updateProfileDTO.getPerfilInfantil() != null) {
+	        entity.setPerfilInfantil(updateProfileDTO.getPerfilInfantil());
+	    }
+
+	    profileRepository.save(entity);
+	    return true;
 	}
 
-	@Override
-	public boolean updateProfileIconUrl(String iconUrl, UUID idUser) {
-		ProfileModel entity = findProfileModelById(idUser);
-		entity.setIconUrl(iconUrl);
-		profileRepository.save(entity);
-		return true;
-	}
-
-	@Override
-	public boolean updateProfileGenerosPreferidos(List<String> generosPreferidos, UUID idUser) {
-		ProfileModel entity = findProfileModelById(idUser);
-		entity.setGenerosPreferidos(generosPreferidos);
-		profileRepository.save(entity);
-		return true;
-	}
-
-	@Override
-	public boolean alterarProfileInfatil(UUID idUser) {
-		ProfileModel entity = findProfileModelById(idUser);
-		if(entity.isPerfilInfantil()) {
-			entity.setPerfilInfantil(false);
-		}else {
-			entity.setPerfilInfantil(true);
-		}
-		profileRepository.save(entity);
-		return true;
-	}
 
 	@Override
 	public boolean delete(UUID id) {

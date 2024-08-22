@@ -7,21 +7,23 @@ import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
-import com.streamit.streaming_service.dtos.CreatePaymentDTO;
-import com.streamit.streaming_service.dtos.CreateUserDTO;
+import com.streamit.streaming_service.dtos.CreateUserWithPaymentDTO;
+import com.streamit.streaming_service.dtos.ProfileDTO;
 import com.streamit.streaming_service.dtos.ReturnUserDTO;
 import com.streamit.streaming_service.exceptions.ResourceAlreadyExistsException;
 import com.streamit.streaming_service.exceptions.ResourceNotFoundException;
-import com.streamit.streaming_service.mappers.PaymentMapper;
 import com.streamit.streaming_service.mappers.UserMapper;
 import com.streamit.streaming_service.model.PaymentModel;
+import com.streamit.streaming_service.model.ProfileModel;
 import com.streamit.streaming_service.model.SubscriptionModel;
 import com.streamit.streaming_service.model.UserModel;
 import com.streamit.streaming_service.repositories.PaymentRepository;
+import com.streamit.streaming_service.repositories.ProfileRepository;
 import com.streamit.streaming_service.repositories.SubscriptionRepository;
 import com.streamit.streaming_service.repositories.UserRepository;
 import com.streamit.streaming_service.services.IUserService;
 
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 
 @Service
@@ -31,19 +33,45 @@ public class UserServiceImpl implements IUserService {
     private UserRepository userRepository;
     private SubscriptionRepository subscriptionRepository;
     private PaymentRepository paymentRepository;
+    private ProfileRepository profileRepository;
 
+    @Transactional
     @Override
-    public ReturnUserDTO create(CreateUserDTO userDto, CreatePaymentDTO paymentDto) {
-        if (userRepository.findByEmail(userDto.getEmail()).isPresent()) {
+    public ReturnUserDTO create(CreateUserWithPaymentDTO userPaymentDto) {
+        if (userRepository.findByEmail(userPaymentDto.getEmail()).isPresent()) {
             throw new ResourceAlreadyExistsException("Email já cadastrado.");
         }
 
         LocalDate currentDate = LocalDate.now();
-        userDto.setDataCadastro(currentDate);
 
-        UserModel entity = UserMapper.toModel(userDto);
+        UserModel entity = new UserModel();
+        entity.setEmail(userPaymentDto.getEmail());
+        entity.setNome(userPaymentDto.getNome());
+        entity.setSenha(userPaymentDto.getSenha());
+        entity.setDataCadastro(currentDate);
+        
+        List<ProfileDTO> profiles = userPaymentDto.getPerfis();
+        List<ProfileModel> profilesModel = new ArrayList<>();
+        
+        // cria os perfis
+        for(ProfileDTO profile : profiles) {
+        	ProfileModel model = new ProfileModel();
+        	model.setNome(profile.getNome());
+        	model.setGenerosPreferidos(profile.getGenerosPreferidos());
+        	model.setIconUrl(profile.getIconUrl());
+        	model.setPerfilInfantil(profile.getPerfilInfantil());
+        	profilesModel.add(model);
+        }
+        
+        entity.setPerfis(profilesModel);
         UserModel entitySaved = userRepository.save(entity);
-
+        
+        // define o usuário nos perfis e salva
+        for(ProfileModel profile : profilesModel) {
+        	profile.setUser(entitySaved);
+        	profileRepository.save(profile);
+        }
+        
         // cria e salva a subscrição
         SubscriptionModel subscription = new SubscriptionModel();
         subscription.setUser(entitySaved);
@@ -54,18 +82,19 @@ public class UserServiceImpl implements IUserService {
         subscriptionRepository.save(subscription);
 
         // cria e salva o pagamento
-        paymentDto.setUserId(entitySaved.getId());
-        paymentDto.setDataPagamento(currentDate);
-        paymentDto.setValor(30.0); // supondo preço do serviço
+        PaymentModel payment = new PaymentModel();
+        payment.setUser(entitySaved);
+        payment.setDataPagamento(currentDate);
+        payment.setMetodoPagamento(userPaymentDto.getMetodoPagamento());
+        payment.setValor(userPaymentDto.getValor());
 
-        PaymentModel payment = PaymentMapper.toModel(paymentDto, entitySaved);
         paymentRepository.save(payment);
 
         return UserMapper.toDtoReturn(entitySaved);
     }
 
     @Override
-    public ReturnUserDTO findById(UUID id) {
+    public ReturnUserDTO findUserDtoById(UUID id) {
         return UserMapper.toDtoReturn(findUserModelById(id));
     }
 
@@ -85,9 +114,11 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public boolean update(CreateUserDTO user, CreatePaymentDTO paymentDTO) {
-        // TODO
-        return false;
+    public boolean update(String name, UUID id) {
+    	UserModel entity = findUserModelById(id);
+    	entity.setNome(name);
+    	userRepository.save(entity);
+        return true;
     }
 
     @Override

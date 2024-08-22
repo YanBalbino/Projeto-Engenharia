@@ -14,12 +14,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.streamit.streaming_service.dtos.CreatePaymentDTO;
-import com.streamit.streaming_service.dtos.CreateUserDTO;
+import com.streamit.streaming_service.dtos.CreateUserWithPaymentDTO;
 import com.streamit.streaming_service.dtos.ReturnUserDTO;
 import com.streamit.streaming_service.services.IUserService;
 
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 
 @RestController
@@ -30,15 +31,14 @@ public class UserController {
 	private final IUserService userService;
 
 	@PostMapping
-	public ResponseEntity<ReturnUserDTO> createUser(@Valid @RequestBody CreateUserDTO userDto,
-			@Valid @RequestBody CreatePaymentDTO paymentDto) {
-		ReturnUserDTO createdUser = userService.create(userDto, paymentDto);
+	public ResponseEntity<ReturnUserDTO> createUser(@Valid @RequestBody CreateUserWithPaymentDTO userPaymentDto) {
+		ReturnUserDTO createdUser = userService.create(userPaymentDto);
 		return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
 	}
 
 	@GetMapping("/{id}")
 	public ResponseEntity<ReturnUserDTO> getUserById(@PathVariable UUID id) {
-		ReturnUserDTO user = userService.findById(id);
+		ReturnUserDTO user = userService.findUserDtoById(id);
 		return new ResponseEntity<>(user, HttpStatus.OK);
 	}
 
@@ -49,9 +49,10 @@ public class UserController {
 	}
 
 	@PutMapping("/{id}")
-	public ResponseEntity<Void> updateUser(@PathVariable UUID id, @Valid @RequestBody CreateUserDTO userDto,
-			@Valid @RequestBody CreatePaymentDTO paymentDto) {
-		boolean updated = userService.update(userDto, paymentDto);
+	public ResponseEntity<Void> updateUser(
+			@NotBlank(message = "Nome é obrigatório") @Size(min = 2, max = 100, message = "Nome deve ter entre 2 e 100 caracteres") String name,
+			@PathVariable UUID id) {
+		boolean updated = userService.update(name, id);
 		if (updated) {
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		} else {

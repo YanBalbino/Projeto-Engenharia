@@ -36,7 +36,6 @@ public class UserModel implements Serializable{
     @Column(unique = true)
     private String email;
     private String senha;
-    private String metodoPagamento; 
     private LocalDate dataCadastro;
     
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
