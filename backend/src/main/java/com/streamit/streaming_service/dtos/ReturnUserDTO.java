@@ -19,5 +19,5 @@ public class ReturnUserDTO {
     
     private String email;
     
-    private List<CreateProfileDTO> perfis;
+    private List<ProfileDTO> perfis;
 }

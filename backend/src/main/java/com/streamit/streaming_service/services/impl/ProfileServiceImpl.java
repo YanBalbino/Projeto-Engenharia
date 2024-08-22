@@ -1,12 +1,11 @@
 package com.streamit.streaming_service.services.impl;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
-import com.streamit.streaming_service.dtos.CreateProfileDTO;
+import com.streamit.streaming_service.dtos.ProfileDTO;
 import com.streamit.streaming_service.exceptions.ResourceNotFoundException;
 import com.streamit.streaming_service.mappers.ProfileMapper;
 import com.streamit.streaming_service.model.ProfileModel;
@@ -18,13 +17,13 @@ import lombok.AllArgsConstructor;
 
 @Service
 @AllArgsConstructor
-public class ProfileServiceImpl implements IProfileService{
+public class ProfileServiceImpl implements IProfileService {
 
 	private ProfileRepository profileRepository;
 	private UserServiceImpl userServiceImpl;
-	
+
 	@Override
-	public CreateProfileDTO create(CreateProfileDTO profile, UUID idUser) {
+	public ProfileDTO create(ProfileDTO profile, UUID idUser) {
 		UserModel user = userServiceImpl.findUserModelById(idUser);
 		ProfileModel entity = ProfileMapper.toModel(profile, user);
 		ProfileModel entitySaved = profileRepository.save(entity);
@@ -32,29 +31,56 @@ public class ProfileServiceImpl implements IProfileService{
 	}
 
 	@Override
-	public CreateProfileDTO findById(UUID id) {
+	public ProfileDTO findProfileDtoById(UUID id) {
 		ProfileModel entity = findProfileModelById(id);
 		return ProfileMapper.toDTO(entity);
 	}
-	
+
 	public ProfileModel findProfileModelById(UUID id) {
-		return profileRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Perfil não encontrado com id " + id));
+		return profileRepository.findById(id)
+				.orElseThrow(() -> new ResourceNotFoundException("Perfil não encontrado com id " + id));
 	}
 
 	@Override
-	public List<CreateProfileDTO> findAll() { // alterar para retornar apenas perfis de determinado usuário
-		List<ProfileModel> entities = profileRepository.findAll();
-		List<CreateProfileDTO> dtos = new ArrayList<CreateProfileDTO>();
-		for(ProfileModel profile : entities) {
-			dtos.add(ProfileMapper.toDTO(profile));
+	public List<ProfileDTO> findProfileDetailsByUser(UUID idUser) {
+		List<ProfileDTO> profiles = profileRepository.findProfileDetailsByUser(idUser);
+		return profiles;
+	}
+
+	@Override
+	public boolean updateProfileName(String name, UUID idUser) {
+		ProfileModel entity = findProfileModelById(idUser);
+		entity.setNome(name);
+		profileRepository.save(entity);
+		return true;
+	}
+
+	@Override
+	public boolean updateProfileIconUrl(String iconUrl, UUID idUser) {
+		ProfileModel entity = findProfileModelById(idUser);
+		entity.setIconUrl(iconUrl);
+		profileRepository.save(entity);
+		return true;
+	}
+
+	@Override
+	public boolean updateProfileGenerosPreferidos(List<String> generosPreferidos, UUID idUser) {
+		ProfileModel entity = findProfileModelById(idUser);
+		entity.setGenerosPreferidos(generosPreferidos);
+		profileRepository.save(entity);
+		return true;
+	}
+
+	@Override
+	public boolean alterarProfileInfatil(UUID idUser) {
+		ProfileModel entity = findProfileModelById(idUser);
+		if(entity.isPerfilInfantil()) {
+			entity.setPerfilInfantil(false);
+		}else {
+			entity.setPerfilInfantil(true);
 		}
-		return dtos;
-	}
-
-	@Override
-	public boolean update(CreateProfileDTO profile, UUID idUser) {
-		// TODO
-		return false;
+		profileRepository.save(entity);
+		return true;
 	}
 
 	@Override

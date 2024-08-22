@@ -1,12 +1,12 @@
 package com.streamit.streaming_service.mappers;
 
-import com.streamit.streaming_service.dtos.CreateProfileDTO;
+import com.streamit.streaming_service.dtos.ProfileDTO;
 import com.streamit.streaming_service.model.ProfileModel;
 import com.streamit.streaming_service.model.UserModel;
 
 public class ProfileMapper {
 
-    public static ProfileModel toModel(CreateProfileDTO dto, UserModel user) {
+    public static ProfileModel toModel(ProfileDTO dto, UserModel user) {
         if (dto == null || user == null) {
             throw new IllegalArgumentException("DTO e UserModel não podem ser nulos.");
         }
@@ -20,12 +20,12 @@ public class ProfileMapper {
         return profile;
     }
 
-    public static CreateProfileDTO toDTO(ProfileModel model) {
+    public static ProfileDTO toDTO(ProfileModel model) {
         if (model == null) {
             throw new IllegalArgumentException("ProfileModel não pode ser nulo.");
         }
 
-        CreateProfileDTO dto = new CreateProfileDTO();
+        ProfileDTO dto = new ProfileDTO();
         dto.setNome(model.getNome());
         dto.setPerfilInfantil(model.isPerfilInfantil());
         dto.setGenerosPreferidos(model.getGenerosPreferidos());

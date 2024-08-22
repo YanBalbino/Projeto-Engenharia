@@ -16,10 +16,12 @@ import lombok.ToString;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-public class CreateProfileDTO {
+public class ProfileDTO {
     
     @NotBlank(message = "Nome do perfil é obrigatório")
     private String nome;
+    
+    private String iconUrl;
     
     @NotNull(message = "É necessário indicar se o perfil é infantil")
     private Boolean perfilInfantil;

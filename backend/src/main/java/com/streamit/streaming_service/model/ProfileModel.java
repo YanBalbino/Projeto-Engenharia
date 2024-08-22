@@ -33,6 +33,7 @@ public class ProfileModel implements Serializable{
 	@GeneratedValue(strategy = GenerationType.UUID)
 	private UUID id;
     private String nome;
+    private String iconUrl;
     private boolean perfilInfantil; // true para perfil infantil, false para perfil comum
     
 	@ElementCollection
