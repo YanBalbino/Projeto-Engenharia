@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.streamit.streaming_service.dtos.CreateUserWithPaymentDTO;
@@ -49,9 +50,8 @@ public class UserController {
 	}
 
 	@PutMapping("/{id}")
-	public ResponseEntity<Void> updateUser(
-			@NotBlank(message = "Nome é obrigatório") @Size(min = 2, max = 100, message = "Nome deve ter entre 2 e 100 caracteres") String name,
-			@PathVariable UUID id) {
+	public ResponseEntity<Void> updateUser(@PathVariable UUID id,
+			@RequestParam @NotBlank(message = "Nome é obrigatório") @Size(min = 2, max = 100, message = "Nome deve ter entre 2 e 100 caracteres") String name) {
 		boolean updated = userService.update(name, id);
 		if (updated) {
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);

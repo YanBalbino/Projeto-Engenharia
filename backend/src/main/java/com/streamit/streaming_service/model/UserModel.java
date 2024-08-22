@@ -12,6 +12,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -40,5 +41,11 @@ public class UserModel implements Serializable{
     
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<ProfileModel> perfis;
+    
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    private PaymentModel payment;
+	
+	@OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    private SubscriptionModel subscription;
 }
 
