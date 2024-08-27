@@ -48,13 +48,9 @@ public class ProfileController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<String> updateProfile(@RequestBody CreateProfileDTO profileDTO, @PathVariable UUID id) {
-        boolean updated = profileService.updateProfile(profileDTO, id);
-        if (updated) {
-            return ResponseEntity.ok("Profile updated successfully.");
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Profile not found.");
-        }
+    public ResponseEntity<ReturnProfileDTO> updateProfile(@RequestBody CreateProfileDTO profileDTO, @PathVariable UUID id) {
+    	ReturnProfileDTO updatedProfile = profileService.updateProfile(profileDTO, id);
+    	return new ResponseEntity<>(updatedProfile, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")

@@ -18,6 +18,5 @@ import lombok.ToString;
 public class SeriesModel extends MediaModel {
 	private static final long serialVersionUID = 1L;
 	private int numeroTemporadas;
-    private int numeroEpisodios;
+	private int numeroEpisodios;
 }
-

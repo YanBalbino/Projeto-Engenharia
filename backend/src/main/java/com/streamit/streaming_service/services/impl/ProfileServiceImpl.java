@@ -54,7 +54,7 @@ public class ProfileServiceImpl implements IProfileService {
 	}
 
 	@Override
-	public boolean updateProfile(CreateProfileDTO profileDTO, UUID id) {
+	public ReturnProfileDTO updateProfile(CreateProfileDTO profileDTO, UUID id) {
 	    ProfileModel entity = findProfileModelById(id);
 	    
 	    if (profileDTO.getNome() != null) {
@@ -73,8 +73,8 @@ public class ProfileServiceImpl implements IProfileService {
 	        entity.setPerfilInfantil(profileDTO.getPerfilInfantil());
 	    }
 
-	    profileRepository.save(entity);
-	    return true;
+		ProfileModel entitySaved = profileRepository.save(entity);
+		return ProfileMapper.toDTO(entitySaved);
 	}
 
 	@Override

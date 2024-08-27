@@ -14,10 +14,11 @@ public final class ApiConstants {
 
     // Paths de API
     public static final String PATH_USERS = "/api/users";
+    public static final String PATH_USERS_RENEW = "api/users/{userId}/subscriptions/{subscriptionId}/payments/{paymentId}/renew";
     public static final String PATH_USER_BY_ID = "/api/users/{id}";
     public static final String PATH_PROFILES = "/api/profiles";
     public static final String PATH_PROFILE_BY_ID = "/api/profiles/{id}";
-
+    
     // Mensagens padrão
     public static final String MESSAGE_SUCCESS = "Request processed successfully";
     public static final String MESSAGE_RESOURCE_CREATED = "Resource successfully created";

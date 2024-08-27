@@ -9,7 +9,7 @@ public class ProfileMapper {
 
     public static ProfileModel toModel(CreateProfileDTO dto, UserModel user) {
         if (dto == null || user == null) {
-            throw new IllegalArgumentException("DTO e UserModel não podem ser nulos.");
+            throw new IllegalArgumentException("CreateProfileDTO e UserModel não podem ser nulos.");
         }
 
         ProfileModel profile = new ProfileModel();

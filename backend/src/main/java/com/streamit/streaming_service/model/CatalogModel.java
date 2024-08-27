@@ -29,9 +29,9 @@ public class CatalogModel implements Serializable{
 	@Id
 	@GeneratedValue(strategy = GenerationType.UUID)
 	private UUID id;
-	@OneToMany(mappedBy = "catalog", cascade = CascadeType.REMOVE)
+	@OneToMany(mappedBy = "catalogo", cascade = CascadeType.REMOVE)
     private List<FilmModel> filmes;
-	@OneToMany(mappedBy = "catalog", cascade = CascadeType.REMOVE)
+	@OneToMany(mappedBy = "catalogo", cascade = CascadeType.REMOVE)
     private List<SeriesModel> series;
 
     /*public List<FilmModel> buscarFilmePorTitulo(String titulo) {

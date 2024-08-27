@@ -55,7 +55,7 @@ public class FilmServiceImplTest {
         filmModel.setDescricao(filmDTO.getDescricao());
         filmModel.setAtores(filmDTO.getAtores());
         filmModel.setDiretor(filmDTO.getDiretor());
-        filmModel.setCatalog(new CatalogModel());
+        filmModel.setCatalogo(new CatalogModel());
     }
 
     @Test

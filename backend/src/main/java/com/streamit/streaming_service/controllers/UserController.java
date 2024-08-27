@@ -16,7 +16,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.streamit.streaming_service.constants.ApiConstants;
-import com.streamit.streaming_service.dtos.CreateUserWithPaymentDTO;
+import com.streamit.streaming_service.dtos.CreatePaymentDTO;
+import com.streamit.streaming_service.dtos.CreateUserDTO;
 import com.streamit.streaming_service.dtos.ReturnUserDTO;
 import com.streamit.streaming_service.response.ApiResponse;
 import com.streamit.streaming_service.response.ResponseUtil;
@@ -35,12 +36,12 @@ public class UserController {
 	private final IUserService userService;
 
 	@PostMapping
-	public ResponseEntity<ApiResponse<ReturnUserDTO>> createUser(@Valid @RequestBody CreateUserWithPaymentDTO userPaymentDto) {
+	public ResponseEntity<ApiResponse<ReturnUserDTO>> createUser(@Valid @RequestBody CreateUserDTO userPaymentDto) {
 		ReturnUserDTO createdUser = userService.create(userPaymentDto);
 		ApiResponse<ReturnUserDTO> response = ResponseUtil.success(createdUser, ApiConstants.MESSAGE_RESOURCE_CREATED, ApiConstants.HTTP_STATUS_CREATED, ApiConstants.PATH_USERS);
 		return new ResponseEntity<>(response, HttpStatus.CREATED);
 	}
-
+	
 	@GetMapping("/{id}")
 	public ResponseEntity<ReturnUserDTO> getUserById(@PathVariable UUID id) {
 		ReturnUserDTO user = userService.findUserDtoById(id);
@@ -52,16 +53,27 @@ public class UserController {
 		List<ReturnUserDTO> users = userService.findAll();
 		return new ResponseEntity<>(users, HttpStatus.OK);
 	}
+	
+    @PutMapping("/{userId}/subscriptions/{subscriptionId}/payments/{paymentId}/renew")
+    public ResponseEntity<ApiResponse<ReturnUserDTO>> renovarInscricao(
+            @PathVariable UUID userId,
+            @PathVariable UUID subscriptionId,
+            @PathVariable UUID paymentId,
+            @Valid @RequestBody CreatePaymentDTO paymentDto) {
+        
+    	ReturnUserDTO createdUser = userService.renovarInscricao(userId, subscriptionId, paymentId, paymentDto);
+        
+        ApiResponse<ReturnUserDTO> response = ResponseUtil.success(createdUser, ApiConstants.MESSAGE_RESOURCE_UPDATED, ApiConstants.HTTP_STATUS_OK, ApiConstants.PATH_USERS_RENEW);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
 
 	@PutMapping("/{id}")
-	public ResponseEntity<Void> updateUser(@PathVariable UUID id,
+	public ResponseEntity<ApiResponse<ReturnUserDTO>> updateUser(@PathVariable UUID id,
 			@RequestParam @NotBlank(message = "Nome é obrigatório") @Size(min = 2, max = 100, message = "Nome deve ter entre 2 e 100 caracteres") String name) {
-		boolean updated = userService.update(name, id);
-		if (updated) {
-			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-		} else {
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		}
+    	ReturnUserDTO createdUser = userService.update(name, id);
+        
+        ApiResponse<ReturnUserDTO> response = ResponseUtil.success(createdUser, ApiConstants.MESSAGE_RESOURCE_UPDATED, ApiConstants.HTTP_STATUS_OK, ApiConstants.PATH_USER_BY_ID);
+        return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 
 	@DeleteMapping("/{id}")

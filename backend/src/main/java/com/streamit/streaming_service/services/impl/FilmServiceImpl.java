@@ -30,7 +30,7 @@ public class FilmServiceImpl implements IFilmService {
         
         CatalogModel catalog = new CatalogModel();
         catalog.setId(filmDto.getCatalogId()); 
-        filmModel.setCatalog(catalog);
+        filmModel.setCatalogo(catalog);
 
         FilmModel savedFilm = filmRepository.save(filmModel);
 
@@ -44,7 +44,7 @@ public class FilmServiceImpl implements IFilmService {
         result.setDescricao(savedFilm.getDescricao());
         result.setAtores(savedFilm.getAtores());
         result.setDiretor(savedFilm.getDiretor());
-        result.setCatalogId(savedFilm.getCatalog().getId()); 
+        result.setCatalogId(savedFilm.getCatalogo().getId()); 
 
         return result;
     }

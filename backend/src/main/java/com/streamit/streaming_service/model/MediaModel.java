@@ -56,7 +56,7 @@ public abstract class MediaModel implements Serializable {
 
 	@ManyToOne
 	@JoinColumn(name = "catalog_id")
-	private CatalogModel catalog;
+	private CatalogModel catalogo;
 
 	private String videoUrl;
 
