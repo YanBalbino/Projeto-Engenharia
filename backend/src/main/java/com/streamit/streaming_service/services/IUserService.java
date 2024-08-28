@@ -13,6 +13,6 @@ public interface IUserService {
 	ReturnUserDTO findUserDtoById(UUID id);
 	List<ReturnUserDTO> findAll();
 	ReturnUserDTO update(String name, UUID idUser);
-	boolean delete(UUID id);
+	void delete(UUID id);
 	ReturnUserDTO renovarInscricao(UUID userId, UUID paymentId, UUID subscriptionId, CreatePaymentDTO paymentDto);
 }

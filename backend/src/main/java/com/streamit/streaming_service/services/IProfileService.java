@@ -12,5 +12,5 @@ public interface IProfileService {
 	ReturnProfileDTO findProfileDtoById(UUID id);
 	List<ReturnProfileDTO> findProfileDetailsByUser(UUID idUser);
 	ReturnProfileDTO updateProfile(CreateProfileDTO profileDTO, UUID id);
-	boolean delete(UUID id);
+	void delete(UUID id);
 }

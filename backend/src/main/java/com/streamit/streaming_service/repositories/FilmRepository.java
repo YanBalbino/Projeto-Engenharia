@@ -8,4 +8,5 @@ import com.streamit.streaming_service.model.FilmModel;
 
 public interface FilmRepository extends JpaRepository<FilmModel, UUID>{
 
+	FilmModel findByVideoUrl(String videoURL);
 }

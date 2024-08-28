@@ -1,8 +1,16 @@
 package com.streamit.streaming_service.services;
 
-import com.streamit.streaming_service.dtos.FilmDTO;
+import java.util.List;
+import java.util.UUID;
+
+import com.streamit.streaming_service.dtos.CreateFilmDTO;
+import com.streamit.streaming_service.model.FilmModel;
 
 public interface IFilmService {
 
-	FilmDTO create(FilmDTO filmDto);
+	FilmModel create(CreateFilmDTO filmDto);
+	FilmModel findById(UUID id);
+	List<FilmModel> findAll();
+	FilmModel update(UUID id, CreateFilmDTO filmDto);
+	void delete(UUID id);
 }

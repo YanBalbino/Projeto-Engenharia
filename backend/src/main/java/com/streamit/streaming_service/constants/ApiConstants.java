@@ -18,6 +18,10 @@ public final class ApiConstants {
     public static final String PATH_USER_BY_ID = "/api/users/{id}";
     public static final String PATH_PROFILES = "/api/profiles";
     public static final String PATH_PROFILE_BY_ID = "/api/profiles/{id}";
+    public static final String PATH_FILMS = "/api/films";
+    public static final String PATH_FILMS_ID = "/api/films/{id}";
+    public static final String PATH_SERIES = "/api/series";
+    public static final String PATH_SERIES_ID = "/api/series/{id}";
     
     // Mensagens padrão
     public static final String MESSAGE_SUCCESS = "Request processed successfully";
@@ -29,7 +33,6 @@ public final class ApiConstants {
     public static final String MESSAGE_BAD_REQUEST = "Invalid request parameters";
     public static final String MESSAGE_INTERNAL_ERROR = "Internal server error";
 
-    // Prevenir instância da classe
     private ApiConstants() {
         throw new AssertionError("Instantiating utility class.");
     }

@@ -1,16 +1,16 @@
 package com.streamit.streaming_service.mappers;
 
-import com.streamit.streaming_service.dtos.SubscriptionDTO;
+import com.streamit.streaming_service.dtos.ReturnSubscriptionDTO;
 import com.streamit.streaming_service.model.SubscriptionModel;
 
 public class SubscriptionMapper {
 
-    public static SubscriptionDTO toDto(SubscriptionModel model) {
+    public static ReturnSubscriptionDTO toDto(SubscriptionModel model) {
         if (model == null) {
             return null;
         }
 
-        SubscriptionDTO dto = new SubscriptionDTO();
+        ReturnSubscriptionDTO dto = new ReturnSubscriptionDTO();
         dto.setId(model.getId());
         dto.setDataInicio(model.getDataInicio());
         dto.setDataTermino(model.getDataTermino());
@@ -18,7 +18,7 @@ public class SubscriptionMapper {
         return dto;
     }
 
-    public static SubscriptionModel toModel(SubscriptionDTO dto) {
+    public static SubscriptionModel toModel(ReturnSubscriptionDTO dto) {
         if (dto == null) {
             return null;
         }

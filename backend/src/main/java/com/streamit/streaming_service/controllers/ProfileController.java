@@ -14,8 +14,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.streamit.streaming_service.constants.ApiConstants;
 import com.streamit.streaming_service.dtos.CreateProfileDTO;
 import com.streamit.streaming_service.dtos.ReturnProfileDTO;
+import com.streamit.streaming_service.response.ApiResponse;
+import com.streamit.streaming_service.response.ResponseUtil;
 import com.streamit.streaming_service.services.IProfileService;
 
 import jakarta.validation.Valid;
@@ -54,12 +57,12 @@ public class ProfileController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteProfile(@PathVariable UUID id) {
-        boolean deleted = profileService.delete(id);
-        if (deleted) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+    public ResponseEntity<ApiResponse<Void>> deleteProfile(@PathVariable UUID id) {
+        profileService.delete(id);
+        ApiResponse<Void> response = ResponseUtil.success(null, 
+                ApiConstants.MESSAGE_RESOURCE_DELETED, 
+                ApiConstants.HTTP_STATUS_NO_CONTENT, 
+                ApiConstants.PATH_PROFILE_BY_ID);
+        return new ResponseEntity<>(response, HttpStatus.NO_CONTENT);
     }
 }

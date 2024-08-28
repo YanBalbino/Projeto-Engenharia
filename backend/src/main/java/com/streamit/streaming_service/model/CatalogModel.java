@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.UUID;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -29,9 +28,9 @@ public class CatalogModel implements Serializable{
 	@Id
 	@GeneratedValue(strategy = GenerationType.UUID)
 	private UUID id;
-	@OneToMany(mappedBy = "catalogo", cascade = CascadeType.REMOVE)
+	@OneToMany(mappedBy = "catalogo")
     private List<FilmModel> filmes;
-	@OneToMany(mappedBy = "catalogo", cascade = CascadeType.REMOVE)
+	@OneToMany(mappedBy = "catalogo")
     private List<SeriesModel> series;
 
     /*public List<FilmModel> buscarFilmePorTitulo(String titulo) {

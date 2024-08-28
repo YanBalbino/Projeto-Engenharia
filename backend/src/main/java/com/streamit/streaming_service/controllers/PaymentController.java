@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.streamit.streaming_service.dtos.ReturnPaymentDTO;
-import com.streamit.streaming_service.services.impl.PaymentServiceImpl;
+import com.streamit.streaming_service.services.IPaymentService;
 
 import lombok.AllArgsConstructor;
 
@@ -19,11 +19,11 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class PaymentController {
 
-    private PaymentServiceImpl paymentServiceImpl;
+    private IPaymentService paymentService;
 
     @GetMapping("/{userId}")
     public ResponseEntity<ReturnPaymentDTO> getSubscriptionByUserId(@PathVariable UUID userId) {
-    	ReturnPaymentDTO payment = paymentServiceImpl.findByUserId(userId);
+    	ReturnPaymentDTO payment = paymentService.findByUserId(userId);
         return new ResponseEntity<>(payment, HttpStatus.OK);
     }
 }

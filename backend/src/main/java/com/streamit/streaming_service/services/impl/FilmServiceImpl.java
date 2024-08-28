@@ -1,51 +1,55 @@
 package com.streamit.streaming_service.services.impl;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import java.util.List;
+import java.util.UUID;
+
 import org.springframework.stereotype.Service;
 
-import com.streamit.streaming_service.dtos.FilmDTO;
-import com.streamit.streaming_service.model.CatalogModel;
+import com.streamit.streaming_service.dtos.CreateFilmDTO;
+import com.streamit.streaming_service.exceptions.ResourceAlreadyExistsException;
+import com.streamit.streaming_service.exceptions.ResourceNotFoundException;
+import com.streamit.streaming_service.mappers.FilmMapper;
 import com.streamit.streaming_service.model.FilmModel;
 import com.streamit.streaming_service.repositories.FilmRepository;
 import com.streamit.streaming_service.services.IFilmService;
 
+import lombok.AllArgsConstructor;
+
 @Service
+@AllArgsConstructor
 public class FilmServiceImpl implements IFilmService {
 
-    @Autowired
     private FilmRepository filmRepository;
 
     @Override
-    public FilmDTO create(FilmDTO filmDto) {
-        FilmModel filmModel = new FilmModel();
-        filmModel.setTitulo(filmDto.getTitulo());
-        filmModel.setAnoProducao(filmDto.getAnoProducao());
-        filmModel.setGenero(filmDto.getGenero());
-        filmModel.setDuracao(filmDto.getDuracao());
-        filmModel.setLegendasDisponiveis(filmDto.getLegendasDisponiveis());
-        filmModel.setAudiosDisponiveis(filmDto.getAudiosDisponiveis());
-        filmModel.setDescricao(filmDto.getDescricao());
-        filmModel.setAtores(filmDto.getAtores());
-        filmModel.setDiretor(filmDto.getDiretor());
-        
-        CatalogModel catalog = new CatalogModel();
-        catalog.setId(filmDto.getCatalogId()); 
-        filmModel.setCatalogo(catalog);
-
-        FilmModel savedFilm = filmRepository.save(filmModel);
-
-        FilmDTO result = new FilmDTO();
-        result.setTitulo(savedFilm.getTitulo());
-        result.setAnoProducao(savedFilm.getAnoProducao());
-        result.setGenero(savedFilm.getGenero());
-        result.setDuracao(savedFilm.getDuracao());
-        result.setLegendasDisponiveis(savedFilm.getLegendasDisponiveis());
-        result.setAudiosDisponiveis(savedFilm.getAudiosDisponiveis());
-        result.setDescricao(savedFilm.getDescricao());
-        result.setAtores(savedFilm.getAtores());
-        result.setDiretor(savedFilm.getDiretor());
-        result.setCatalogId(savedFilm.getCatalogo().getId()); 
-
-        return result;
+    public FilmModel create(CreateFilmDTO filmDto) {
+    	if(filmRepository.findByVideoUrl(filmDto.getVideoURL()) != null) {
+    		throw new ResourceAlreadyExistsException("Filme já cadastrado.");
+    	}
+    	FilmModel entity = FilmMapper.toModel(filmDto);
+        return filmRepository.save(entity); 
     }
+
+	@Override
+	public FilmModel findById(UUID id) {
+		return filmRepository.findById(id)
+				.orElseThrow(() -> new ResourceNotFoundException("Filme não encontrado com id " + id));
+	}
+
+	@Override
+	public List<FilmModel> findAll() {
+		return filmRepository.findAll();
+	}
+
+	@Override
+	public FilmModel update(UUID id, CreateFilmDTO filmDto) {
+		findById(id);
+    	return create(filmDto);
+	}
+
+	@Override
+	public void delete(UUID id) {
+		FilmModel entity = findById(id);
+		filmRepository.delete(entity);
+	}
 }

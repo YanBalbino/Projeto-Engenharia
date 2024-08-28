@@ -77,12 +77,12 @@ public class UserController {
 	}
 
 	@DeleteMapping("/{id}")
-	public ResponseEntity<Void> deleteUser(@PathVariable UUID id) {
-		boolean deleted = userService.delete(id);
-		if (deleted) {
-			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-		} else {
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		}
+	public ResponseEntity<ApiResponse<Void>> deleteUser(@PathVariable UUID id) {
+		userService.delete(id);
+        ApiResponse<Void> response = ResponseUtil.success(null, 
+                ApiConstants.MESSAGE_RESOURCE_DELETED, 
+                ApiConstants.HTTP_STATUS_NO_CONTENT, 
+                ApiConstants.PATH_USER_BY_ID);
+        return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 }

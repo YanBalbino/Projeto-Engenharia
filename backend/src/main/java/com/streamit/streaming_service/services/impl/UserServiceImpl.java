@@ -35,45 +35,34 @@ public class UserServiceImpl implements IUserService {
 
     @Transactional
     @Override
-    public ReturnUserDTO create(CreateUserDTO userPaymentDto) {
-        if (userRepository.findByEmail(userPaymentDto.getEmail()).isPresent()) {
+    public ReturnUserDTO create(CreateUserDTO userDto) {
+        if (userRepository.findByEmail(userDto.getEmail()).isPresent()) {
             throw new ResourceAlreadyExistsException("Email já cadastrado.");
         }
 
         LocalDate currentDate = LocalDate.now();
 
         UserModel entity = new UserModel();
-        entity.setEmail(userPaymentDto.getEmail());
-        entity.setNome(userPaymentDto.getNome());
-        entity.setSenha(userPaymentDto.getSenha());
+        entity.setEmail(userDto.getEmail());
+        entity.setNome(userDto.getNome());
+        entity.setSenha(userDto.getSenha());
         entity.setDataCadastro(currentDate);
         
-        List<CreateProfileDTO> profiles = userPaymentDto.getPerfis();
+        List<CreateProfileDTO> profiles = userDto.getPerfis();
         List<ProfileModel> profilesModel = new ArrayList<>();
         
         // cria os perfis
         for(CreateProfileDTO profile : profiles) {
         	profilesModel.add(ProfileMapper.toModel(profile, entity));
         }
-        
         entity.setPerfis(profilesModel);
         
         // cria a inscrição
-        SubscriptionModel subscription = new SubscriptionModel();
-        subscription.setUser(entity);
-        subscription.setDataInicio(currentDate);
-        subscription.setDataTermino(currentDate.plusMonths(1)); 
-        subscription.setStatusAtivo(true);
-        
+        SubscriptionModel subscription = subscriptionServiceImpl.createSubscription(entity, currentDate);
         entity.setSubscription(subscription);
 
         // cria o pagamento
-        PaymentModel payment = new PaymentModel();
-        payment.setUser(entity);
-        payment.setDataPagamento(currentDate);
-        payment.setMetodoPagamento(userPaymentDto.getMetodoPagamento());
-        payment.setValor(userPaymentDto.getValor());
-        
+        PaymentModel payment = paymentServiceImpl.createPayment(entity, userDto, currentDate);
         entity.setPayment(payment);
 
         UserModel entitySaved = userRepository.save(entity);
@@ -110,10 +99,9 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public boolean delete(UUID id) {
+    public void delete(UUID id) {
         UserModel entity = findUserModelById(id);
         userRepository.delete(entity);
-        return true;
     }
     
     @Transactional

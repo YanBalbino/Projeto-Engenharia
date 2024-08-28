@@ -78,10 +78,9 @@ public class ProfileServiceImpl implements IProfileService {
 	}
 
 	@Override
-	public boolean delete(UUID id) {
+	public void delete(UUID id) {
 		ProfileModel entity = findProfileModelById(id);
 		profileRepository.delete(entity);
-		return true;
 	}
 
 }

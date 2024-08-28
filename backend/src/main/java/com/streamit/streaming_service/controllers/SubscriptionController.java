@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.streamit.streaming_service.dtos.SubscriptionDTO;
-import com.streamit.streaming_service.services.impl.SubscriptionServiceImpl;
+import com.streamit.streaming_service.dtos.ReturnSubscriptionDTO;
+import com.streamit.streaming_service.services.ISubscriptionService;
 
 import lombok.AllArgsConstructor;
 
@@ -19,11 +19,11 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class SubscriptionController {
 
-    private SubscriptionServiceImpl subscriptionServiceImpl;
+    private ISubscriptionService subscriptionService;
 
     @GetMapping("/{userId}")
-    public ResponseEntity<SubscriptionDTO> getSubscriptionByUserId(@PathVariable UUID userId) {
-    	SubscriptionDTO subscription = subscriptionServiceImpl.findByUserId(userId);
+    public ResponseEntity<ReturnSubscriptionDTO> getSubscriptionByUserId(@PathVariable UUID userId) {
+    	ReturnSubscriptionDTO subscription = subscriptionService.findByUserId(userId);
         return new ResponseEntity<>(subscription, HttpStatus.OK);
     }
 }

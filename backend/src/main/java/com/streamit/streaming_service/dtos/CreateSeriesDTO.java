@@ -58,6 +58,8 @@ public class CreateSeriesDTO {
     @Min(value = 1, message = "O número de episódios deve ser no mínimo 1")
     private int numeroEpisodios;
 
-    @NotNull(message = "O ID do catálogo não pode ser nulo")
     private UUID catalogId;
+    
+    @NotBlank(message = "A URL do vídeo não pode ser vazio")
+    private String videoURL;
 }

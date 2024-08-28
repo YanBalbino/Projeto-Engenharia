@@ -14,7 +14,7 @@ import lombok.ToString;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-public class SubscriptionDTO {
+public class ReturnSubscriptionDTO {
     
 	private UUID id;
 	

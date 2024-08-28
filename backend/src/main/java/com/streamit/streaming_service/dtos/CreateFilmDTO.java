@@ -19,7 +19,7 @@ import lombok.ToString;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-public class FilmDTO {
+public class CreateFilmDTO {
     
     @NotBlank(message = "O título não pode ser vazio")
     private String titulo;
@@ -51,6 +51,8 @@ public class FilmDTO {
     @NotBlank(message = "O nome do diretor não pode ser vazio")
     private String diretor;
 
-    @NotNull(message = "O ID do catálogo não pode ser nulo")
     private UUID catalogId;
+    
+    @NotBlank(message = "A URL do vídeo não pode ser vazio")
+    private String videoURL;
 }
