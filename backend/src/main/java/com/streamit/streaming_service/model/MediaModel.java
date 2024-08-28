@@ -1,12 +1,9 @@
 package com.streamit.streaming_service.model;
 
 import java.io.Serializable;
-import java.util.List;
 import java.util.UUID;
 
-import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
-import jakarta.persistence.ElementCollection;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -35,22 +32,7 @@ public abstract class MediaModel implements Serializable {
 	private String genero;
 	private int duracao; // em minutos
 
-	@ElementCollection
-	@CollectionTable(name = "media_subtitles", joinColumns = @JoinColumn(name = "film_id"))
-	@Column(name = "subtitles")
-	private List<String> legendasDisponiveis;
-
-	@ElementCollection
-	@CollectionTable(name = "media_audios", joinColumns = @JoinColumn(name = "film_id"))
-	@Column(name = "audios")
-	private List<String> audiosDisponiveis;
-
 	private String descricao;
-
-	@ElementCollection
-	@CollectionTable(name = "media_actors", joinColumns = @JoinColumn(name = "film_id"))
-	@Column(name = "actors")
-	private List<String> atores;
 
 	private String diretor;
 
