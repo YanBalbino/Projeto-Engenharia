@@ -21,6 +21,7 @@ import com.streamit.streaming_service.response.ApiResponse;
 import com.streamit.streaming_service.response.ResponseUtil;
 import com.streamit.streaming_service.services.IFilmService;
 
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 
 @RestController
@@ -31,7 +32,7 @@ public class FilmController {
     private final IFilmService filmService;
 
     @PostMapping
-    public ResponseEntity<ApiResponse<FilmModel>> createFilm(@RequestBody CreateFilmDTO createFilmDTO) {
+    public ResponseEntity<ApiResponse<FilmModel>> createFilm(@Valid @RequestBody CreateFilmDTO createFilmDTO) {
         FilmModel createdFilm = filmService.create(createFilmDTO);
         ApiResponse<FilmModel> response = ResponseUtil.success(createdFilm, 
                 ApiConstants.MESSAGE_RESOURCE_CREATED, 
@@ -54,7 +55,7 @@ public class FilmController {
 
     @PutMapping("/{id}")
     public ResponseEntity<ApiResponse<FilmModel>> updateFilm(@PathVariable UUID id, 
-                                                             @RequestBody CreateFilmDTO createFilmDTO) {
+                                                             @Valid @RequestBody CreateFilmDTO createFilmDTO) {
         FilmModel updatedFilm = filmService.update(id, createFilmDTO);
         ApiResponse<FilmModel> response = ResponseUtil.success(updatedFilm, 
                 ApiConstants.MESSAGE_RESOURCE_UPDATED, 

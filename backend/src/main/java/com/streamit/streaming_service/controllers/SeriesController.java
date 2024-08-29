@@ -21,6 +21,7 @@ import com.streamit.streaming_service.response.ApiResponse;
 import com.streamit.streaming_service.response.ResponseUtil;
 import com.streamit.streaming_service.services.ISeriesService;
 
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 
 @RestController
@@ -31,7 +32,7 @@ public class SeriesController {
     private final ISeriesService seriesService;
 
     @PostMapping
-    public ResponseEntity<ApiResponse<SeriesModel>> createSeries(@RequestBody CreateSeriesDTO createSeriesDTO) {
+    public ResponseEntity<ApiResponse<SeriesModel>> createSeries(@Valid @RequestBody CreateSeriesDTO createSeriesDTO) {
         SeriesModel createdSeries = seriesService.create(createSeriesDTO);
         ApiResponse<SeriesModel> response = ResponseUtil.success(createdSeries, 
                 ApiConstants.MESSAGE_RESOURCE_CREATED, 
@@ -54,7 +55,7 @@ public class SeriesController {
 
     @PutMapping("/{id}")
     public ResponseEntity<ApiResponse<SeriesModel>> updateSeries(@PathVariable UUID id, 
-                                                                 @RequestBody CreateSeriesDTO createSeriesDTO) {
+                                                                 @Valid @RequestBody CreateSeriesDTO createSeriesDTO) {
         SeriesModel updatedSeries = seriesService.update(id, createSeriesDTO);
         ApiResponse<SeriesModel> response = ResponseUtil.success(updatedSeries, 
                 ApiConstants.MESSAGE_RESOURCE_UPDATED, 

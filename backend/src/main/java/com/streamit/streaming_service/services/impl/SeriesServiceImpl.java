@@ -47,7 +47,7 @@ public class SeriesServiceImpl implements ISeriesService {
 		List<SeriesModel> entities = seriesRepository.findAll();
 		for(SeriesModel serie : entities) {
 			if(serie.getVideoUrl().equals(seriesDto.getVideoURL()) && !entity.getId().equals(serie.getId())) {
-				throw new ResourceAlreadyExistsException("Filme já cadastrado.");
+				throw new ResourceAlreadyExistsException("Série já cadastrada.");
 			}
 		}
 		SeriesMapper.toModel(seriesDto, entity);
