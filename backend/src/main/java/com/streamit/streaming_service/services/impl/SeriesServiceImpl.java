@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import com.streamit.streaming_service.dtos.CreateSeriesDTO;
 import com.streamit.streaming_service.exceptions.ResourceAlreadyExistsException;
 import com.streamit.streaming_service.exceptions.ResourceNotFoundException;
-import com.streamit.streaming_service.mappers.SeriesMapper;
+import com.streamit.streaming_service.mappers.MediaMapper;
 import com.streamit.streaming_service.model.SeriesModel;
 import com.streamit.streaming_service.repositories.SeriesRepository;
 import com.streamit.streaming_service.services.ISeriesService;
@@ -26,7 +26,7 @@ public class SeriesServiceImpl implements ISeriesService {
 		if(seriesRepository.findByVideoUrl(seriesDto.getVideoURL()) != null) {
     		throw new ResourceAlreadyExistsException("Série já cadastrada.");
     	}
-		SeriesModel seriesModel = SeriesMapper.toModel(seriesDto, new SeriesModel());
+		SeriesModel seriesModel = MediaMapper.seriesToModel(seriesDto, new SeriesModel());
         return seriesRepository.save(seriesModel); 
 	}
 
@@ -50,7 +50,7 @@ public class SeriesServiceImpl implements ISeriesService {
 				throw new ResourceAlreadyExistsException("Série já cadastrada.");
 			}
 		}
-		SeriesMapper.toModel(seriesDto, entity);
+		MediaMapper.seriesToModel(seriesDto, entity);
     	return seriesRepository.save(entity);
 	}
 

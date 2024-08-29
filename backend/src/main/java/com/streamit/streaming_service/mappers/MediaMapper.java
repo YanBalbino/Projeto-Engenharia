@@ -1,11 +1,27 @@
 package com.streamit.streaming_service.mappers;
 
+import com.streamit.streaming_service.dtos.CreateFilmDTO;
 import com.streamit.streaming_service.dtos.CreateSeriesDTO;
+import com.streamit.streaming_service.model.FilmModel;
 import com.streamit.streaming_service.model.SeriesModel;
 
-public class SeriesMapper {
+public class MediaMapper {
 
-	public static SeriesModel toModel(CreateSeriesDTO seriesDto, SeriesModel seriesModel) {
+	public static FilmModel filmToModel(CreateFilmDTO filmDto, FilmModel filmModel) {
+		filmModel.setTitulo(filmDto.getTitulo());
+		filmModel.setAnoProducao(filmDto.getAnoProducao());
+		filmModel.setGenero(filmDto.getGenero());
+		filmModel.setDuracao(filmDto.getDuracao());
+		filmModel.setLegendasDisponiveis(filmDto.getLegendasDisponiveis());
+		filmModel.setAudiosDisponiveis(filmDto.getAudiosDisponiveis());
+		filmModel.setDescricao(filmDto.getDescricao());
+		filmModel.setAtores(filmDto.getAtores());
+		filmModel.setDiretor(filmDto.getDiretor());
+		filmModel.setVideoUrl(filmDto.getVideoURL());
+		return filmModel;
+	}
+	
+	public static SeriesModel seriesToModel(CreateSeriesDTO seriesDto, SeriesModel seriesModel) {
 		seriesModel.setTitulo(seriesDto.getTitulo());
 		seriesModel.setAnoProducao(seriesDto.getAnoProducao());
 		seriesModel.setGenero(seriesDto.getGenero());

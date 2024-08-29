@@ -8,7 +8,9 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -28,33 +30,28 @@ public class CatalogModel implements Serializable{
 	@Id
 	@GeneratedValue(strategy = GenerationType.UUID)
 	private UUID id;
-	@OneToMany(mappedBy = "catalogo")
-    private List<FilmModel> filmes;
-	@OneToMany(mappedBy = "catalogo")
-    private List<SeriesModel> series;
+	
+	private String nome;
+	
+    @ManyToMany
+    @JoinTable(
+        name = "catalog_media",
+        joinColumns = @JoinColumn(name = "catalog_id"), 
+        inverseJoinColumns = @JoinColumn(name = "media_id") 
+    )
+    private List<MediaModel> medias;
 
-    /*public List<FilmModel> buscarFilmePorTitulo(String titulo) {
+    /*public List<MediaModel> buscarFilmePorTitulo(String titulo) {
         // Implementação de busca por título
     }
 
-    public List<SeriesModel> buscarSeriePorTitulo(String titulo) {
-        // Implementação de busca por título
-    }
-
-    public List<FilmModel> buscarFilmePorDiretor(String diretor) {
+    public List<MediaModel> buscarFilmePorDiretor(String diretor) {
         // Implementação de busca por diretor
     }
 
-    public List<SeriesModel> buscarSeriePorDiretor(String diretor) {
-        // Implementação de busca por diretor
-    }
-
-    public List<FilmModel> buscarFilmePorAtor(String ator) {
-        // Implementação de busca por ator
-    }
-
-    public List<SeriesModel> buscarSeriePorAtor(String ator) {
+    public List<MediaModel> buscarFilmePorAtor(String ator) {
         // Implementação de busca por ator
     }*/
+
 }
 

@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import com.streamit.streaming_service.dtos.CreateFilmDTO;
 import com.streamit.streaming_service.exceptions.ResourceAlreadyExistsException;
 import com.streamit.streaming_service.exceptions.ResourceNotFoundException;
-import com.streamit.streaming_service.mappers.FilmMapper;
+import com.streamit.streaming_service.mappers.MediaMapper;
 import com.streamit.streaming_service.model.FilmModel;
 import com.streamit.streaming_service.repositories.FilmRepository;
 import com.streamit.streaming_service.services.IFilmService;
@@ -26,7 +26,7 @@ public class FilmServiceImpl implements IFilmService {
     	if(filmRepository.findByVideoUrl(filmDto.getVideoURL()) != null) {
     		throw new ResourceAlreadyExistsException("Filme já cadastrado.");
     	}
-    	FilmModel entity = FilmMapper.toModel(filmDto, new FilmModel());
+    	FilmModel entity = MediaMapper.filmToModel(filmDto, new FilmModel());
         return filmRepository.save(entity); 
     }
 
@@ -50,7 +50,7 @@ public class FilmServiceImpl implements IFilmService {
 				throw new ResourceAlreadyExistsException("Filme já cadastrado.");
 			}
 		}
-		FilmMapper.toModel(filmDto, entity);
+		MediaMapper.filmToModel(filmDto, entity);
     	return filmRepository.save(entity);
 	}
 

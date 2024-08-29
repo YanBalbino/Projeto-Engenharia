@@ -15,9 +15,10 @@ import lombok.ToString;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CatalogDTO {
+	
+	private String nome;
     
-    private List<UUID> filmesIds;
+    private List<UUID> midiaIds;
 
-    private List<UUID> seriesIds;
 }
 

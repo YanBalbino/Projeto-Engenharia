@@ -22,6 +22,8 @@ public final class ApiConstants {
     public static final String PATH_FILMS_ID = "/api/films/{id}";
     public static final String PATH_SERIES = "/api/series";
     public static final String PATH_SERIES_ID = "/api/series/{id}";
+    public static final String PATH_CATALOG = "/api/catalogs";
+    public static final String PATH_CATALOG_ID = "/api/catalogs/{id}";
     
     // Mensagens padrão
     public static final String MESSAGE_SUCCESS = "Request processed successfully";
