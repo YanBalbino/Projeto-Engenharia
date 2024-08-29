@@ -5,8 +5,7 @@ import com.streamit.streaming_service.model.SeriesModel;
 
 public class SeriesMapper {
 
-	public static SeriesModel toModel(CreateSeriesDTO seriesDto) {
-		SeriesModel seriesModel = new SeriesModel();
+	public static SeriesModel toModel(CreateSeriesDTO seriesDto, SeriesModel seriesModel) {
 		seriesModel.setTitulo(seriesDto.getTitulo());
 		seriesModel.setAnoProducao(seriesDto.getAnoProducao());
 		seriesModel.setGenero(seriesDto.getGenero());

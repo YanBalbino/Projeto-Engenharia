@@ -26,7 +26,7 @@ public class SeriesServiceImpl implements ISeriesService {
 		if(seriesRepository.findByVideoUrl(seriesDto.getVideoURL()) != null) {
     		throw new ResourceAlreadyExistsException("Série já cadastrada.");
     	}
-		SeriesModel seriesModel = SeriesMapper.toModel(seriesDto);
+		SeriesModel seriesModel = SeriesMapper.toModel(seriesDto, new SeriesModel());
         return seriesRepository.save(seriesModel); 
 	}
 
@@ -43,8 +43,15 @@ public class SeriesServiceImpl implements ISeriesService {
 
 	@Override
 	public SeriesModel update(UUID id, CreateSeriesDTO seriesDto) {
-		findById(id);
-		return create(seriesDto);
+		SeriesModel entity = findById(id);
+		List<SeriesModel> entities = seriesRepository.findAll();
+		for(SeriesModel serie : entities) {
+			if(serie.getVideoUrl().equals(seriesDto.getVideoURL()) && !entity.getId().equals(serie.getId())) {
+				throw new ResourceAlreadyExistsException("Filme já cadastrado.");
+			}
+		}
+		SeriesMapper.toModel(seriesDto, entity);
+    	return seriesRepository.save(entity);
 	}
 
 	@Override

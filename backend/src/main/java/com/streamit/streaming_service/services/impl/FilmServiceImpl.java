@@ -26,7 +26,7 @@ public class FilmServiceImpl implements IFilmService {
     	if(filmRepository.findByVideoUrl(filmDto.getVideoURL()) != null) {
     		throw new ResourceAlreadyExistsException("Filme já cadastrado.");
     	}
-    	FilmModel entity = FilmMapper.toModel(filmDto);
+    	FilmModel entity = FilmMapper.toModel(filmDto, new FilmModel());
         return filmRepository.save(entity); 
     }
 
@@ -43,8 +43,15 @@ public class FilmServiceImpl implements IFilmService {
 
 	@Override
 	public FilmModel update(UUID id, CreateFilmDTO filmDto) {
-		findById(id);
-    	return create(filmDto);
+		FilmModel entity = findById(id);
+		List<FilmModel> entities = filmRepository.findAll();
+		for(FilmModel film : entities) {
+			if(film.getVideoUrl().equals(filmDto.getVideoURL()) && !entity.getId().equals(film.getId())) {
+				throw new ResourceAlreadyExistsException("Filme já cadastrado.");
+			}
+		}
+		FilmMapper.toModel(filmDto, entity);
+    	return filmRepository.save(entity);
 	}
 
 	@Override

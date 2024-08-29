@@ -68,8 +68,8 @@ public class FilmController {
         filmService.delete(id);
         ApiResponse<Void> response = ResponseUtil.success(null, 
                 ApiConstants.MESSAGE_RESOURCE_DELETED, 
-                ApiConstants.HTTP_STATUS_NO_CONTENT, 
+                ApiConstants.HTTP_STATUS_OK, 
                 ApiConstants.PATH_FILMS_ID);
-        return new ResponseEntity<>(response, HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }

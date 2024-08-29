@@ -81,7 +81,7 @@ public class UserController {
 		userService.delete(id);
         ApiResponse<Void> response = ResponseUtil.success(null, 
                 ApiConstants.MESSAGE_RESOURCE_DELETED, 
-                ApiConstants.HTTP_STATUS_NO_CONTENT, 
+                ApiConstants.HTTP_STATUS_OK, 
                 ApiConstants.PATH_USER_BY_ID);
         return new ResponseEntity<>(response, HttpStatus.OK);
 	}

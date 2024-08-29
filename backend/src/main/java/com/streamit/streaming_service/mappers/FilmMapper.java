@@ -5,8 +5,7 @@ import com.streamit.streaming_service.model.FilmModel;
 
 public class FilmMapper {
 
-	public static FilmModel toModel(CreateFilmDTO filmDto) {
-		FilmModel filmModel = new FilmModel();
+	public static FilmModel toModel(CreateFilmDTO filmDto, FilmModel filmModel) {
 		filmModel.setTitulo(filmDto.getTitulo());
 		filmModel.setAnoProducao(filmDto.getAnoProducao());
 		filmModel.setGenero(filmDto.getGenero());
