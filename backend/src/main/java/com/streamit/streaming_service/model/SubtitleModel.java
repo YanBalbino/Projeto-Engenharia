@@ -1,12 +1,14 @@
 package com.streamit.streaming_service.model;
 
-import java.io.Serializable;
 import java.util.UUID;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -15,24 +17,20 @@ import lombok.Setter;
 import lombok.ToString;
 
 @Entity
-@Table(name = "medias")
+@Table(name = "subtitles")
 @AllArgsConstructor
 @NoArgsConstructor
 @Setter
 @Getter
 @ToString
-public class MediaModel implements Serializable {
-	private static final long serialVersionUID = 1L;
+public class SubtitleModel {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.UUID)
 	private UUID id;
-	private String titulo;
-	private int anoProducao;
-	private String genero;
-
-	private String descricao;
-
-	private String diretor;
-
+	
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "attributes_id")
+    private MediaAttributes attributes;
+    
 }

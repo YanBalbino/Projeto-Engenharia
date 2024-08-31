@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.streamit.streaming_service.constants.ApiConstants;
-import com.streamit.streaming_service.dtos.CreateFilmDTO;
+import com.streamit.streaming_service.dtos.FilmDTO;
 import com.streamit.streaming_service.model.FilmModel;
 import com.streamit.streaming_service.response.ApiResponse;
 import com.streamit.streaming_service.response.ResponseUtil;
@@ -32,7 +32,7 @@ public class FilmController {
     private final IFilmService filmService;
 
     @PostMapping
-    public ResponseEntity<ApiResponse<FilmModel>> createFilm(@Valid @RequestBody CreateFilmDTO createFilmDTO) {
+    public ResponseEntity<ApiResponse<FilmModel>> createFilm(@Valid @RequestBody FilmDTO createFilmDTO) {
         FilmModel createdFilm = filmService.create(createFilmDTO);
         ApiResponse<FilmModel> response = ResponseUtil.success(createdFilm, 
                 ApiConstants.MESSAGE_RESOURCE_CREATED, 
@@ -55,7 +55,7 @@ public class FilmController {
 
     @PutMapping("/{id}")
     public ResponseEntity<ApiResponse<FilmModel>> updateFilm(@PathVariable UUID id, 
-                                                             @Valid @RequestBody CreateFilmDTO createFilmDTO) {
+                                                             @Valid @RequestBody FilmDTO createFilmDTO) {
         FilmModel updatedFilm = filmService.update(id, createFilmDTO);
         ApiResponse<FilmModel> response = ResponseUtil.success(updatedFilm, 
                 ApiConstants.MESSAGE_RESOURCE_UPDATED, 

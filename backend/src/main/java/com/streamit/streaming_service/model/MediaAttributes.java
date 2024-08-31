@@ -1,6 +1,5 @@
 package com.streamit.streaming_service.model;
 
-import java.io.Serializable;
 import java.util.UUID;
 
 import jakarta.persistence.Entity;
@@ -15,24 +14,19 @@ import lombok.Setter;
 import lombok.ToString;
 
 @Entity
-@Table(name = "medias")
+@Table(name = "media_attributes")
 @AllArgsConstructor
 @NoArgsConstructor
 @Setter
 @Getter
 @ToString
-public class MediaModel implements Serializable {
-	private static final long serialVersionUID = 1L;
-	
-	@Id
-	@GeneratedValue(strategy = GenerationType.UUID)
-	private UUID id;
-	private String titulo;
-	private int anoProducao;
-	private String genero;
+public class MediaAttributes {
 
-	private String descricao;
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID id;
 
-	private String diretor;
-
+    private String idioma;
+    
+    private String url;
 }

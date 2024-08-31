@@ -7,8 +7,6 @@ import java.util.UUID;
 import org.springframework.stereotype.Service;
 
 import com.streamit.streaming_service.dtos.CatalogDTO;
-import com.streamit.streaming_service.dtos.CreateFilmDTO;
-import com.streamit.streaming_service.dtos.CreateSeriesDTO;
 import com.streamit.streaming_service.exceptions.ResourceNotFoundException;
 import com.streamit.streaming_service.model.CatalogModel;
 import com.streamit.streaming_service.model.MediaModel;
@@ -60,25 +58,13 @@ public class CatalogServiceImpl implements ICatalogService {
 	}
 
 	@Override
-	public CatalogModel addFilm(UUID id, List<CreateFilmDTO> films) {
+	public CatalogModel addMedia(UUID idMedia) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public CatalogModel removeFilm(UUID id, List<CreateFilmDTO> films) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public CatalogModel addSeries(UUID id, List<CreateSeriesDTO> series) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public CatalogModel removeSeries(UUID id, List<CreateSeriesDTO> series) {
+	public CatalogModel removeMedia(UUID idMedia) {
 		// TODO Auto-generated method stub
 		return null;
 	}
