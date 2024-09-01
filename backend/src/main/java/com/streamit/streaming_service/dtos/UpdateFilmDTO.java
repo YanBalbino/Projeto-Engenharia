@@ -18,17 +18,9 @@ import lombok.ToString;
 public class UpdateFilmDTO implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    private String titulo;
-
-    private int anoProducao;
-
-    private String genero;
-
-    private String descricao;
-
-    private String diretor;
-
-    private int duracao; 
+    private UpdateMediaDTO media;
+    
+    private Integer duracao;
 
     private String videoUrl;
 

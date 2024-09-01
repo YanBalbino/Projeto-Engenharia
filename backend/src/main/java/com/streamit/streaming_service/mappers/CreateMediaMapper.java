@@ -7,6 +7,7 @@ import com.streamit.streaming_service.dtos.ActorDTO;
 import com.streamit.streaming_service.dtos.AudioDTO;
 import com.streamit.streaming_service.dtos.EpisodeDTO;
 import com.streamit.streaming_service.dtos.FilmDTO;
+import com.streamit.streaming_service.dtos.MediaDTO;
 import com.streamit.streaming_service.dtos.SeasonDTO;
 import com.streamit.streaming_service.dtos.SeriesDTO;
 import com.streamit.streaming_service.dtos.SubtitleDTO;
@@ -23,11 +24,7 @@ public class CreateMediaMapper {
 
     public static FilmModel toFilmEntity(FilmDTO dto, FilmModel film) {
     	MediaModel media = new MediaModel();
-        media.setTitulo(dto.getTitulo());
-        media.setAnoProducao(dto.getAnoProducao());
-        media.setGenero(dto.getGenero());
-        media.setDescricao(dto.getDescricao());
-        media.setDiretor(dto.getDiretor());
+    	updateMediaFields(dto.getMedia(), media);
         film.setMedia(media);
 
         if(dto.getLegendasDisponiveis() != null) {
@@ -55,12 +52,8 @@ public class CreateMediaMapper {
     }
 
     public static SeriesModel toSeriesEntity(SeriesDTO dto, SeriesModel series) {
-        MediaModel media = new MediaModel();
-        media.setTitulo(dto.getTitulo());
-        media.setAnoProducao(dto.getAnoProducao());
-        media.setGenero(dto.getGenero());
-        media.setDescricao(dto.getDescricao());
-        media.setDiretor(dto.getDiretor());
+    	MediaModel media = new MediaModel();
+    	updateMediaFields(dto.getMedia(), media);
         series.setMedia(media);
 
         if(dto.getAtores() != null) {
@@ -103,6 +96,14 @@ public class CreateMediaMapper {
         }
         series.setSeasons(seasons);
         return series;
+    }
+    
+    private static void updateMediaFields(MediaDTO dto, MediaModel media) {
+        media.setTitulo(dto.getTitulo());
+        media.setAnoProducao(dto.getAnoProducao());
+        media.setGenero(dto.getGenero());
+        media.setDescricao(dto.getDescricao());
+        media.setDiretor(dto.getDiretor());
     }
     
     public static List<SubtitleModel> updateSubtitles(List<SubtitleDTO> subtitleDTOs) {

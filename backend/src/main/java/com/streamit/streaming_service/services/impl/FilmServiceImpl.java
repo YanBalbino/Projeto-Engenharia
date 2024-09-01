@@ -29,7 +29,7 @@ public class FilmServiceImpl implements IFilmService {
     //supor que filmes sem atores podem ser criado, uasndo IA, por exemplo
     @Override
     public FilmModel create(FilmDTO filmDto) {
-    	if(filmRepository.existsByTitle(filmDto.getTitulo())) {
+    	if(filmRepository.existsByTitle(filmDto.getMedia().getTitulo())) {
     		throw new ResourceAlreadyExistsException("Filme já cadastrado.");
     	}
     	FilmModel entity = new FilmModel();
@@ -70,7 +70,7 @@ public class FilmServiceImpl implements IFilmService {
 		FilmModel entity = findById(id);
 		List<FilmModel> entities = filmRepository.findAll();
 		for(FilmModel film : entities) {
-			if(film.getMedia().getTitulo().equals(filmDto.getTitulo()) && !entity.getId().equals(film.getId())) {
+			if(film.getMedia().getTitulo().equals(filmDto.getMedia().getTitulo()) && !entity.getId().equals(film.getId())) {
 				throw new ResourceAlreadyExistsException("Filme já cadastrado com esse título.");
 			}
 		}

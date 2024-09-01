@@ -28,7 +28,7 @@ public class SeriesServiceImpl implements ISeriesService {
 
     @Override
     public SeriesModel create(SeriesDTO seriesDto) {
-        if (seriesRepository.existsByTitle(seriesDto.getTitulo())) {
+        if (seriesRepository.existsByTitle(seriesDto.getMedia().getTitulo())) {
             throw new ResourceAlreadyExistsException("Série já cadastrada.");
         }
         SeriesModel entity = new SeriesModel();
@@ -69,7 +69,7 @@ public class SeriesServiceImpl implements ISeriesService {
 
 	    List<SeriesModel> entities = seriesRepository.findAll();
 	    for (SeriesModel series : entities) {
-	        if (series.getMedia().getTitulo().equals(seriesDto.getTitulo()) && !entity.getId().equals(series.getId())) {
+	        if (series.getMedia().getTitulo().equals(seriesDto.getMedia().getTitulo()) && !entity.getId().equals(series.getId())) {
 	            throw new ResourceAlreadyExistsException("Série já cadastrada com esse título.");
 	        }
 	    }
