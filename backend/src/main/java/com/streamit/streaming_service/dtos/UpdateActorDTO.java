@@ -1,6 +1,8 @@
 package com.streamit.streaming_service.dtos;
 
-import jakarta.validation.constraints.NotBlank;
+import java.util.UUID;
+
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,11 +14,12 @@ import lombok.ToString;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-public class ActorDTO {
+public class UpdateActorDTO {
 	
-    @NotBlank(message = "A URL da imagem não pode ser vazia")
+	@NotNull(message = "O id do ator não pode ser nulo")
+	private UUID id;
+
     private String imagemUrl;
 
-    @NotBlank(message = "O nome do ator não pode ser vazio")
     private String nome;
 }

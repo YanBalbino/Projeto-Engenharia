@@ -13,7 +13,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @NoArgsConstructor
 public class SubtitleDTO {
-    
+	
     @NotBlank(message = "A URL da legenda não pode ser vazia")
     private String legendaUrl;
 

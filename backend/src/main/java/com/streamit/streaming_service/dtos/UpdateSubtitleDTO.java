@@ -1,6 +1,8 @@
 package com.streamit.streaming_service.dtos;
 
-import jakarta.validation.constraints.NotBlank;
+import java.util.UUID;
+
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,11 +14,12 @@ import lombok.ToString;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-public class AudioDTO {
+public class UpdateSubtitleDTO {
 	
-    @NotBlank(message = "A URL do áudio não pode ser vazia")
-    private String audioUrl;
+	@NotNull(message = "O id da legenda não pode ser nulo")
+	private UUID id;
+    
+    private String legendaUrl;
 
-    @NotBlank(message = "O idioma do áudio não pode ser vazio")
     private String idioma;
 }

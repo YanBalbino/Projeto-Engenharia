@@ -7,9 +7,11 @@ import java.util.UUID;
 import org.springframework.stereotype.Service;
 
 import com.streamit.streaming_service.dtos.FilmDTO;
+import com.streamit.streaming_service.dtos.UpdateFilmDTO;
 import com.streamit.streaming_service.exceptions.ResourceAlreadyExistsException;
 import com.streamit.streaming_service.exceptions.ResourceNotFoundException;
-import com.streamit.streaming_service.mappers.MediaMapper;
+import com.streamit.streaming_service.mappers.CreateMediaMapper;
+import com.streamit.streaming_service.mappers.UpdateMediaMapper;
 import com.streamit.streaming_service.model.ActorModel;
 import com.streamit.streaming_service.model.FilmModel;
 import com.streamit.streaming_service.repositories.FilmRepository;
@@ -32,7 +34,7 @@ public class FilmServiceImpl implements IFilmService {
     	}
     	FilmModel entity = new FilmModel();
     	
-    	FilmModel entityMapped = MediaMapper.toFilmEntity(filmDto, entity);
+    	FilmModel entityMapped = CreateMediaMapper.toFilmEntity(filmDto, entity);
     	
     	// lógica para adicionar atores que já existem no bd
     	List<UUID> actorIds = filmDto.getActorIds();
@@ -64,7 +66,7 @@ public class FilmServiceImpl implements IFilmService {
 	}
 
 	@Override
-	public FilmModel update(UUID id, FilmDTO filmDto) {
+	public FilmModel update(UUID id, UpdateFilmDTO filmDto) {
 		FilmModel entity = findById(id);
 		List<FilmModel> entities = filmRepository.findAll();
 		for(FilmModel film : entities) {
@@ -72,7 +74,7 @@ public class FilmServiceImpl implements IFilmService {
 				throw new ResourceAlreadyExistsException("Filme já cadastrado com esse título.");
 			}
 		}
-		MediaMapper.toFilmEntity(filmDto, entity);
+		UpdateMediaMapper.toFilmEntity(filmDto, entity);
     	// lógica para adicionar atores que já existem no bd
     	List<UUID> actorIds = filmDto.getActorIds();
     	if(!actorIds.isEmpty()) {

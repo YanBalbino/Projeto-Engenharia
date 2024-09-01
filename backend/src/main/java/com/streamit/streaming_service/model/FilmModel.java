@@ -40,7 +40,7 @@ public class FilmModel implements Serializable {
 	@JoinColumn(name = "media_id")
 	private MediaModel media;
 
-	private int duracao; // em minutos
+	private Integer duracao; // em minutos
 	
 	@Column(unique = true)
 	private String videoUrl;

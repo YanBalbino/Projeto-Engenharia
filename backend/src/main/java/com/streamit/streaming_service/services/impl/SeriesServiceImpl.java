@@ -7,9 +7,11 @@ import java.util.UUID;
 import org.springframework.stereotype.Service;
 
 import com.streamit.streaming_service.dtos.SeriesDTO;
+import com.streamit.streaming_service.dtos.UpdateSeriesDTO;
 import com.streamit.streaming_service.exceptions.ResourceAlreadyExistsException;
 import com.streamit.streaming_service.exceptions.ResourceNotFoundException;
-import com.streamit.streaming_service.mappers.MediaMapper;
+import com.streamit.streaming_service.mappers.CreateMediaMapper;
+import com.streamit.streaming_service.mappers.UpdateMediaMapper;
 import com.streamit.streaming_service.model.ActorModel;
 import com.streamit.streaming_service.model.SeriesModel;
 import com.streamit.streaming_service.repositories.SeriesRepository;
@@ -31,7 +33,7 @@ public class SeriesServiceImpl implements ISeriesService {
         }
         SeriesModel entity = new SeriesModel();
         
-        SeriesModel entityMapped = MediaMapper.toSeriesEntity(seriesDto, entity);
+        SeriesModel entityMapped = CreateMediaMapper.toSeriesEntity(seriesDto, entity);
     	// lógica para adicionar atores que já existem no bd
     	List<UUID> actorIds = seriesDto.getActorIds();
     	if(!actorIds.isEmpty()) {
@@ -62,7 +64,7 @@ public class SeriesServiceImpl implements ISeriesService {
 	}
 
 	@Override
-	public SeriesModel update(UUID id, SeriesDTO seriesDto) {
+	public SeriesModel update(UUID id, UpdateSeriesDTO seriesDto) {
 	    SeriesModel entity = findById(id);
 
 	    List<SeriesModel> entities = seriesRepository.findAll();
@@ -71,7 +73,7 @@ public class SeriesServiceImpl implements ISeriesService {
 	            throw new ResourceAlreadyExistsException("Série já cadastrada com esse título.");
 	        }
 	    }
-	    MediaMapper.toSeriesEntity(seriesDto, entity);
+	    UpdateMediaMapper.toSeriesEntity(seriesDto, entity);
     	// lógica para adicionar atores que já existem no bd
     	List<UUID> actorIds = seriesDto.getActorIds();
     	if(!actorIds.isEmpty()) {

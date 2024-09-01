@@ -36,7 +36,7 @@ public class SeasonModel implements Serializable {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
     
-    private int seasonNumber;
+    private Integer seasonNumber;
     
     @JsonIgnore
     @ManyToOne

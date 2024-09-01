@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.streamit.streaming_service.constants.ApiConstants;
 import com.streamit.streaming_service.dtos.SeriesDTO;
+import com.streamit.streaming_service.dtos.UpdateSeriesDTO;
 import com.streamit.streaming_service.model.SeriesModel;
 import com.streamit.streaming_service.response.ApiResponse;
 import com.streamit.streaming_service.response.ResponseUtil;
@@ -55,7 +56,7 @@ public class SeriesController {
 
     @PutMapping("/{id}")
     public ResponseEntity<ApiResponse<SeriesModel>> updateSeries(@PathVariable UUID id, 
-                                                                 @Valid @RequestBody SeriesDTO createSeriesDTO) {
+                                                                 @RequestBody UpdateSeriesDTO createSeriesDTO) {
         SeriesModel updatedSeries = seriesService.update(id, createSeriesDTO);
         ApiResponse<SeriesModel> response = ResponseUtil.success(updatedSeries, 
                 ApiConstants.MESSAGE_RESOURCE_UPDATED, 

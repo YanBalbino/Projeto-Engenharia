@@ -38,11 +38,11 @@ public class EpisodeModel implements Serializable {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
     
-    private int numeroEpisodio;
+    private Integer numeroEpisodio;
     
     private String tituloEpisodio;
     
-    private int duracaoEpisodio; // in minutes
+    private Integer duracaoEpisodio; // in minutes
     
     @Column(unique = true)
 	private String videoUrl;
