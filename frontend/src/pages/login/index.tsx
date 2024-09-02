@@ -23,7 +23,7 @@ const Login = () => {
                     <input type="password" name="" id="" className="h-10 rounded-lg text-black p-2  focus:outline-none focus:ring-2 focus:ring-cyan-600"/>
                     <a href="" className="text-blue-500 hover:text-blue-700 text-sm">Esqueceu a senha?</a>
                 </div>
-                <button className="w-11/12 h-10 rounded-lg bg-cyan-600 hover:bg-cyan-400">Continuar</button>
+                <button onClick={() => handleClick('/catalogo')} className="w-11/12 h-10 rounded-lg bg-cyan-600 hover:bg-cyan-400">Continuar</button>
                 <div className="flex flex-row gap-3 mr-40">
                     <input type="checkbox" name="" id="" className="w-4   "/> 
                     <label htmlFor="">Mantenha-me conectado</label>
