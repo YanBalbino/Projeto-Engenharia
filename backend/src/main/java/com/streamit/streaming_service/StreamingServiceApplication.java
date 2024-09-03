@@ -3,6 +3,8 @@ package com.streamit.streaming_service;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+
+
 @SpringBootApplication
 public class StreamingServiceApplication {
 
@@ -10,4 +12,5 @@ public class StreamingServiceApplication {
 		SpringApplication.run(StreamingServiceApplication.class, args);
 	}
 
+	
 }
