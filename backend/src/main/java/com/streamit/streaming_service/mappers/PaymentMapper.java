@@ -1,6 +1,6 @@
 package com.streamit.streaming_service.mappers;
 
-import com.streamit.streaming_service.dtos.ReturnPaymentDTO;
+import com.streamit.streaming_service.dtos.payment.ReturnPaymentDTO;
 import com.streamit.streaming_service.model.PaymentModel;
 
 public class PaymentMapper {

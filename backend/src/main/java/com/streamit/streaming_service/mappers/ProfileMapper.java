@@ -1,7 +1,7 @@
 package com.streamit.streaming_service.mappers;
 
-import com.streamit.streaming_service.dtos.CreateProfileDTO;
-import com.streamit.streaming_service.dtos.ReturnProfileDTO;
+import com.streamit.streaming_service.dtos.profile.CreateProfileDTO;
+import com.streamit.streaming_service.dtos.profile.ReturnProfileDTO;
 import com.streamit.streaming_service.model.ProfileModel;
 import com.streamit.streaming_service.model.UserModel;
 

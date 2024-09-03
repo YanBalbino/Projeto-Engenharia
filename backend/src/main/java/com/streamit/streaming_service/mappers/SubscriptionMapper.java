@@ -1,6 +1,6 @@
 package com.streamit.streaming_service.mappers;
 
-import com.streamit.streaming_service.dtos.ReturnSubscriptionDTO;
+import com.streamit.streaming_service.dtos.subscription.ReturnSubscriptionDTO;
 import com.streamit.streaming_service.model.SubscriptionModel;
 
 public class SubscriptionMapper {
