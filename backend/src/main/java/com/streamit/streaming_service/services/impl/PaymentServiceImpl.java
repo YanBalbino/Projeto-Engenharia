@@ -5,9 +5,9 @@ import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
-import com.streamit.streaming_service.dtos.CreatePaymentDTO;
-import com.streamit.streaming_service.dtos.CreateUserDTO;
-import com.streamit.streaming_service.dtos.ReturnPaymentDTO;
+import com.streamit.streaming_service.dtos.payment.CreatePaymentDTO;
+import com.streamit.streaming_service.dtos.payment.ReturnPaymentDTO;
+import com.streamit.streaming_service.dtos.user.CreateUserDTO;
 import com.streamit.streaming_service.exceptions.ResourceNotFoundException;
 import com.streamit.streaming_service.mappers.PaymentMapper;
 import com.streamit.streaming_service.model.PaymentModel;

@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.streamit.streaming_service.constants.ApiConstants;
-import com.streamit.streaming_service.dtos.CreateProfileDTO;
-import com.streamit.streaming_service.dtos.ReturnProfileDTO;
+import com.streamit.streaming_service.dtos.profile.CreateProfileDTO;
+import com.streamit.streaming_service.dtos.profile.ReturnProfileDTO;
 import com.streamit.streaming_service.response.ApiResponse;
 import com.streamit.streaming_service.response.ResponseUtil;
 import com.streamit.streaming_service.services.IProfileService;

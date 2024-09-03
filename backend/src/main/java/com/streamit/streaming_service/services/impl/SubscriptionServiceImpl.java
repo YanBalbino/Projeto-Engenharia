@@ -5,7 +5,7 @@ import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
-import com.streamit.streaming_service.dtos.ReturnSubscriptionDTO;
+import com.streamit.streaming_service.dtos.subscription.ReturnSubscriptionDTO;
 import com.streamit.streaming_service.exceptions.ResourceNotFoundException;
 import com.streamit.streaming_service.mappers.SubscriptionMapper;
 import com.streamit.streaming_service.model.SubscriptionModel;

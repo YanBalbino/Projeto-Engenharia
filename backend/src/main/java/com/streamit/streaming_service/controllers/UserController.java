@@ -16,9 +16,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.streamit.streaming_service.constants.ApiConstants;
-import com.streamit.streaming_service.dtos.CreatePaymentDTO;
-import com.streamit.streaming_service.dtos.CreateUserDTO;
-import com.streamit.streaming_service.dtos.ReturnUserDTO;
+import com.streamit.streaming_service.dtos.payment.CreatePaymentDTO;
+import com.streamit.streaming_service.dtos.user.CreateUserDTO;
+import com.streamit.streaming_service.dtos.user.ReturnUserDTO;
 import com.streamit.streaming_service.response.ApiResponse;
 import com.streamit.streaming_service.response.ResponseUtil;
 import com.streamit.streaming_service.services.IUserService;
