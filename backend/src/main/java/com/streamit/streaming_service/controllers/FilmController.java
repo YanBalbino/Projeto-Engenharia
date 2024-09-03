@@ -15,9 +15,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.streamit.streaming_service.constants.ApiConstants;
-import com.streamit.streaming_service.dtos.FilmDTO;
-import com.streamit.streaming_service.dtos.UpdateFilmDTO;
-import com.streamit.streaming_service.model.FilmModel;
+import com.streamit.streaming_service.dtos.film.CreateFilmDTO;
+import com.streamit.streaming_service.dtos.film.ReturnFilmDTO;
+import com.streamit.streaming_service.dtos.film.UpdateFilmDTO;
 import com.streamit.streaming_service.response.ApiResponse;
 import com.streamit.streaming_service.response.ResponseUtil;
 import com.streamit.streaming_service.services.IFilmService;
@@ -33,9 +33,9 @@ public class FilmController {
     private final IFilmService filmService;
 
     @PostMapping
-    public ResponseEntity<ApiResponse<FilmModel>> createFilm(@Valid @RequestBody FilmDTO createFilmDTO) {
-        FilmModel createdFilm = filmService.create(createFilmDTO);
-        ApiResponse<FilmModel> response = ResponseUtil.success(createdFilm, 
+    public ResponseEntity<ApiResponse<ReturnFilmDTO>> createFilm(@Valid @RequestBody CreateFilmDTO createFilmDTO) {
+    	ReturnFilmDTO createdFilm = filmService.create(createFilmDTO);
+        ApiResponse<ReturnFilmDTO> response = ResponseUtil.success(createdFilm, 
                 ApiConstants.MESSAGE_RESOURCE_CREATED, 
                 ApiConstants.HTTP_STATUS_CREATED, 
                 ApiConstants.PATH_FILMS);
@@ -43,22 +43,22 @@ public class FilmController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<FilmModel> getFilmById(@PathVariable UUID id) {
-        FilmModel film = filmService.findById(id);
+    public ResponseEntity<ReturnFilmDTO> getFilmById(@PathVariable UUID id) {
+    	ReturnFilmDTO film = filmService.findById(id);
         return new ResponseEntity<>(film, HttpStatus.OK);
     }
 
     @GetMapping
-    public ResponseEntity<List<FilmModel>> getAllFilms() {
-        List<FilmModel> filmsList = filmService.findAll();
+    public ResponseEntity<List<ReturnFilmDTO>> getAllFilms() {
+        List<ReturnFilmDTO> filmsList = filmService.findAll();
         return new ResponseEntity<>(filmsList, HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ApiResponse<FilmModel>> updateFilm(@PathVariable UUID id, 
+    public ResponseEntity<ApiResponse<ReturnFilmDTO>> updateFilm(@PathVariable UUID id, 
                                                              @RequestBody UpdateFilmDTO createFilmDTO) {
-        FilmModel updatedFilm = filmService.update(id, createFilmDTO);
-        ApiResponse<FilmModel> response = ResponseUtil.success(updatedFilm, 
+    	ReturnFilmDTO updatedFilm = filmService.update(id, createFilmDTO);
+        ApiResponse<ReturnFilmDTO> response = ResponseUtil.success(updatedFilm, 
                 ApiConstants.MESSAGE_RESOURCE_UPDATED, 
                 ApiConstants.HTTP_STATUS_OK, 
                 ApiConstants.PATH_FILMS_ID);

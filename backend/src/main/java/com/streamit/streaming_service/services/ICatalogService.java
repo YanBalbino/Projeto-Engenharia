@@ -3,7 +3,7 @@ package com.streamit.streaming_service.services;
 import java.util.List;
 import java.util.UUID;
 
-import com.streamit.streaming_service.dtos.CatalogDTO;
+import com.streamit.streaming_service.dtos.catalog.CatalogDTO;
 import com.streamit.streaming_service.model.CatalogModel;
 
 public interface ICatalogService {

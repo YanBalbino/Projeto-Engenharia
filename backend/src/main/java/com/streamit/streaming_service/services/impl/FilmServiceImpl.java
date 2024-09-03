@@ -6,12 +6,12 @@ import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
-import com.streamit.streaming_service.dtos.FilmDTO;
-import com.streamit.streaming_service.dtos.UpdateFilmDTO;
+import com.streamit.streaming_service.dtos.film.CreateFilmDTO;
+import com.streamit.streaming_service.dtos.film.ReturnFilmDTO;
+import com.streamit.streaming_service.dtos.film.UpdateFilmDTO;
 import com.streamit.streaming_service.exceptions.ResourceAlreadyExistsException;
 import com.streamit.streaming_service.exceptions.ResourceNotFoundException;
-import com.streamit.streaming_service.mappers.CreateMediaMapper;
-import com.streamit.streaming_service.mappers.UpdateMediaMapper;
+import com.streamit.streaming_service.mappers.FilmMapper;
 import com.streamit.streaming_service.model.ActorModel;
 import com.streamit.streaming_service.model.FilmModel;
 import com.streamit.streaming_service.repositories.FilmRepository;
@@ -26,15 +26,15 @@ public class FilmServiceImpl implements IFilmService {
     private FilmRepository filmRepository;
     private ActorServiceImpl actorServiceImpl;
 
-    //supor que filmes sem atores podem ser criado, uasndo IA, por exemplo
+    //supor que filmes sem atores podem ser criados, usando IA, por exemplo
     @Override
-    public FilmModel create(FilmDTO filmDto) {
+    public ReturnFilmDTO create(CreateFilmDTO filmDto) {
     	if(filmRepository.existsByTitle(filmDto.getMedia().getTitulo())) {
     		throw new ResourceAlreadyExistsException("Filme já cadastrado.");
     	}
     	FilmModel entity = new FilmModel();
     	
-    	FilmModel entityMapped = CreateMediaMapper.toFilmEntity(filmDto, entity);
+    	FilmModel entityMapped = FilmMapper.toEntity(filmDto, entity);
     	
     	// lógica para adicionar atores que já existem no bd
     	List<UUID> actorIds = filmDto.getActorIds();
@@ -51,30 +51,43 @@ public class FilmServiceImpl implements IFilmService {
     		}
     		
     	}
-        return filmRepository.save(entityMapped); 
+    	ReturnFilmDTO entityDto = FilmMapper.toDto(filmRepository.save(entityMapped));
+        return entityDto; 
     }
 
 	@Override
-	public FilmModel findById(UUID id) {
+	public ReturnFilmDTO findById(UUID id) {
+		FilmModel entity = findModelById(id);
+    	ReturnFilmDTO entityDto = FilmMapper.toDto(entity);
+        return entityDto; 
+	}
+	
+	public FilmModel findModelById(UUID id) {
 		return filmRepository.findById(id)
 				.orElseThrow(() -> new ResourceNotFoundException("Filme não encontrado com id " + id));
 	}
 
 	@Override
-	public List<FilmModel> findAll() {
-		return filmRepository.findAll();
+	public List<ReturnFilmDTO> findAll() {
+		List<FilmModel> entities = filmRepository.findAll();
+		List<ReturnFilmDTO> dtos = new ArrayList<>();
+		for(FilmModel entity : entities) {
+			ReturnFilmDTO entityDto = FilmMapper.toDto(entity);
+			dtos.add(entityDto);
+		}
+		return dtos;
 	}
 
 	@Override
-	public FilmModel update(UUID id, UpdateFilmDTO filmDto) {
-		FilmModel entity = findById(id);
+	public ReturnFilmDTO update(UUID id, UpdateFilmDTO filmDto) {
+		FilmModel entity = findModelById(id);
 		List<FilmModel> entities = filmRepository.findAll();
 		for(FilmModel film : entities) {
 			if(film.getMedia().getTitulo().equals(filmDto.getMedia().getTitulo()) && !entity.getId().equals(film.getId())) {
 				throw new ResourceAlreadyExistsException("Filme já cadastrado com esse título.");
 			}
 		}
-		UpdateMediaMapper.toFilmEntity(filmDto, entity);
+		FilmMapper.toUpdateEntity(filmDto, entity);
     	// lógica para adicionar atores que já existem no bd
     	List<UUID> actorIds = filmDto.getActorIds();
     	if(!actorIds.isEmpty()) {
@@ -89,12 +102,13 @@ public class FilmServiceImpl implements IFilmService {
     			entity.getAtores().addAll(actors);
     		}
     	}
-    	return filmRepository.save(entity);
+    	ReturnFilmDTO entityDto = FilmMapper.toDto(filmRepository.save(entity));
+        return entityDto; 
 	}
 
 	@Override
 	public void delete(UUID id) {
-	    FilmModel film = findById(id);
+	    FilmModel film = findModelById(id);
 	    if (film.getAtores() != null) {
 	        for (ActorModel actor : film.getAtores()) {
 	            actor.getFilme().remove(film);

@@ -6,12 +6,11 @@ import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
-import com.streamit.streaming_service.dtos.SeriesDTO;
-import com.streamit.streaming_service.dtos.UpdateSeriesDTO;
+import com.streamit.streaming_service.dtos.series.CreateSeriesDTO;
+import com.streamit.streaming_service.dtos.series.UpdateSeriesDTO;
 import com.streamit.streaming_service.exceptions.ResourceAlreadyExistsException;
 import com.streamit.streaming_service.exceptions.ResourceNotFoundException;
-import com.streamit.streaming_service.mappers.CreateMediaMapper;
-import com.streamit.streaming_service.mappers.UpdateMediaMapper;
+import com.streamit.streaming_service.mappers.SeriesMapper;
 import com.streamit.streaming_service.model.ActorModel;
 import com.streamit.streaming_service.model.SeriesModel;
 import com.streamit.streaming_service.repositories.SeriesRepository;
@@ -27,13 +26,13 @@ public class SeriesServiceImpl implements ISeriesService {
     private ActorServiceImpl actorServiceImpl;
 
     @Override
-    public SeriesModel create(SeriesDTO seriesDto) {
+    public SeriesModel create(CreateSeriesDTO seriesDto) {
         if (seriesRepository.existsByTitle(seriesDto.getMedia().getTitulo())) {
             throw new ResourceAlreadyExistsException("Série já cadastrada.");
         }
         SeriesModel entity = new SeriesModel();
         
-        SeriesModel entityMapped = CreateMediaMapper.toSeriesEntity(seriesDto, entity);
+        SeriesModel entityMapped = SeriesMapper.toEntity(seriesDto, entity);
     	// lógica para adicionar atores que já existem no bd
     	List<UUID> actorIds = seriesDto.getActorIds();
     	if(!actorIds.isEmpty()) {
@@ -73,7 +72,7 @@ public class SeriesServiceImpl implements ISeriesService {
 	            throw new ResourceAlreadyExistsException("Série já cadastrada com esse título.");
 	        }
 	    }
-	    UpdateMediaMapper.toSeriesEntity(seriesDto, entity);
+	    SeriesMapper.toUpdateEntity(seriesDto, entity);
     	// lógica para adicionar atores que já existem no bd
     	List<UUID> actorIds = seriesDto.getActorIds();
     	if(!actorIds.isEmpty()) {

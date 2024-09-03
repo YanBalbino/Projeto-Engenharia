@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.streamit.streaming_service.dtos.ReturnSubscriptionDTO;
+import com.streamit.streaming_service.dtos.subscription.ReturnSubscriptionDTO;
 import com.streamit.streaming_service.services.ISubscriptionService;
 
 import lombok.AllArgsConstructor;

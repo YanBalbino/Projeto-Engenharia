@@ -6,7 +6,7 @@ import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
-import com.streamit.streaming_service.dtos.CatalogDTO;
+import com.streamit.streaming_service.dtos.catalog.CatalogDTO;
 import com.streamit.streaming_service.exceptions.ResourceNotFoundException;
 import com.streamit.streaming_service.model.CatalogModel;
 import com.streamit.streaming_service.model.MediaModel;

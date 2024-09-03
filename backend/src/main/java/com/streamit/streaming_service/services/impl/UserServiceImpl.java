@@ -7,10 +7,10 @@ import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
-import com.streamit.streaming_service.dtos.CreatePaymentDTO;
-import com.streamit.streaming_service.dtos.CreateProfileDTO;
-import com.streamit.streaming_service.dtos.CreateUserDTO;
-import com.streamit.streaming_service.dtos.ReturnUserDTO;
+import com.streamit.streaming_service.dtos.payment.CreatePaymentDTO;
+import com.streamit.streaming_service.dtos.profile.CreateProfileDTO;
+import com.streamit.streaming_service.dtos.user.CreateUserDTO;
+import com.streamit.streaming_service.dtos.user.ReturnUserDTO;
 import com.streamit.streaming_service.exceptions.ResourceAlreadyExistsException;
 import com.streamit.streaming_service.exceptions.ResourceNotFoundException;
 import com.streamit.streaming_service.mappers.ProfileMapper;

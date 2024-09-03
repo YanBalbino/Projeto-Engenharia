@@ -6,8 +6,8 @@ import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
-import com.streamit.streaming_service.dtos.CreateProfileDTO;
-import com.streamit.streaming_service.dtos.ReturnProfileDTO;
+import com.streamit.streaming_service.dtos.profile.CreateProfileDTO;
+import com.streamit.streaming_service.dtos.profile.ReturnProfileDTO;
 import com.streamit.streaming_service.exceptions.ResourceNotFoundException;
 import com.streamit.streaming_service.mappers.ProfileMapper;
 import com.streamit.streaming_service.model.ProfileModel;
