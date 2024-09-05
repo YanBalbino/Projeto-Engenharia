@@ -30,9 +30,7 @@ public class MediaModel implements Serializable {
 	private String titulo;
 	private int anoProducao;
 	private String genero;
-
 	private String descricao;
-
 	private String diretor;
 
 }

@@ -20,5 +20,6 @@ public class ReturnMediaDTO {
     private Integer anoProducao;
     private String genero;
     private String descricao;
+    private String diretor;
 }
 

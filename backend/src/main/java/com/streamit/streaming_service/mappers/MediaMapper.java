@@ -30,6 +30,7 @@ public class MediaMapper {
         dto.setAnoProducao(media.getAnoProducao());
         dto.setGenero(media.getGenero());
         dto.setDescricao(media.getDescricao());
+        dto.setDiretor(media.getDiretor());
         return dto;
     }
 }
