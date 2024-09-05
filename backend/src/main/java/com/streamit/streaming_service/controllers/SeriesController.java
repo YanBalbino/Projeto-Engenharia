@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.streamit.streaming_service.constants.ApiConstants;
 import com.streamit.streaming_service.dtos.series.CreateSeriesDTO;
+import com.streamit.streaming_service.dtos.series.ReturnSeriesDTO;
 import com.streamit.streaming_service.dtos.series.UpdateSeriesDTO;
-import com.streamit.streaming_service.model.SeriesModel;
 import com.streamit.streaming_service.response.ApiResponse;
 import com.streamit.streaming_service.response.ResponseUtil;
 import com.streamit.streaming_service.services.ISeriesService;
@@ -33,9 +33,9 @@ public class SeriesController {
     private final ISeriesService seriesService;
 
     @PostMapping
-    public ResponseEntity<ApiResponse<SeriesModel>> createSeries(@Valid @RequestBody CreateSeriesDTO createSeriesDTO) {
-        SeriesModel createdSeries = seriesService.create(createSeriesDTO);
-        ApiResponse<SeriesModel> response = ResponseUtil.success(createdSeries, 
+    public ResponseEntity<ApiResponse<ReturnSeriesDTO>> createSeries(@Valid @RequestBody CreateSeriesDTO createSeriesDTO) {
+    	ReturnSeriesDTO createdSeries = seriesService.create(createSeriesDTO);
+        ApiResponse<ReturnSeriesDTO> response = ResponseUtil.success(createdSeries, 
                 ApiConstants.MESSAGE_RESOURCE_CREATED, 
                 ApiConstants.HTTP_STATUS_CREATED, 
                 ApiConstants.PATH_SERIES);
@@ -43,22 +43,22 @@ public class SeriesController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<SeriesModel> getSeriesById(@PathVariable UUID id) {
-        SeriesModel series = seriesService.findById(id);
+    public ResponseEntity<ReturnSeriesDTO> getSeriesById(@PathVariable UUID id) {
+    	ReturnSeriesDTO series = seriesService.findById(id);
         return new ResponseEntity<>(series, HttpStatus.OK);
     }
 
     @GetMapping
-    public ResponseEntity<List<SeriesModel>> getAllSeries() {
-        List<SeriesModel> seriesList = seriesService.findAll();
+    public ResponseEntity<List<ReturnSeriesDTO>> getAllSeries() {
+        List<ReturnSeriesDTO> seriesList = seriesService.findAll();
         return new ResponseEntity<>(seriesList, HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ApiResponse<SeriesModel>> updateSeries(@PathVariable UUID id, 
+    public ResponseEntity<ApiResponse<ReturnSeriesDTO>> updateSeries(@PathVariable UUID id, 
                                                                  @RequestBody UpdateSeriesDTO createSeriesDTO) {
-        SeriesModel updatedSeries = seriesService.update(id, createSeriesDTO);
-        ApiResponse<SeriesModel> response = ResponseUtil.success(updatedSeries, 
+    	ReturnSeriesDTO updatedSeries = seriesService.update(id, createSeriesDTO);
+        ApiResponse<ReturnSeriesDTO> response = ResponseUtil.success(updatedSeries, 
                 ApiConstants.MESSAGE_RESOURCE_UPDATED, 
                 ApiConstants.HTTP_STATUS_OK, 
                 ApiConstants.PATH_SERIES_ID);

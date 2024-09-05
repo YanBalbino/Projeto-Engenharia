@@ -7,6 +7,7 @@ import java.util.UUID;
 import org.springframework.stereotype.Service;
 
 import com.streamit.streaming_service.dtos.series.CreateSeriesDTO;
+import com.streamit.streaming_service.dtos.series.ReturnSeriesDTO;
 import com.streamit.streaming_service.dtos.series.UpdateSeriesDTO;
 import com.streamit.streaming_service.exceptions.ResourceAlreadyExistsException;
 import com.streamit.streaming_service.exceptions.ResourceNotFoundException;
@@ -26,7 +27,7 @@ public class SeriesServiceImpl implements ISeriesService {
     private ActorServiceImpl actorServiceImpl;
 
     @Override
-    public SeriesModel create(CreateSeriesDTO seriesDto) {
+    public ReturnSeriesDTO create(CreateSeriesDTO seriesDto) {
         if (seriesRepository.existsByTitle(seriesDto.getMedia().getTitulo())) {
             throw new ResourceAlreadyExistsException("Série já cadastrada.");
         }
@@ -47,24 +48,36 @@ public class SeriesServiceImpl implements ISeriesService {
     			entity.getAtores().addAll(actors);
     		}
     	}
-        return seriesRepository.save(entityMapped);
+    	ReturnSeriesDTO entityDto = SeriesMapper.toDto(seriesRepository.save(entityMapped));
+        return entityDto; 
+    }
+    
+    public SeriesModel findModelById(UUID id) {
+    	return seriesRepository.findById(id)
+    			.orElseThrow(() -> new ResourceNotFoundException("Série não encontrada com id " + id));
     }
 
-
 	@Override
-	public SeriesModel findById(UUID id) {
-		return seriesRepository.findById(id)
-				.orElseThrow(() -> new ResourceNotFoundException("Série não encontrada com id " + id));
+	public ReturnSeriesDTO findById(UUID id) {
+		SeriesModel entity = findModelById(id);
+		ReturnSeriesDTO entityDto = SeriesMapper.toDto(entity);
+        return entityDto; 
 	}
 
 	@Override
-	public List<SeriesModel> findAll() {
-		return seriesRepository.findAll();
+	public List<ReturnSeriesDTO> findAll() {
+		List<SeriesModel> entities = seriesRepository.findAll();
+		List<ReturnSeriesDTO> dtos = new ArrayList<>();
+		for(SeriesModel entity : entities) {
+			ReturnSeriesDTO entityDto = SeriesMapper.toDto(entity);
+			dtos.add(entityDto);
+		}
+		return dtos;
 	}
 
 	@Override
-	public SeriesModel update(UUID id, UpdateSeriesDTO seriesDto) {
-	    SeriesModel entity = findById(id);
+	public ReturnSeriesDTO update(UUID id, UpdateSeriesDTO seriesDto) {
+	    SeriesModel entity = findModelById(id);
 
 	    List<SeriesModel> entities = seriesRepository.findAll();
 	    for (SeriesModel series : entities) {
@@ -87,13 +100,13 @@ public class SeriesServiceImpl implements ISeriesService {
     			entity.getAtores().addAll(actors);
     		}
     	}
-	    return seriesRepository.save(entity);
+    	ReturnSeriesDTO entityDto = SeriesMapper.toDto(seriesRepository.save(entity));
+        return entityDto; 
 	}
-
 
 	@Override
 	public void delete(UUID id) {
-		SeriesModel entity = findById(id);
+		SeriesModel entity = findModelById(id);
 	    if (entity.getAtores() != null) {
 	        for (ActorModel actor : entity.getAtores()) {
 	            actor.getSerie().remove(entity);

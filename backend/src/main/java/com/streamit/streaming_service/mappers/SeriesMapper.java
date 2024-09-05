@@ -3,7 +3,6 @@ package com.streamit.streaming_service.mappers;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.streamit.streaming_service.dtos.actor.CreateActorDTO;
 import com.streamit.streaming_service.dtos.actor.ReturnActorDTO;
 import com.streamit.streaming_service.dtos.season.CreateSeasonDTO;
 import com.streamit.streaming_service.dtos.season.ReturnSeasonDTO;
@@ -22,16 +21,8 @@ public class SeriesMapper {
         MediaMapper.toEntity(dto.getMedia(), media);
         series.setMedia(media);
 
-        if (dto.getAtores() != null) {
-            List<ActorModel> newActors = new ArrayList<>();
-            for (CreateActorDTO actorDTO : dto.getAtores()) {
-                ActorModel actor = new ActorModel();
-                actor.setNome(actorDTO.getNome());
-                actor.setImagemUrl(actorDTO.getImagemUrl());
-                actor.setSerie(List.of(series));
-                newActors.add(actor);
-            }
-            series.setAtores(newActors);
+        if(dto.getAtores() != null) {
+            series.setAtores(ActorMapper.toEntityListToSeries(dto.getAtores(), series));
         }
 
         List<SeasonModel> seasons = new ArrayList<>();

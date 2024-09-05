@@ -3,7 +3,6 @@ package com.streamit.streaming_service.mappers;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.streamit.streaming_service.dtos.actor.CreateActorDTO;
 import com.streamit.streaming_service.dtos.actor.ReturnActorDTO;
 import com.streamit.streaming_service.dtos.audio.ReturnAudioDTO;
 import com.streamit.streaming_service.dtos.film.CreateFilmDTO;
@@ -32,15 +31,7 @@ public class FilmMapper {
         }
 
         if(dto.getAtores() != null) {
-            List<ActorModel> newActors = new ArrayList<>();
-            for (CreateActorDTO actorDTO : dto.getAtores()) {
-                ActorModel actor = new ActorModel();
-                actor.setNome(actorDTO.getNome());
-                actor.setImagemUrl(actorDTO.getImagemUrl());
-                actor.setFilme(List.of(film));
-                newActors.add(actor);
-            }
-            film.setAtores(newActors);
+            film.setAtores(ActorMapper.toEntityListToFilm(dto.getAtores(), film));
         }
 
         film.setDuracao(dto.getDuracao());
