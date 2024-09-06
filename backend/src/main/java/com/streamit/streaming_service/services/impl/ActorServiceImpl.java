@@ -15,9 +15,9 @@ import lombok.AllArgsConstructor;
 @Service
 @AllArgsConstructor
 public class ActorServiceImpl implements IActorService {
-	
+
 	ActorRepository actorRepository;
-	
+
 	@Override
 	public ActorModel findById(UUID id) {
 		ActorModel entity = actorRepository.findById(id)
@@ -25,7 +25,6 @@ public class ActorServiceImpl implements IActorService {
 		return entity;
 	}
 
-	
 	@Override
 	public List<ActorModel> findAll() {
 		List<ActorModel> entities = actorRepository.findAll();

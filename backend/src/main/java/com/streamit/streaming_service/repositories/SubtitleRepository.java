@@ -4,8 +4,8 @@ import java.util.UUID;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.streamit.streaming_service.model.ActorModel;
+import com.streamit.streaming_service.model.SubtitleModel;
 
-public interface ActorRepository extends JpaRepository<ActorModel, UUID>{
+public interface SubtitleRepository extends JpaRepository<SubtitleModel, UUID>{
 
 }

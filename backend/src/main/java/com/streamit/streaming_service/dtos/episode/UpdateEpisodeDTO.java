@@ -1,6 +1,7 @@
 package com.streamit.streaming_service.dtos.episode;
 
 import java.util.List;
+import java.util.UUID;
 
 import com.streamit.streaming_service.dtos.audio.UpdateAudioDTO;
 import com.streamit.streaming_service.dtos.subtitle.UpdateSubtitleDTO;
@@ -15,6 +16,8 @@ import lombok.Setter;
 @Setter
 @Getter
 public class UpdateEpisodeDTO {
+	
+	private UUID id;
 
     private Integer numeroEpisodio;
 

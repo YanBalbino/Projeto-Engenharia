@@ -7,8 +7,8 @@ import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.streamit.streaming_service.dtos.media.CreateMediaDTO;
 import com.streamit.streaming_service.dtos.media.ReturnMediaDTO;
+import com.streamit.streaming_service.dtos.media.UpdateMediaDTO;
 import com.streamit.streaming_service.exceptions.ResourceAlreadyExistsException;
 import com.streamit.streaming_service.exceptions.ResourceNotFoundException;
 import com.streamit.streaming_service.mappers.MediaMapper;
@@ -48,7 +48,7 @@ public class MediaServiceImpl implements IMediaService {
     }
 
     @Override
-    public ReturnMediaDTO update(UUID id, CreateMediaDTO mediaDto) {
+    public ReturnMediaDTO update(UUID id, UpdateMediaDTO mediaDto) {
     	MediaModel entity = findById(id);
 	    List<MediaModel> entities = mediaRepository.findAll();
 	    for (MediaModel media : entities) {
@@ -57,7 +57,7 @@ public class MediaServiceImpl implements IMediaService {
 	        }
 	    }
         
-        MediaMapper.toEntity(mediaDto, entity); 
+        MediaMapper.toUpdateEntity(mediaDto, entity); 
         MediaModel updatedMedia = mediaRepository.save(entity); 
         
         return MediaMapper.toDto(updatedMedia); 
