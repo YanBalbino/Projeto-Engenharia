@@ -41,7 +41,7 @@ public class FilmServiceImpl implements IFilmService {
     	if(!actorIds.isEmpty()) {
     		List<ActorModel> actors = new ArrayList<>();
     		for(UUID actorId : actorIds) {
-    			ActorModel actor = actorServiceImpl.findById(actorId);
+    			ActorModel actor = actorServiceImpl.findModelById(actorId);
     			actors.add(actor);
     		}
     		if(entity.getAtores().isEmpty()) {
@@ -93,7 +93,7 @@ public class FilmServiceImpl implements IFilmService {
     	if(!actorIds.isEmpty()) {
     		List<ActorModel> actors = new ArrayList<>();
     		for(UUID actorId : actorIds) {
-    			ActorModel actor = actorServiceImpl.findById(actorId);
+    			ActorModel actor = actorServiceImpl.findModelById(actorId);
     			actors.add(actor);
     		}
     		if(entity.getAtores().isEmpty()) {

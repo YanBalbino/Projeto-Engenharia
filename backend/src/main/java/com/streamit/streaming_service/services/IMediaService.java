@@ -8,7 +8,7 @@ import com.streamit.streaming_service.dtos.media.UpdateMediaDTO;
 
 public interface IMediaService {
 
-	ReturnMediaDTO findModelById(UUID id);
+	ReturnMediaDTO findById(UUID id);
 	List<ReturnMediaDTO> findAll();
 	ReturnMediaDTO update(UUID id, UpdateMediaDTO mediaDto);
 }

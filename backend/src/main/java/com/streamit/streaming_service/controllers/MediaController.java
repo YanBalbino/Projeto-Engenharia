@@ -31,7 +31,7 @@ public class MediaController {
 
 	@GetMapping("/{id}")
 	public ResponseEntity<ReturnMediaDTO> getMediaById(@PathVariable UUID id) {
-		ReturnMediaDTO mediaDto = mediaService.findModelById(id);
+		ReturnMediaDTO mediaDto = mediaService.findById(id);
 		return new ResponseEntity<>(mediaDto, HttpStatus.OK);
 	}
 

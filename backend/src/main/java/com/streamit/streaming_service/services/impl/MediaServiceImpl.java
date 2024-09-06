@@ -22,14 +22,14 @@ public class MediaServiceImpl implements IMediaService {
     @Autowired
     private MediaRepository mediaRepository;
     
-    public MediaModel findById(UUID id) {
+    public MediaModel findModelById(UUID id) {
     	return mediaRepository.findById(id)
     			.orElseThrow(() -> new ResourceNotFoundException("Mídia não encontrada com id " + id));
     }
 
     @Override
-    public ReturnMediaDTO findModelById(UUID id) {
-        MediaModel media = findById(id);
+    public ReturnMediaDTO findById(UUID id) {
+        MediaModel media = findModelById(id);
         ReturnMediaDTO entityDto = MediaMapper.toDto(media);
         return entityDto;
     }
@@ -49,7 +49,7 @@ public class MediaServiceImpl implements IMediaService {
 
     @Override
     public ReturnMediaDTO update(UUID id, UpdateMediaDTO mediaDto) {
-    	MediaModel entity = findById(id);
+    	MediaModel entity = findModelById(id);
 	    List<MediaModel> entities = mediaRepository.findAll();
 	    for (MediaModel media : entities) {
 	        if (media.getTitulo().equals(mediaDto.getTitulo()) && !entity.getId().equals(media.getId())) {
