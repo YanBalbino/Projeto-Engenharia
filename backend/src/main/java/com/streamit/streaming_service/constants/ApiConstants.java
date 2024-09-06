@@ -27,6 +27,7 @@ public final class ApiConstants {
     public static final String PATH_MEDIA_ID = "/api/medias/{id}";
     public static final String PATH_SUBTITLE_ID = "/api/subtitles/{id}";
     public static final String PATH_AUDIO_ID = "/api/audios/{id}";
+    public static final String PATH_ACTOR_ID = "/api/actors/{id}";
     
     // Mensagens padrão
     public static final String MESSAGE_SUCCESS = "Request processed successfully";

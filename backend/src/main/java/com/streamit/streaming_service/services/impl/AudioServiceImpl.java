@@ -49,17 +49,17 @@ public class AudioServiceImpl implements IAudioService {
     }
 
     @Override
-    public ReturnAudioDTO update(UUID id, UpdateAudioDTO AudioDto) {
+    public ReturnAudioDTO update(UUID id, UpdateAudioDTO audioDto) {
         AudioModel entity = findModelById(id);
         
         List<AudioModel> entities = audioRepository.findAll();
         for (AudioModel Audio : entities) {
-            if (Audio.getUrl().equals(AudioDto.getAudioUrl()) && !entity.getId().equals(Audio.getId())) {
+            if (Audio.getUrl().equals(audioDto.getAudioUrl()) && !entity.getId().equals(Audio.getId())) {
                 throw new ResourceAlreadyExistsException("URL de áudio já cadastrado.");
             }
         }
 
-        AudioMapper.toUpdateEntity(AudioDto, entity);
+        AudioMapper.toUpdateEntity(audioDto, entity);
         
         AudioModel updatedAudio = audioRepository.save(entity);
 
