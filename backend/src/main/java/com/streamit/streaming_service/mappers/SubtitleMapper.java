@@ -1,6 +1,5 @@
 package com.streamit.streaming_service.mappers;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -10,31 +9,19 @@ import com.streamit.streaming_service.dtos.subtitle.UpdateSubtitleDTO;
 import com.streamit.streaming_service.model.SubtitleModel;
 
 public class SubtitleMapper {
-	
-    public static void toUpdateEntity(List<UpdateSubtitleDTO> legendasDto, List<SubtitleModel> legendasModel) {
-        if (legendasDto != null) {
-            for (UpdateSubtitleDTO legendaDto : legendasDto) {
-                UUID legendaId = legendaDto.getId();
-                for (SubtitleModel legendaModel : legendasModel) {
-                    if (legendaModel.getId().equals(legendaId)) {
-                        legendaModel.setIdioma(legendaDto.getIdioma());
-                        legendaModel.setUrl(legendaDto.getLegendaUrl());
-                        break;
-                    }
-                }
-            }
-        }
+
+    public static SubtitleModel toEntity(CreateSubtitleDTO subtitleDTO) {
+        SubtitleModel subtitle = new SubtitleModel();
+        subtitle.setIdioma(subtitleDTO.getIdioma());
+        subtitle.setUrl(subtitleDTO.getLegendaUrl());
+        return subtitle;
     }
-	
-    public static List<SubtitleModel> toEntityList(List<CreateSubtitleDTO> subtitleDTOs) {
-        List<SubtitleModel> subtitles = new ArrayList<>();
-        for (CreateSubtitleDTO subtitleDTO : subtitleDTOs) {
-            SubtitleModel subtitle = new SubtitleModel();
-            subtitle.setIdioma(subtitleDTO.getIdioma());
-            subtitle.setUrl(subtitleDTO.getLegendaUrl());
-            subtitles.add(subtitle);
+
+    public static void toUpdateEntity(UpdateSubtitleDTO subtitleDto, SubtitleModel subtitleModel) {
+        if (subtitleDto != null) {
+            subtitleModel.setIdioma(subtitleDto.getIdioma());
+            subtitleModel.setUrl(subtitleDto.getLegendaUrl());
         }
-        return subtitles;
     }
 
     public static ReturnSubtitleDTO toDto(SubtitleModel subtitle) {
@@ -44,5 +31,15 @@ public class SubtitleMapper {
         dto.setUrl(subtitle.getUrl());
         return dto;
     }
+    
+    public static SubtitleModel findSubtitleModelById(UUID id, List<SubtitleModel> subtitles) {
+        for (SubtitleModel subtitle : subtitles) {
+            if (subtitle.getId().equals(id)) {
+                return subtitle;
+            }
+        }
+        return null;
+    }
 }
+
 

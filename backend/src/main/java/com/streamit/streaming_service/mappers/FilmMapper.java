@@ -3,12 +3,18 @@ package com.streamit.streaming_service.mappers;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.streamit.streaming_service.dtos.actor.CreateActorDTO;
 import com.streamit.streaming_service.dtos.actor.ReturnActorDTO;
+import com.streamit.streaming_service.dtos.actor.UpdateActorDTO;
+import com.streamit.streaming_service.dtos.audio.CreateAudioDTO;
 import com.streamit.streaming_service.dtos.audio.ReturnAudioDTO;
+import com.streamit.streaming_service.dtos.audio.UpdateAudioDTO;
 import com.streamit.streaming_service.dtos.film.CreateFilmDTO;
 import com.streamit.streaming_service.dtos.film.ReturnFilmDTO;
 import com.streamit.streaming_service.dtos.film.UpdateFilmDTO;
+import com.streamit.streaming_service.dtos.subtitle.CreateSubtitleDTO;
 import com.streamit.streaming_service.dtos.subtitle.ReturnSubtitleDTO;
+import com.streamit.streaming_service.dtos.subtitle.UpdateSubtitleDTO;
 import com.streamit.streaming_service.model.ActorModel;
 import com.streamit.streaming_service.model.AudioModel;
 import com.streamit.streaming_service.model.FilmModel;
@@ -22,33 +28,69 @@ public class FilmMapper {
         MediaMapper.toEntity(dto.getMedia(), media);
         film.setMedia(media);
 
-        if(dto.getLegendasDisponiveis() != null) {
-            film.setLegendasDisponiveis(SubtitleMapper.toEntityList(dto.getLegendasDisponiveis()));
+        if (dto.getLegendasDisponiveis() != null) {
+            List<SubtitleModel> subtitles = new ArrayList<>();
+            for (CreateSubtitleDTO subtitleDto : dto.getLegendasDisponiveis()) {
+                SubtitleModel subtitle = SubtitleMapper.toEntity(subtitleDto);
+                subtitles.add(subtitle);
+            }
+            film.setLegendasDisponiveis(subtitles);
         }
 
-        if(dto.getAudiosDisponiveis() != null) {
-            film.setAudiosDisponiveis(AudioMapper.toEntityList(dto.getAudiosDisponiveis()));
+        if (dto.getAudiosDisponiveis() != null) {
+            List<AudioModel> audios = new ArrayList<>();
+            for (CreateAudioDTO audioDto : dto.getAudiosDisponiveis()) {
+                AudioModel audio = AudioMapper.toEntity(audioDto);
+                audios.add(audio);
+            }
+            film.setAudiosDisponiveis(audios);
         }
 
-        if(dto.getAtores() != null) {
-            film.setAtores(ActorMapper.toEntityListToFilm(dto.getAtores(), film));
+        if (dto.getAtores() != null) {
+            List<ActorModel> actors = new ArrayList<>();
+            for (CreateActorDTO actorDto : dto.getAtores()) {
+                ActorModel actor = ActorMapper.toEntityForFilm(actorDto, film);
+                actors.add(actor);
+            }
+            film.setAtores(actors);
         }
 
         film.setDuracao(dto.getDuracao());
         film.setVideoUrl(dto.getVideoUrl());
+
         return film;
     }
     
     public static FilmModel toUpdateEntity(UpdateFilmDTO dto, FilmModel film) {
-        MediaModel media = film.getMedia();
-        MediaMapper.toUpdateEntity(dto.getMedia(), media);
+        MediaMapper.toUpdateEntity(dto.getMedia(), film.getMedia());
+
         film.setDuracao(dto.getDuracao());
         film.setVideoUrl(dto.getVideoUrl());
 
-        SubtitleMapper.toUpdateEntity(dto.getLegendasDisponiveis(), film.getLegendasDisponiveis());
-        AudioMapper.toUpdateEntity(dto.getAudiosDisponiveis(), film.getAudiosDisponiveis());
-        ActorMapper.toUpdateEntity(dto.getAtores(), film.getAtores());
-
+        if (dto.getLegendasDisponiveis() != null) {
+            for (UpdateSubtitleDTO subtitleDto : dto.getLegendasDisponiveis()) {
+                SubtitleModel subtitleModel = SubtitleMapper.findSubtitleModelById(subtitleDto.getId(), film.getLegendasDisponiveis());
+                if (subtitleModel != null) {
+                    SubtitleMapper.toUpdateEntity(subtitleDto, subtitleModel);
+                }
+            }
+        }
+        if (dto.getAudiosDisponiveis() != null) {
+            for (UpdateAudioDTO audioDto : dto.getAudiosDisponiveis()) {
+                AudioModel audioModel = AudioMapper.findAudioModelById(audioDto.getId(), film.getAudiosDisponiveis());
+                if (audioModel != null) {
+                    AudioMapper.toUpdateEntity(audioDto, audioModel);
+                }
+            }
+        }
+        if (dto.getAtores() != null) {
+            for (UpdateActorDTO actorDto : dto.getAtores()) {
+                ActorModel actorModel = ActorMapper.findActorModelById(actorDto.getId(), film.getAtores());
+                if (actorModel != null) {
+                    ActorMapper.toUpdateEntity(actorDto, actorModel);
+                }
+            }
+        }
         return film;
     }
 

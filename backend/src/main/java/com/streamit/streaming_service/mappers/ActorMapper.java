@@ -1,6 +1,5 @@
 package com.streamit.streaming_service.mappers;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -12,44 +11,27 @@ import com.streamit.streaming_service.model.FilmModel;
 import com.streamit.streaming_service.model.SeriesModel;
 
 public class ActorMapper {
-	
-	public static List<ActorModel> toEntityListToFilm(List<CreateActorDTO> atoresDto, FilmModel film) {
-	    List<ActorModel> atores = new ArrayList<>();
-        for (CreateActorDTO actorDTO : atoresDto) {
-            ActorModel actor = new ActorModel();
-            actor.setNome(actorDTO.getNome());
-            actor.setImagemUrl(actorDTO.getImagemUrl());
-            actor.setFilme(List.of(film)); 
-            atores.add(actor);
-        }
-	    return atores;
-	}
 
-	public static List<ActorModel> toEntityListToSeries(List<CreateActorDTO> atoresDto, SeriesModel series) {
-	    List<ActorModel> atores = new ArrayList<>();
-        for (CreateActorDTO actorDTO : atoresDto) {
-            ActorModel actor = new ActorModel();
-            actor.setNome(actorDTO.getNome());
-            actor.setImagemUrl(actorDTO.getImagemUrl());
-            actor.setSerie(List.of(series));
-            atores.add(actor);
-        }
-	    return atores;
-	}
+    public static ActorModel toEntityForFilm(CreateActorDTO actorDTO, FilmModel film) {
+        ActorModel actor = new ActorModel();
+        actor.setNome(actorDTO.getNome());
+        actor.setImagemUrl(actorDTO.getImagemUrl());
+        actor.setFilme(List.of(film));
+        return actor;
+    }
 
-	
-    public static void toUpdateEntity(List<UpdateActorDTO> atoresDto, List<ActorModel> atoresModel) {
-        if (atoresDto != null) {
-            for (UpdateActorDTO atorDto : atoresDto) {
-                UUID atorId = atorDto.getId();
-                for (ActorModel atorModel : atoresModel) {
-                    if (atorModel.getId().equals(atorId)) {
-                        atorModel.setNome(atorDto.getNome());
-                        atorModel.setImagemUrl(atorDto.getImagemUrl());
-                        break;
-                    }
-                }
-            }
+    public static ActorModel toEntityForSeries(CreateActorDTO actorDTO, SeriesModel series) {
+        ActorModel actor = new ActorModel();
+        actor.setNome(actorDTO.getNome());
+        actor.setImagemUrl(actorDTO.getImagemUrl());
+        actor.setSerie(List.of(series));
+        return actor;
+    }
+
+    public static void toUpdateEntity(UpdateActorDTO actorDto, ActorModel actorModel) {
+        if (actorDto != null) {
+            actorModel.setNome(actorDto.getNome());
+            actorModel.setImagemUrl(actorDto.getImagemUrl());
         }
     }
 
@@ -60,5 +42,15 @@ public class ActorMapper {
         dto.setNome(actor.getNome());
         return dto;
     }
+    
+    public static ActorModel findActorModelById(UUID id, List<ActorModel> actors) {
+        for (ActorModel actor : actors) {
+            if (actor.getId().equals(id)) {
+                return actor;
+            }
+        }
+        return null;
+    }
 }
+
 

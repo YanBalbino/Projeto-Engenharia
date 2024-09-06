@@ -6,6 +6,7 @@ import java.util.UUID;
 
 import com.streamit.streaming_service.dtos.episode.CreateEpisodeDTO;
 import com.streamit.streaming_service.dtos.episode.ReturnEpisodeDTO;
+import com.streamit.streaming_service.dtos.episode.UpdateEpisodeDTO;
 import com.streamit.streaming_service.dtos.season.CreateSeasonDTO;
 import com.streamit.streaming_service.dtos.season.ReturnSeasonDTO;
 import com.streamit.streaming_service.dtos.season.UpdateSeasonDTO;
@@ -15,20 +16,20 @@ import com.streamit.streaming_service.model.SeriesModel;
 
 public class SeasonMapper {
 	
-    public static void toUpdateEntity(List<UpdateSeasonDTO> seasonsDto, List<SeasonModel> seasonsModel) {
-        if (seasonsDto != null) {
-            for (UpdateSeasonDTO seasonDto : seasonsDto) {
-                UUID seasonId = seasonDto.getId();
-                for (SeasonModel seasonModel : seasonsModel) {
-                    if (seasonModel.getId().equals(seasonId)) {
-                    	seasonModel.setSeasonNumber(seasonDto.getSeasonNumber());
-                        EpisodeMapper.toUpdateEntity(seasonDto.getEpisodes(), seasonModel.getEpisodes());
-                        break;
-                    }
-                }
-            }
-        }
-    }
+	public static void toUpdateEntity(UpdateSeasonDTO seasonDto, SeasonModel seasonModel) {
+	    if (seasonDto != null && seasonModel != null) {
+	        seasonModel.setSeasonNumber(seasonDto.getSeasonNumber());
+
+	        if (seasonDto.getEpisodes() != null) {
+	            for (UpdateEpisodeDTO episodeDto : seasonDto.getEpisodes()) {
+	                EpisodeModel episodeModel = EpisodeMapper.findEpisodeModelById(episodeDto.getId(), seasonModel.getEpisodes());
+	                if (episodeModel != null) {
+	                    EpisodeMapper.toUpdateEntity(episodeDto, episodeModel);
+	                }
+	            }
+	        }
+	    }
+	}
 	
     public static SeasonModel toEntity(CreateSeasonDTO dto, SeriesModel series) {
         SeasonModel season = new SeasonModel();
@@ -56,6 +57,15 @@ public class SeasonMapper {
         dto.setEpisodes(episodeDtos);
 
         return dto;
+    }
+    
+    public static SeasonModel findSeasonModelById(UUID id, List<SeasonModel> seasons) {
+        for (SeasonModel season : seasons) {
+            if (season.getId().equals(id)) {
+                return season;
+            }
+        }
+        return null;
     }
 }
 
