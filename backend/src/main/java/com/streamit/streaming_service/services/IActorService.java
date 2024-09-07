@@ -11,5 +11,5 @@ public interface IActorService {
 	List<ReturnActorDTO> findAll();
 	ReturnActorDTO findById(UUID id);
 	ReturnActorDTO update(UUID id, UpdateActorDTO dto);
-	
+	void delete(UUID id);
 }

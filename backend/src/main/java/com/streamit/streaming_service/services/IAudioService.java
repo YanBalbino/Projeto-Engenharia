@@ -10,4 +10,5 @@ public interface IAudioService {
 	ReturnAudioDTO findById(UUID id);
 	List<ReturnAudioDTO> findAll();
 	ReturnAudioDTO update (UUID id, UpdateAudioDTO subtitleDto);
+	void delete(UUID id);
 }

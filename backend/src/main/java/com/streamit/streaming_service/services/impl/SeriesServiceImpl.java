@@ -107,11 +107,6 @@ public class SeriesServiceImpl implements ISeriesService {
 	@Override
 	public void delete(UUID id) {
 		SeriesModel entity = findModelById(id);
-	    if (entity.getAtores() != null) {
-	        for (ActorModel actor : entity.getAtores()) {
-	            actor.getSerie().remove(entity);
-	        }
-	    }
 	    seriesRepository.delete(entity);
 	}
 }

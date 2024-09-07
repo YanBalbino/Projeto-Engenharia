@@ -109,12 +109,16 @@ public class FilmServiceImpl implements IFilmService {
 	@Override
 	public void delete(UUID id) {
 	    FilmModel film = findModelById(id);
-	    if (film.getAtores() != null) {
-	        for (ActorModel actor : film.getAtores()) {
-	            actor.getFilme().remove(film);
-	        }
-	    }
 	    filmRepository.delete(film);
 	}
-
+	
+    public FilmModel getFilmByAudioId(UUID audioId) {
+        return filmRepository.findFilmByAudioId(audioId)
+                .orElseThrow(() -> new ResourceNotFoundException("Filme não encontrado para o áudio com id " + audioId));
+    }
+    
+    public FilmModel getFilmBySubtitleId(UUID audioId) {
+    	return filmRepository.findFilmBySubtitleId(audioId)
+    			.orElseThrow(() -> new ResourceNotFoundException("Filme não encontrado para a legenda com id " + audioId));
+    }
 }

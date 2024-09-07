@@ -5,6 +5,7 @@ import java.util.UUID;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -53,6 +54,16 @@ public class AudioController {
                 ApiConstants.HTTP_STATUS_OK,
                 ApiConstants.PATH_AUDIO_ID
         );
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+    
+    @DeleteMapping("/{id}")
+    public ResponseEntity<ApiResponse<Void>> deleteActor(@PathVariable UUID id) {
+    	audioService.delete(id);
+        ApiResponse<Void> response = ResponseUtil.success(null, 
+                ApiConstants.MESSAGE_RESOURCE_DELETED, 
+                ApiConstants.HTTP_STATUS_OK, 
+                ApiConstants.PATH_AUDIO_ID);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }

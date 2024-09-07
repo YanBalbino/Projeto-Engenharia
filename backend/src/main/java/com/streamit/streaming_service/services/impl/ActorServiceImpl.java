@@ -12,6 +12,8 @@ import com.streamit.streaming_service.exceptions.ResourceAlreadyExistsException;
 import com.streamit.streaming_service.exceptions.ResourceNotFoundException;
 import com.streamit.streaming_service.mappers.ActorMapper;
 import com.streamit.streaming_service.model.ActorModel;
+import com.streamit.streaming_service.model.FilmModel;
+import com.streamit.streaming_service.model.SeriesModel;
 import com.streamit.streaming_service.repositories.ActorRepository;
 import com.streamit.streaming_service.services.IActorService;
 
@@ -65,6 +67,22 @@ public class ActorServiceImpl implements IActorService {
         ActorModel updatedActor = actorRepository.save(entity);
 
         return ActorMapper.toDto(updatedActor);
+	}
+
+	@Override
+	public void delete(UUID id) {
+		ActorModel entity = findModelById(id);
+	    if (entity.getFilme() != null) {
+	        for (FilmModel film : entity.getFilme()) {
+	        	film.getAtores().remove(entity);
+	        }
+	    }
+	    if (entity.getSerie() != null) {
+	    	for (SeriesModel series: entity.getSerie()) {
+	    		series.getAtores().remove(entity);
+	    	}
+	    }
+	    actorRepository.delete(entity);
 	}
 
 }

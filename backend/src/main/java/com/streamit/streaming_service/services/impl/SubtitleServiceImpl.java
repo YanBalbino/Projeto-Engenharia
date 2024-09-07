@@ -11,6 +11,7 @@ import com.streamit.streaming_service.dtos.subtitle.UpdateSubtitleDTO;
 import com.streamit.streaming_service.exceptions.ResourceAlreadyExistsException;
 import com.streamit.streaming_service.exceptions.ResourceNotFoundException;
 import com.streamit.streaming_service.mappers.SubtitleMapper;
+import com.streamit.streaming_service.model.FilmModel;
 import com.streamit.streaming_service.model.SubtitleModel;
 import com.streamit.streaming_service.repositories.SubtitleRepository;
 import com.streamit.streaming_service.services.ISubtitleService;
@@ -22,6 +23,7 @@ import lombok.AllArgsConstructor;
 public class SubtitleServiceImpl implements ISubtitleService {
 
     private SubtitleRepository subtitleRepository;
+    private FilmServiceImpl filmServiceImpl;
 
     public SubtitleModel findModelById(UUID id) {
         return subtitleRepository.findById(id)
@@ -65,4 +67,12 @@ public class SubtitleServiceImpl implements ISubtitleService {
 
         return SubtitleMapper.toDto(updatedSubtitle);
     }
+    
+	@Override
+	public void delete(UUID id) {
+		SubtitleModel entity = findModelById(id);
+		FilmModel film = filmServiceImpl.getFilmBySubtitleId(id);
+		film.getLegendasDisponiveis().remove(entity);
+		subtitleRepository.delete(entity);
+	}
 }

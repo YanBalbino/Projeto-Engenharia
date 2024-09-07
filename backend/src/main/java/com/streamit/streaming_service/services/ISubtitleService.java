@@ -11,5 +11,5 @@ public interface ISubtitleService {
 	ReturnSubtitleDTO findById(UUID id);
 	List<ReturnSubtitleDTO> findAll();
 	ReturnSubtitleDTO update (UUID id, UpdateSubtitleDTO subtitleDto);
-	
+	void delete(UUID id);
 }
