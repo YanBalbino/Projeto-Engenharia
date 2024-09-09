@@ -1,6 +1,5 @@
 package com.streamit.streaming_service.controllers;
 
-import java.util.List;
 import java.util.UUID;
 
 import org.springframework.http.HttpStatus;
@@ -34,12 +33,6 @@ public class AudioController {
     public ResponseEntity<ReturnAudioDTO> getAudioById(@PathVariable UUID id) {
         ReturnAudioDTO audioDto = audioService.findById(id);
         return new ResponseEntity<>(audioDto, HttpStatus.OK);
-    }
-
-    @GetMapping
-    public ResponseEntity<List<ReturnAudioDTO>> getAllAudios() {
-        List<ReturnAudioDTO> audioList = audioService.findAll();
-        return new ResponseEntity<>(audioList, HttpStatus.OK);
     }
 
     @PutMapping("/{id}")

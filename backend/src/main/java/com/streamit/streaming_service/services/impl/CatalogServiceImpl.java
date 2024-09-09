@@ -2,71 +2,99 @@ package com.streamit.streaming_service.services.impl;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import com.streamit.streaming_service.dtos.catalog.CatalogDTO;
-import com.streamit.streaming_service.exceptions.ResourceNotFoundException;
-import com.streamit.streaming_service.model.CatalogModel;
-import com.streamit.streaming_service.model.MediaModel;
-import com.streamit.streaming_service.repositories.CatalogRepository;
-import com.streamit.streaming_service.repositories.MediaRepository;
-import com.streamit.streaming_service.services.ICatalogService;
+import com.streamit.streaming_service.dtos.catalog.ReturnCatalogDTO;
+import com.streamit.streaming_service.dtos.film.ReturnFilmDTO;
+import com.streamit.streaming_service.dtos.series.ReturnSeriesDTO;
+import com.streamit.streaming_service.mappers.FilmMapper;
+import com.streamit.streaming_service.mappers.SeriesMapper;
+import com.streamit.streaming_service.model.FilmModel;
+import com.streamit.streaming_service.model.SeriesModel;
+import com.streamit.streaming_service.repositories.FilmRepository;
+import com.streamit.streaming_service.repositories.SeriesRepository;
 
 import lombok.AllArgsConstructor;
 
 @Service
 @AllArgsConstructor
-public class CatalogServiceImpl implements ICatalogService {
+public class CatalogServiceImpl {
 
-	CatalogRepository catalogRepository;
-	MediaRepository mediaRepository;
+    private final FilmRepository filmRepository;
+    private final SeriesRepository seriesRepository;
 
-	@Override
-	public CatalogModel create(CatalogDTO catalogDto) {
-		CatalogModel entity = new CatalogModel();
-		entity.setNome(catalogDto.getNome());
+    // Busca por ator
+    public ReturnCatalogDTO findFilmsAndSeriesByActorName(String nomeAtor, Pageable pageable) {
+        Page<FilmModel> filmList = filmRepository.findFilmsByActorName(nomeAtor, pageable);
+        Page<SeriesModel> seriesList = seriesRepository.findSeriesByActorName(nomeAtor, pageable);
+        
+        List<ReturnFilmDTO> filmDtos = new ArrayList<>();
+        for (FilmModel film : filmList.getContent()) {
+            filmDtos.add(FilmMapper.toDto(film));
+        }
+        
+        List<ReturnSeriesDTO> seriesDtos = new ArrayList<>();
+        for (SeriesModel series : seriesList.getContent()) {
+            seriesDtos.add(SeriesMapper.toDto(series));
+        }
+        
+        return new ReturnCatalogDTO(filmDtos, seriesDtos);
+    }
 
-		if (!catalogDto.getMidiaIds().isEmpty()) {
-			List<MediaModel> filmList = new ArrayList<>();
-			for (UUID mediaId : catalogDto.getMidiaIds()) {
-				MediaModel media = mediaRepository.findById(mediaId)
-						.orElseThrow(() -> new ResourceNotFoundException("Mídia não encontrada com id " + mediaId));
-				filmList.add(media);
-			}
-			entity.setMedias(filmList);
-		}
-		return catalogRepository.save(entity);
-	}
+    // Busca por título
+    public ReturnCatalogDTO findFilmsAndSeriesByTitle(String titulo, Pageable pageable) {
+        Page<FilmModel> filmList = filmRepository.findFilmsByTitle(titulo, pageable);
+        Page<SeriesModel> seriesList = seriesRepository.findSeriesByTitle(titulo, pageable);
+        
+        List<ReturnFilmDTO> filmDtos = new ArrayList<>();
+        for (FilmModel film : filmList.getContent()) {
+            filmDtos.add(FilmMapper.toDto(film));
+        }
+        
+        List<ReturnSeriesDTO> seriesDtos = new ArrayList<>();
+        for (SeriesModel series : seriesList.getContent()) {
+            seriesDtos.add(SeriesMapper.toDto(series));
+        }
+        
+        return new ReturnCatalogDTO(filmDtos, seriesDtos);
+    }
 
-	@Override
-	public CatalogModel findById(UUID id) {
-		return catalogRepository.findById(id)
-				.orElseThrow(() -> new ResourceNotFoundException("Catálogo não encontrado com id " + id));
-	}
+    // Busca por gênero
+    public ReturnCatalogDTO findFilmsAndSeriesByGenre(String genero, Pageable pageable) {
+        Page<FilmModel> filmList = filmRepository.findFilmsByGenre(genero, pageable);
+        Page<SeriesModel> seriesList = seriesRepository.findSeriesByGenre(genero, pageable);
+        
+        List<ReturnFilmDTO> filmDtos = new ArrayList<>();
+        for (FilmModel film : filmList.getContent()) {
+            filmDtos.add(FilmMapper.toDto(film));
+        }
+        
+        List<ReturnSeriesDTO> seriesDtos = new ArrayList<>();
+        for (SeriesModel series : seriesList.getContent()) {
+            seriesDtos.add(SeriesMapper.toDto(series));
+        }
+        
+        return new ReturnCatalogDTO(filmDtos, seriesDtos);
+    }
 
-	@Override
-	public List<CatalogModel> findAll() {
-		return catalogRepository.findAll();
-	}
-
-	@Override
-	public void delete(UUID id) {
-		CatalogModel entity = findById(id);
-		catalogRepository.delete(entity);
-	}
-
-	@Override
-	public CatalogModel addMedia(UUID idMedia) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public CatalogModel removeMedia(UUID idMedia) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
+    // Busca por diretor
+    public ReturnCatalogDTO findFilmsAndSeriesByDirector(String diretor, Pageable pageable) {
+        Page<FilmModel> filmList = filmRepository.findFilmsByDirector(diretor, pageable);
+        Page<SeriesModel> seriesList = seriesRepository.findSeriesByDirector(diretor, pageable);
+        
+        List<ReturnFilmDTO> filmDtos = new ArrayList<>();
+        for (FilmModel film : filmList.getContent()) {
+            filmDtos.add(FilmMapper.toDto(film));
+        }
+        
+        List<ReturnSeriesDTO> seriesDtos = new ArrayList<>();
+        for (SeriesModel series : seriesList.getContent()) {
+            seriesDtos.add(SeriesMapper.toDto(series));
+        }
+        
+        return new ReturnCatalogDTO(filmDtos, seriesDtos);
+    }
 }

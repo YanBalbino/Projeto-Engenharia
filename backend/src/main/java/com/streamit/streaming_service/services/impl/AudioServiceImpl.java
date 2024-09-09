@@ -1,6 +1,5 @@
 package com.streamit.streaming_service.services.impl;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -35,19 +34,6 @@ public class AudioServiceImpl implements IAudioService {
         AudioModel audio = findModelById(id);
         ReturnAudioDTO entityDto = AudioMapper.toDto(audio);
         return entityDto;
-    }
-
-    @Override
-    public List<ReturnAudioDTO> findAll() {
-        List<AudioModel> audioList = audioRepository.findAll();
-        List<ReturnAudioDTO> dtoList = new ArrayList<>();
-
-        for (AudioModel audio : audioList) {
-            ReturnAudioDTO dto = AudioMapper.toDto(audio);
-            dtoList.add(dto);
-        }
-
-        return dtoList;
     }
 
     @Override

@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.streamit.streaming_service.dtos.media.ReturnMediaDTO;
@@ -35,8 +37,8 @@ public class MediaServiceImpl implements IMediaService {
     }
 
     @Override
-    public List<ReturnMediaDTO> findAll() {
-        List<MediaModel> mediaList = mediaRepository.findAll();
+    public List<ReturnMediaDTO> findAll(Pageable pageable) {
+        Page<MediaModel> mediaList = mediaRepository.findAll(pageable);
         List<ReturnMediaDTO> dtoList = new ArrayList<>();
         
         for (MediaModel media : mediaList) {

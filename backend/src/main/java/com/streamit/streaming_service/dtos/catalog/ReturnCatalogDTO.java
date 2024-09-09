@@ -1,7 +1,9 @@
 package com.streamit.streaming_service.dtos.catalog;
 
 import java.util.List;
-import java.util.UUID;
+
+import com.streamit.streaming_service.dtos.film.ReturnFilmDTO;
+import com.streamit.streaming_service.dtos.series.ReturnSeriesDTO;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -14,11 +16,7 @@ import lombok.ToString;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-public class CatalogDTO {
-	
-	private String nome;
-    
-    private List<UUID> midiaIds;
-
+public class ReturnCatalogDTO {
+    private List<ReturnFilmDTO> filmes;
+    private List<ReturnSeriesDTO> series;
 }
-

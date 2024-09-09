@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.streamit.streaming_service.dtos.series.CreateSeriesDTO;
@@ -51,7 +53,7 @@ public class SeriesServiceImpl implements ISeriesService {
     	ReturnSeriesDTO entityDto = SeriesMapper.toDto(seriesRepository.save(entityMapped));
         return entityDto; 
     }
-    
+ 
     public SeriesModel findModelById(UUID id) {
     	return seriesRepository.findById(id)
     			.orElseThrow(() -> new ResourceNotFoundException("Série não encontrada com id " + id));
@@ -63,12 +65,23 @@ public class SeriesServiceImpl implements ISeriesService {
 		ReturnSeriesDTO entityDto = SeriesMapper.toDto(entity);
         return entityDto; 
 	}
+	
+	@Override
+	public List<ReturnSeriesDTO> findByGenre(String genre, Pageable pageable) {
+	    Page<SeriesModel> seriesPage = seriesRepository.findSeriesByGenre(genre, pageable);
+	    List<ReturnSeriesDTO> dtos = new ArrayList<>();
+	    for(SeriesModel entity : seriesPage.getContent()) {
+	    	ReturnSeriesDTO entityDto = SeriesMapper.toDto(entity);
+	        dtos.add(entityDto);
+	    }
+	    return dtos;
+	}
 
 	@Override
-	public List<ReturnSeriesDTO> findAll() {
-		List<SeriesModel> entities = seriesRepository.findAll();
+	public List<ReturnSeriesDTO> findAll(Pageable pageable) {
+		Page<SeriesModel> seriesPage = seriesRepository.findAll(pageable);
 		List<ReturnSeriesDTO> dtos = new ArrayList<>();
-		for(SeriesModel entity : entities) {
+		for(SeriesModel entity : seriesPage.getContent()) {
 			ReturnSeriesDTO entityDto = SeriesMapper.toDto(entity);
 			dtos.add(entityDto);
 		}

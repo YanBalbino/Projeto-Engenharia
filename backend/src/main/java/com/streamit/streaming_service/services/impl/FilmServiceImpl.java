@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.streamit.streaming_service.dtos.film.CreateFilmDTO;
@@ -29,8 +31,17 @@ public class FilmServiceImpl implements IFilmService {
     //supor que filmes sem atores podem ser criados, usando IA, por exemplo
     @Override
     public ReturnFilmDTO create(CreateFilmDTO filmDto) {
-    	if(filmRepository.existsByTitle(filmDto.getMedia().getTitulo())) {
-    		throw new ResourceAlreadyExistsException("Filme já cadastrado.");
+    	StringBuilder sb = new StringBuilder();
+    	if (filmRepository.existsByTitle(filmDto.getMedia().getTitulo())) {
+    	    sb.append("Filme já cadastrado com o título: ").append(filmDto.getMedia().getTitulo()).append(". ");
+    	}
+
+    	if (filmRepository.existsByUrl(filmDto.getVideoUrl())) {
+    	    sb.append("Filme já cadastrado com a URL: ").append(filmDto.getVideoUrl()).append(". ");
+    	}
+
+    	if (sb.length() > 0) {
+    	    throw new ResourceAlreadyExistsException(sb.toString().trim());
     	}
     	FilmModel entity = new FilmModel();
     	
@@ -68,14 +79,25 @@ public class FilmServiceImpl implements IFilmService {
 	}
 
 	@Override
-	public List<ReturnFilmDTO> findAll() {
-		List<FilmModel> entities = filmRepository.findAll();
-		List<ReturnFilmDTO> dtos = new ArrayList<>();
-		for(FilmModel entity : entities) {
-			ReturnFilmDTO entityDto = FilmMapper.toDto(entity);
-			dtos.add(entityDto);
-		}
-		return dtos;
+	public List<ReturnFilmDTO> findByGenre(String genre, Pageable pageable) {
+	    Page<FilmModel> filmPage = filmRepository.findFilmsByGenre(genre, pageable);
+	    List<ReturnFilmDTO> dtos = new ArrayList<>();
+	    for(FilmModel entity : filmPage.getContent()) {
+	        ReturnFilmDTO entityDto = FilmMapper.toDto(entity);
+	        dtos.add(entityDto);
+	    }
+	    return dtos;
+	}
+
+	@Override
+	public List<ReturnFilmDTO> findAll(Pageable pageable) {
+	    Page<FilmModel> filmPage = filmRepository.findAll(pageable);
+	    List<ReturnFilmDTO> dtos = new ArrayList<>();
+	    for(FilmModel entity : filmPage.getContent()) {
+	        ReturnFilmDTO entityDto = FilmMapper.toDto(entity);
+	        dtos.add(entityDto);
+	    }
+	    return dtos;
 	}
 
 	@Override
@@ -121,4 +143,5 @@ public class FilmServiceImpl implements IFilmService {
     	return filmRepository.findFilmBySubtitleId(audioId)
     			.orElseThrow(() -> new ResourceNotFoundException("Filme não encontrado para a legenda com id " + audioId));
     }
+
 }

@@ -3,6 +3,7 @@ package com.streamit.streaming_service.controllers;
 import java.util.List;
 import java.util.UUID;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -36,8 +37,8 @@ public class MediaController {
 	}
 
 	@GetMapping
-	public ResponseEntity<List<ReturnMediaDTO>> getAllMedia() {
-		List<ReturnMediaDTO> mediaList = mediaService.findAll();
+	public ResponseEntity<List<ReturnMediaDTO>> getAllMedia(Pageable pageable) {
+		List<ReturnMediaDTO> mediaList = mediaService.findAll(pageable);
 		return new ResponseEntity<>(mediaList, HttpStatus.OK);
 	}
 

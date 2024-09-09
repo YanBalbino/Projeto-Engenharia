@@ -27,6 +27,9 @@ public class ProfileServiceImpl implements IProfileService {
 	@Override
 	public ReturnProfileDTO create(CreateProfileDTO profile, UUID idUser) {
 		UserModel user = userServiceImpl.findUserModelById(idUser);
+		if(user.getPerfis().size() == 4) {
+			throw new ResourceNotFoundException("Limite de perfis atingidos para o usuário " + user.getNome());
+		}
 		ProfileModel entity = ProfileMapper.toModel(profile, user);
 		ProfileModel entitySaved = profileRepository.save(entity);
 		return ProfileMapper.toDTO(entitySaved);
@@ -82,5 +85,5 @@ public class ProfileServiceImpl implements IProfileService {
 		ProfileModel entity = findProfileModelById(id);
 		profileRepository.delete(entity);
 	}
-
+	
 }

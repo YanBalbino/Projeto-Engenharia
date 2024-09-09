@@ -3,6 +3,7 @@ package com.streamit.streaming_service.controllers;
 import java.util.List;
 import java.util.UUID;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.streamit.streaming_service.constants.ApiConstants;
@@ -35,11 +37,13 @@ public class ActorController {
         ReturnActorDTO actorDto = actorService.findById(id);
         return new ResponseEntity<>(actorDto, HttpStatus.OK);
     }
-
-    @GetMapping
-    public ResponseEntity<List<ReturnActorDTO>> getAllActors() {
-        List<ReturnActorDTO> actorList = actorService.findAll();
-        return new ResponseEntity<>(actorList, HttpStatus.OK);
+    
+    @GetMapping("/name")
+    public ResponseEntity<List<ReturnActorDTO>> gedActorsByName(
+            @RequestParam String nome, 
+            Pageable pageable) {
+        List<ReturnActorDTO> actors = actorService.findByName(nome, pageable);
+        return ResponseEntity.ok(actors);
     }
 
     @PutMapping("/{id}")

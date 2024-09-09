@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.streamit.streaming_service.dtos.actor.ReturnActorDTO;
@@ -37,19 +39,17 @@ public class ActorServiceImpl implements IActorService {
 		ReturnActorDTO entityDto = ActorMapper.toDto(entity);
 		return entityDto;
 	}
-
-	@Override
-	public List<ReturnActorDTO> findAll() {
-        List<ActorModel> actorList = actorRepository.findAll();
+	
+    @Override
+    public List<ReturnActorDTO> findByName(String nome, Pageable pageable) {
+        Page<ActorModel> actorList = actorRepository.findByNomeContainingIgnoreCase(nome, pageable);
         List<ReturnActorDTO> dtoList = new ArrayList<>();
-
-        for (ActorModel actor : actorList) {
+        for (ActorModel actor : actorList.getContent()) {
             ReturnActorDTO dto = ActorMapper.toDto(actor);
             dtoList.add(dto);
         }
-
         return dtoList;
-	}
+    }
 
 	@Override
 	public ReturnActorDTO update(UUID id, UpdateActorDTO actorDto) {

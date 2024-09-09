@@ -3,6 +3,7 @@ package com.streamit.streaming_service.model;
 import java.io.Serializable;
 import java.util.UUID;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -27,6 +28,7 @@ public class MediaModel implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.UUID)
 	private UUID id;
+	@Column(unique = true)
 	private String titulo;
 	private int anoProducao;
 	private String genero;

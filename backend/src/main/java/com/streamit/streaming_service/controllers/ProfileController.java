@@ -65,4 +65,5 @@ public class ProfileController {
                 ApiConstants.PATH_PROFILE_BY_ID);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
+    
 }

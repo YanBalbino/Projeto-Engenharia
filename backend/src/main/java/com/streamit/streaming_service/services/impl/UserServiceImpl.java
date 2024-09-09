@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.streamit.streaming_service.dtos.payment.CreatePaymentDTO;
@@ -81,8 +83,8 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public List<ReturnUserDTO> findAll() {
-        List<UserModel> entities = userRepository.findAll();
+    public List<ReturnUserDTO> findAll(Pageable pageable) {
+        Page<UserModel> entities = userRepository.findAll(pageable);
         List<ReturnUserDTO> dtos = new ArrayList<>();
         for(UserModel entity : entities) {
             dtos.add(UserMapper.toDtoReturn(entity));
@@ -116,4 +118,12 @@ public class UserServiceImpl implements IUserService {
         return UserMapper.toDtoReturn(entitySaved);
     }
 
+	@Override
+	public boolean getProfilesQuantity(UUID id) {
+		UserModel user = findUserModelById(id);
+		if(user.getPerfis().size() == 4) {
+			return true;
+		}
+		return false;
+	}
 }

@@ -3,6 +3,7 @@ package com.streamit.streaming_service.controllers;
 import java.util.List;
 import java.util.UUID;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -51,8 +52,8 @@ public class UserController {
 	}
 
 	@GetMapping
-	public ResponseEntity<List<ReturnUserDTO>> getAllUsers() {
-		List<ReturnUserDTO> users = userService.findAll();
+	public ResponseEntity<List<ReturnUserDTO>> getAllUsers(Pageable pageable) {
+		List<ReturnUserDTO> users = userService.findAll(pageable);
 		return new ResponseEntity<>(users, HttpStatus.OK);
 	}
 	
@@ -71,7 +72,7 @@ public class UserController {
 
 	@PutMapping("/{id}")
 	public ResponseEntity<ApiResponse<ReturnUserDTO>> updateUser(@PathVariable UUID id,
-			@RequestParam @NotBlank(message = "Nome é obrigatório") @Size(min = 2, max = 100, message = "Nome deve ter entre 2 e 100 caracteres") String name) {
+			@RequestParam @NotBlank(message = "O nome de usuario é obrigatório") @Size(min = 2, max = 100, message = "Nome deve ter entre 2 e 100 caracteres") String name) {
     	ReturnUserDTO createdUser = userService.update(name, id);
         
         ApiResponse<ReturnUserDTO> response = ResponseUtil.success(createdUser, ApiConstants.MESSAGE_RESOURCE_UPDATED, ApiConstants.HTTP_STATUS_OK, ApiConstants.PATH_USER_BY_ID);
@@ -87,4 +88,10 @@ public class UserController {
                 ApiConstants.PATH_USER_BY_ID);
         return new ResponseEntity<>(response, HttpStatus.OK);
 	}
+	
+    @GetMapping("/max-profiles-quantity/{id}")
+    public ResponseEntity<Boolean> checkProfilesQuantity(@PathVariable UUID id) {
+        boolean hasMaxProfiles = userService.getProfilesQuantity(id);
+        return ResponseEntity.ok(hasMaxProfiles);
+    }
 }

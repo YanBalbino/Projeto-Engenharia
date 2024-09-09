@@ -1,6 +1,5 @@
 package com.streamit.streaming_service.services.impl;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -35,19 +34,6 @@ public class SubtitleServiceImpl implements ISubtitleService {
         SubtitleModel subtitle = findModelById(id);
         ReturnSubtitleDTO entityDto = SubtitleMapper.toDto(subtitle);
         return entityDto;
-    }
-
-    @Override
-    public List<ReturnSubtitleDTO> findAll() {
-        List<SubtitleModel> subtitleList = subtitleRepository.findAll();
-        List<ReturnSubtitleDTO> dtoList = new ArrayList<>();
-
-        for (SubtitleModel subtitle : subtitleList) {
-            ReturnSubtitleDTO dto = SubtitleMapper.toDto(subtitle);
-            dtoList.add(dto);
-        }
-
-        return dtoList;
     }
 
     @Override
