@@ -43,9 +43,8 @@ public class FilmServiceImpl implements IFilmService {
     	if (sb.length() > 0) {
     	    throw new ResourceAlreadyExistsException(sb.toString().trim());
     	}
-    	FilmModel entity = new FilmModel();
     	
-    	FilmModel entityMapped = FilmMapper.toEntity(filmDto, entity);
+    	FilmModel entityMapped = FilmMapper.toEntity(filmDto, new FilmModel());
     	
     	// lógica para adicionar atores que já existem no bd
     	List<UUID> actorIds = filmDto.getActorIds();
@@ -55,10 +54,10 @@ public class FilmServiceImpl implements IFilmService {
     			ActorModel actor = actorServiceImpl.findModelById(actorId);
     			actors.add(actor);
     		}
-    		if(entity.getAtores().isEmpty()) {
-    			entity.setAtores(actors);
+    		if(entityMapped.getAtores().isEmpty()) {
+    			entityMapped.setAtores(actors);
     		}else {
-    			entity.getAtores().addAll(actors);
+    			entityMapped.getAtores().addAll(actors);
     		}
     		
     	}

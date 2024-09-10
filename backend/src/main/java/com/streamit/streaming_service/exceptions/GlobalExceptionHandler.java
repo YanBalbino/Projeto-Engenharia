@@ -19,7 +19,7 @@ import com.streamit.streaming_service.response.ResponseUtil;
 public class GlobalExceptionHandler {
 
 	@ExceptionHandler(Exception.class)
-	public ResponseEntity<ApiResponse<Void>> hadleException(Exception ex, WebRequest request) {
+	public ResponseEntity<ApiResponse<Void>> handleException(Exception ex, WebRequest request) {
 		List<String> errors = Arrays.asList(ex.getMessage());
 		ApiResponse<Void> response = ResponseUtil.error(errors, ApiConstants.MESSAGE_INTERNAL_ERROR,
 				ApiConstants.HTTP_STATUS_INTERNAL_SERVER_ERROR, request.getDescription(false));
@@ -27,15 +27,22 @@ public class GlobalExceptionHandler {
 	}
 
 	@ExceptionHandler(ResourceNotFoundException.class)
-	public ResponseEntity<ApiResponse<Void>> hadleResourceNotFoundException(Exception ex, WebRequest request) {
+	public ResponseEntity<ApiResponse<Void>> handleResourceNotFoundException(Exception ex, WebRequest request) {
 		ApiResponse<Void> response = ResponseUtil.error(ex.getMessage(), ApiConstants.MESSAGE_RESOURCE_NOT_FOUND,
 				ApiConstants.HTTP_STATUS_NOT_FOUND, request.getDescription(false));
 		return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
 	}
 
 	@ExceptionHandler(ResourceAlreadyExistsException.class)
-	public ResponseEntity<ApiResponse<Void>> hadleResourceAlreadyExistsException(Exception ex, WebRequest request) {
+	public ResponseEntity<ApiResponse<Void>> handleResourceAlreadyExistsException(Exception ex, WebRequest request) {
 		ApiResponse<Void> response = ResponseUtil.error(ex.getMessage(), ApiConstants.MESSAGE_RESOURCE_ALREADY_EXISTS,
+				ApiConstants.HTTP_STATUS_BAD_REQUEST, request.getDescription(false));
+		return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+	}
+	
+	@ExceptionHandler(MaxProfilesLimitReachedException.class)
+	public ResponseEntity<ApiResponse<Void>> handleMaxProfilesLimitReachedException(Exception ex, WebRequest request) {
+		ApiResponse<Void> response = ResponseUtil.error(ex.getMessage(), ApiConstants.MESSAGE_MAX_PROFILES_LIMIT_REACHED,
 				ApiConstants.HTTP_STATUS_BAD_REQUEST, request.getDescription(false));
 		return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
 	}

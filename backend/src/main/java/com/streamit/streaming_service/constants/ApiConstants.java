@@ -22,12 +22,16 @@ public final class ApiConstants {
     public static final String PATH_FILMS_ID = "/api/films/{id}";
     public static final String PATH_SERIES = "/api/series";
     public static final String PATH_SERIES_ID = "/api/series/{id}";
-    public static final String PATH_CATALOG = "/api/catalogs";
-    public static final String PATH_CATALOG_ID = "/api/catalogs/{id}";
-    public static final String PATH_MEDIA_ID = "/api/medias/{id}";
-    public static final String PATH_SUBTITLE_ID = "/api/subtitles/{id}";
-    public static final String PATH_AUDIO_ID = "/api/audios/{id}";
-    public static final String PATH_ACTOR_ID = "/api/actors/{id}";
+    public static final String PATH_CATALOGS = "/api/catalogs";
+    public static final String PATH_CATALOGS_ID = "/api/catalogs/{id}";
+    public static final String PATH_MEDIAS_ID = "/api/medias/{id}";
+    public static final String PATH_SUBTITLES_ID = "/api/subtitles/{id}";
+    public static final String PATH_AUDIOS_ID = "/api/audios/{id}";
+    public static final String PATH_ACTORS_ID = "/api/actors/{id}";
+    public static final String PATH_SEASONS = "/api/seasons";
+    public static final String PATH_SEASONS_ID = "/api/seasons/{id}";
+    public static final String PATH_EPISODES = "/api/episodes";
+    public static final String PATH_EPISODES_ID = "/api/episodes/{id}";
     
     // Mensagens padrão
     public static final String MESSAGE_SUCCESS = "Request processed successfully";
@@ -36,6 +40,7 @@ public final class ApiConstants {
     public static final String MESSAGE_RESOURCE_DELETED = "Resource successfully deleted";
     public static final String MESSAGE_RESOURCE_NOT_FOUND = "Resource not found";
     public static final String MESSAGE_RESOURCE_ALREADY_EXISTS = "Resource already exists";
+    public static final String MESSAGE_MAX_PROFILES_LIMIT_REACHED = "Max profiles limit reached";
     public static final String MESSAGE_BAD_REQUEST = "Invalid request parameters";
     public static final String MESSAGE_INTERNAL_ERROR = "Internal server error";
 

@@ -45,7 +45,7 @@ public class SubtitleController {
                 updatedSubtitle,
                 ApiConstants.MESSAGE_RESOURCE_UPDATED,
                 ApiConstants.HTTP_STATUS_OK,
-                ApiConstants.PATH_SUBTITLE_ID
+                ApiConstants.PATH_SUBTITLES_ID
         );
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -54,7 +54,7 @@ public class SubtitleController {
 	public ResponseEntity<ApiResponse<Void>> deleteActor(@PathVariable UUID id) {
 		subtitleService.delete(id);
 		ApiResponse<Void> response = ResponseUtil.success(null, ApiConstants.MESSAGE_RESOURCE_DELETED,
-				ApiConstants.HTTP_STATUS_OK, ApiConstants.PATH_SUBTITLE_ID);
+				ApiConstants.HTTP_STATUS_OK, ApiConstants.PATH_SUBTITLES_ID);
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 }

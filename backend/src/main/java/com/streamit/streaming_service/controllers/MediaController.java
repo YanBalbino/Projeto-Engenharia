@@ -48,7 +48,7 @@ public class MediaController {
 
 		ReturnMediaDTO updatedMedia = mediaService.update(id, mediaDto);
 		ApiResponse<ReturnMediaDTO> response = ResponseUtil.success(updatedMedia, ApiConstants.MESSAGE_RESOURCE_UPDATED,
-				ApiConstants.HTTP_STATUS_OK, ApiConstants.PATH_MEDIA_ID);
+				ApiConstants.HTTP_STATUS_OK, ApiConstants.PATH_MEDIAS_ID);
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 }

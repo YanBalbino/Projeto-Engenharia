@@ -17,8 +17,6 @@ import lombok.Setter;
 public class UpdateSeasonDTO {
 	
 	private UUID id;
-	
     private Integer seasonNumber;
-
     private List<UpdateEpisodeDTO> episodes;
 }

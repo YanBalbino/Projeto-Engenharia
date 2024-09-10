@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.streamit.streaming_service.dtos.profile.CreateProfileDTO;
 import com.streamit.streaming_service.dtos.profile.ReturnProfileDTO;
+import com.streamit.streaming_service.exceptions.MaxProfilesLimitReachedException;
 import com.streamit.streaming_service.exceptions.ResourceNotFoundException;
 import com.streamit.streaming_service.mappers.ProfileMapper;
 import com.streamit.streaming_service.model.ProfileModel;
@@ -28,7 +29,7 @@ public class ProfileServiceImpl implements IProfileService {
 	public ReturnProfileDTO create(CreateProfileDTO profile, UUID idUser) {
 		UserModel user = userServiceImpl.findUserModelById(idUser);
 		if(user.getPerfis().size() == 4) {
-			throw new ResourceNotFoundException("Limite de perfis atingidos para o usuário " + user.getNome());
+			throw new MaxProfilesLimitReachedException("Limite de perfis atingido para o usuário " + user.getNome());
 		}
 		ProfileModel entity = ProfileMapper.toModel(profile, user);
 		ProfileModel entitySaved = profileRepository.save(entity);

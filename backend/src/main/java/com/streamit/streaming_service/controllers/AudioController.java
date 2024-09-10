@@ -45,7 +45,7 @@ public class AudioController {
                 updatedAudio,
                 ApiConstants.MESSAGE_RESOURCE_UPDATED,
                 ApiConstants.HTTP_STATUS_OK,
-                ApiConstants.PATH_AUDIO_ID
+                ApiConstants.PATH_AUDIOS_ID
         );
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -56,7 +56,7 @@ public class AudioController {
         ApiResponse<Void> response = ResponseUtil.success(null, 
                 ApiConstants.MESSAGE_RESOURCE_DELETED, 
                 ApiConstants.HTTP_STATUS_OK, 
-                ApiConstants.PATH_AUDIO_ID);
+                ApiConstants.PATH_AUDIOS_ID);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }

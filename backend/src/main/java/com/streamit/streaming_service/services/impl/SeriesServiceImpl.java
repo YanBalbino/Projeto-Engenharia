@@ -33,9 +33,7 @@ public class SeriesServiceImpl implements ISeriesService {
         if (seriesRepository.existsByTitle(seriesDto.getMedia().getTitulo())) {
             throw new ResourceAlreadyExistsException("Série já cadastrada.");
         }
-        SeriesModel entity = new SeriesModel();
-        
-        SeriesModel entityMapped = SeriesMapper.toEntity(seriesDto, entity);
+        SeriesModel entityMapped = SeriesMapper.toEntity(seriesDto, new SeriesModel());
     	// lógica para adicionar atores que já existem no bd
     	List<UUID> actorIds = seriesDto.getActorIds();
     	if(!actorIds.isEmpty()) {
@@ -44,10 +42,10 @@ public class SeriesServiceImpl implements ISeriesService {
     			ActorModel actor = actorServiceImpl.findModelById(actorId);
     			actors.add(actor);
     		}
-    		if(entity.getAtores().isEmpty()) {
-    			entity.setAtores(actors);
+    		if(entityMapped.getAtores().isEmpty()) {
+    			entityMapped.setAtores(actors);
     		}else {
-    			entity.getAtores().addAll(actors);
+    			entityMapped.getAtores().addAll(actors);
     		}
     	}
     	ReturnSeriesDTO entityDto = SeriesMapper.toDto(seriesRepository.save(entityMapped));
