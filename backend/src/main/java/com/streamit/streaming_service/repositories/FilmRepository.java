@@ -22,7 +22,7 @@ public interface FilmRepository extends JpaRepository<FilmModel, UUID>{
     @Query("SELECT f FROM FilmModel f JOIN f.audiosDisponiveis a WHERE a.id = :audioId")
     Optional<FilmModel> findFilmByAudioId(@Param("audioId") UUID audioId);
     
-    @Query("SELECT f FROM FilmModel f JOIN f.legendasDisponiveis a WHERE a.id = :legendaId")
+    @Query("SELECT f FROM FilmModel f JOIN f.legendasDisponiveis l WHERE l.id = :legendaId")
     Optional<FilmModel> findFilmBySubtitleId(@Param("legendaId") UUID legendaId);
     
     // Busca por ator com paginação

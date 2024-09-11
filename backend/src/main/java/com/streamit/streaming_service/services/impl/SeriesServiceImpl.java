@@ -125,7 +125,7 @@ public class SeriesServiceImpl implements ISeriesService {
 		SeriesModel entity = findModelById(id);
 	    seriesRepository.delete(entity);
 	}
-
+	
 	@Override
 	public ReturnSeriesDTO addSeason(UUID id, CreateSeasonDTO seasonDto) {
 		SeriesModel entity = findModelById(id);

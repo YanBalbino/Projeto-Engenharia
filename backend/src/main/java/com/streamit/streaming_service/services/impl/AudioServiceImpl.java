@@ -11,6 +11,7 @@ import com.streamit.streaming_service.exceptions.ResourceAlreadyExistsException;
 import com.streamit.streaming_service.exceptions.ResourceNotFoundException;
 import com.streamit.streaming_service.mappers.AudioMapper;
 import com.streamit.streaming_service.model.AudioModel;
+import com.streamit.streaming_service.model.EpisodeModel;
 import com.streamit.streaming_service.model.FilmModel;
 import com.streamit.streaming_service.repositories.AudioRepository;
 import com.streamit.streaming_service.services.IAudioService;
@@ -23,6 +24,7 @@ public class AudioServiceImpl implements IAudioService {
 
     private AudioRepository audioRepository;
     private FilmServiceImpl filmServiceImpl;
+    private EpisodeServiceImpl episodeServiceImpl;
 
     public AudioModel findModelById(UUID id) {
         return audioRepository.findById(id)
@@ -58,7 +60,12 @@ public class AudioServiceImpl implements IAudioService {
 	public void delete(UUID id) {
 		AudioModel entity = findModelById(id);
 		FilmModel film = filmServiceImpl.getFilmByAudioId(id);
-		film.getAudiosDisponiveis().remove(entity);
+		EpisodeModel episode = episodeServiceImpl.getEpisodeByAudioId(id);
+		if(film != null) {
+			film.getAudiosDisponiveis().remove(entity);
+		}else {
+			episode.getAudiosDisponiveis().remove(entity);
+		}
 		audioRepository.delete(entity);
 	}
 }

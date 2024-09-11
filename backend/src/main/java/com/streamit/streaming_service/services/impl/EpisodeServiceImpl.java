@@ -116,6 +116,16 @@ public class EpisodeServiceImpl implements IEpisodeService {
         episode.setTemporada(null);
         episodeRepository.delete(episode);
     }
+    
+    public EpisodeModel getEpisodeByAudioId(UUID audioId) {
+        return episodeRepository.findEpisodeByAudioId(audioId)
+        		.orElse(null);
+    }
+    
+    public EpisodeModel getEpisodeBySubtitleId(UUID audioId) {
+    	return episodeRepository.findEpisodeBySubtitleId(audioId)
+    			.orElse(null);
+    }
 
 	@Override
 	public ReturnEpisodeDTO addAudio(UUID id, CreateAudioDTO audioDTO) {

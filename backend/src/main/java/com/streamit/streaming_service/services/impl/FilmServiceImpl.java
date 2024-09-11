@@ -143,12 +143,12 @@ public class FilmServiceImpl implements IFilmService {
 	
     public FilmModel getFilmByAudioId(UUID audioId) {
         return filmRepository.findFilmByAudioId(audioId)
-                .orElseThrow(() -> new ResourceNotFoundException("Filme não encontrado para o áudio com id " + audioId));
+        		.orElse(null);
     }
     
     public FilmModel getFilmBySubtitleId(UUID audioId) {
     	return filmRepository.findFilmBySubtitleId(audioId)
-    			.orElseThrow(() -> new ResourceNotFoundException("Filme não encontrado para a legenda com id " + audioId));
+    			.orElse(null);
     }
 
 	@Override
