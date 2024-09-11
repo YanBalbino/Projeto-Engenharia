@@ -6,11 +6,14 @@ import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
+import com.streamit.streaming_service.dtos.episode.CreateEpisodeDTO;
 import com.streamit.streaming_service.dtos.season.CreateSeasonDTO;
 import com.streamit.streaming_service.dtos.season.ReturnSeasonDTO;
 import com.streamit.streaming_service.dtos.season.UpdateSeasonDTO;
 import com.streamit.streaming_service.exceptions.ResourceNotFoundException;
+import com.streamit.streaming_service.mappers.EpisodeMapper;
 import com.streamit.streaming_service.mappers.SeasonMapper;
+import com.streamit.streaming_service.model.EpisodeModel;
 import com.streamit.streaming_service.model.SeasonModel;
 import com.streamit.streaming_service.model.SeriesModel;
 import com.streamit.streaming_service.repositories.SeasonRepository;
@@ -93,4 +96,16 @@ public class SeasonServiceImpl implements ISeasonService {
         season.setSerie(null);
         seasonRepository.delete(season);
     }
+
+	@Override
+	public ReturnSeasonDTO addEpisode(UUID id, CreateEpisodeDTO episodeDto) {
+		SeasonModel entity = findModelById(id);
+		EpisodeModel episode = EpisodeMapper.toEntity(episodeDto, entity);
+		List<EpisodeModel> listEpisode = entity.getEpisodes();
+		if(!listEpisode.isEmpty()) {
+			listEpisode.add(episode);
+		}
+		ReturnSeasonDTO dto = SeasonMapper.toDto(entity);
+		return dto;
+	}
 }

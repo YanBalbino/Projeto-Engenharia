@@ -8,14 +8,22 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.streamit.streaming_service.dtos.actor.CreateActorDTO;
+import com.streamit.streaming_service.dtos.audio.CreateAudioDTO;
 import com.streamit.streaming_service.dtos.film.CreateFilmDTO;
 import com.streamit.streaming_service.dtos.film.ReturnFilmDTO;
 import com.streamit.streaming_service.dtos.film.UpdateFilmDTO;
+import com.streamit.streaming_service.dtos.subtitle.CreateSubtitleDTO;
 import com.streamit.streaming_service.exceptions.ResourceAlreadyExistsException;
 import com.streamit.streaming_service.exceptions.ResourceNotFoundException;
+import com.streamit.streaming_service.mappers.ActorMapper;
+import com.streamit.streaming_service.mappers.AudioMapper;
 import com.streamit.streaming_service.mappers.FilmMapper;
+import com.streamit.streaming_service.mappers.SubtitleMapper;
 import com.streamit.streaming_service.model.ActorModel;
+import com.streamit.streaming_service.model.AudioModel;
 import com.streamit.streaming_service.model.FilmModel;
+import com.streamit.streaming_service.model.SubtitleModel;
 import com.streamit.streaming_service.repositories.FilmRepository;
 import com.streamit.streaming_service.services.IFilmService;
 
@@ -142,5 +150,41 @@ public class FilmServiceImpl implements IFilmService {
     	return filmRepository.findFilmBySubtitleId(audioId)
     			.orElseThrow(() -> new ResourceNotFoundException("Filme não encontrado para a legenda com id " + audioId));
     }
+
+	@Override
+	public ReturnFilmDTO addAudio(UUID id, CreateAudioDTO audioDto) {
+		FilmModel entity = findModelById(id);
+		AudioModel audio = AudioMapper.toEntity(audioDto);
+		List<AudioModel> listAudio = entity.getAudiosDisponiveis();
+		if(!listAudio.isEmpty()) {
+			listAudio.add(audio);
+		}
+		ReturnFilmDTO dto = FilmMapper.toDto(entity);
+		return dto;
+	}
+
+	@Override
+	public ReturnFilmDTO addSubtitle(UUID id, CreateSubtitleDTO subtitleDto) {
+		FilmModel entity = findModelById(id);
+		SubtitleModel subtitle = SubtitleMapper.toEntity(subtitleDto);
+		List<SubtitleModel> listSubtitle = entity.getLegendasDisponiveis();
+		if(!listSubtitle.isEmpty()) {
+			listSubtitle.add(subtitle);
+		}
+		ReturnFilmDTO dto = FilmMapper.toDto(entity);
+		return dto;
+	}
+
+	@Override
+	public ReturnFilmDTO addActor(UUID id, CreateActorDTO actorDto) {
+		FilmModel entity = findModelById(id);
+		ActorModel actor = ActorMapper.toEntityForFilm(actorDto, entity);
+		List<ActorModel> listActor = entity.getAtores();
+		if(!listActor.isEmpty()) {
+			listActor.add(actor);
+		}
+		ReturnFilmDTO dto = FilmMapper.toDto(entity);
+		return dto;
+	}
 
 }

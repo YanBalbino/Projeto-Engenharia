@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.streamit.streaming_service.constants.ApiConstants;
+import com.streamit.streaming_service.dtos.actor.CreateActorDTO;
+import com.streamit.streaming_service.dtos.season.CreateSeasonDTO;
 import com.streamit.streaming_service.dtos.series.CreateSeriesDTO;
 import com.streamit.streaming_service.dtos.series.ReturnSeriesDTO;
 import com.streamit.streaming_service.dtos.series.UpdateSeriesDTO;
@@ -70,6 +72,28 @@ public class SeriesController {
 				ApiConstants.MESSAGE_RESOURCE_UPDATED, ApiConstants.HTTP_STATUS_OK, ApiConstants.PATH_SERIES_ID);
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
+	
+    @PutMapping("/{id}/season")
+    public ResponseEntity<ApiResponse<ReturnSeriesDTO>> addSeason(@PathVariable UUID id, 
+    		@Valid @RequestBody CreateSeasonDTO seasonDto) {
+    	ReturnSeriesDTO updatedSeries = seriesService.addSeason(id, seasonDto);
+    	ApiResponse<ReturnSeriesDTO> response = ResponseUtil.success(updatedSeries, 
+    			ApiConstants.MESSAGE_RESOURCE_ADDED, 
+    			ApiConstants.HTTP_STATUS_OK, 
+    			ApiConstants.PATH_SERIES_ID_SEASON);
+    	return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+	
+    @PutMapping("/{id}/actor")
+    public ResponseEntity<ApiResponse<ReturnSeriesDTO>> addActor(@PathVariable UUID id, 
+    		@Valid @RequestBody CreateActorDTO actorDto) {
+    	ReturnSeriesDTO updatedSeries = seriesService.addActor(id, actorDto);
+    	ApiResponse<ReturnSeriesDTO> response = ResponseUtil.success(updatedSeries, 
+    			ApiConstants.MESSAGE_RESOURCE_ADDED, 
+    			ApiConstants.HTTP_STATUS_OK, 
+    			ApiConstants.PATH_SERIES_ID_ACTOR);
+    	return new ResponseEntity<>(response, HttpStatus.OK);
+    }
 
 	@DeleteMapping("/{id}")
 	public ResponseEntity<ApiResponse<Void>> deleteSeries(@PathVariable UUID id) {

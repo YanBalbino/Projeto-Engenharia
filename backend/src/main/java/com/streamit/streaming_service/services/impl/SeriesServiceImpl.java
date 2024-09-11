@@ -8,13 +8,18 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.streamit.streaming_service.dtos.actor.CreateActorDTO;
+import com.streamit.streaming_service.dtos.season.CreateSeasonDTO;
 import com.streamit.streaming_service.dtos.series.CreateSeriesDTO;
 import com.streamit.streaming_service.dtos.series.ReturnSeriesDTO;
 import com.streamit.streaming_service.dtos.series.UpdateSeriesDTO;
 import com.streamit.streaming_service.exceptions.ResourceAlreadyExistsException;
 import com.streamit.streaming_service.exceptions.ResourceNotFoundException;
+import com.streamit.streaming_service.mappers.ActorMapper;
+import com.streamit.streaming_service.mappers.SeasonMapper;
 import com.streamit.streaming_service.mappers.SeriesMapper;
 import com.streamit.streaming_service.model.ActorModel;
+import com.streamit.streaming_service.model.SeasonModel;
 import com.streamit.streaming_service.model.SeriesModel;
 import com.streamit.streaming_service.repositories.SeriesRepository;
 import com.streamit.streaming_service.services.ISeriesService;
@@ -119,5 +124,29 @@ public class SeriesServiceImpl implements ISeriesService {
 	public void delete(UUID id) {
 		SeriesModel entity = findModelById(id);
 	    seriesRepository.delete(entity);
+	}
+
+	@Override
+	public ReturnSeriesDTO addSeason(UUID id, CreateSeasonDTO seasonDto) {
+		SeriesModel entity = findModelById(id);
+		SeasonModel season = SeasonMapper.toEntity(seasonDto, entity);
+		List<SeasonModel> listSeason = entity.getSeasons();
+		if(!listSeason.isEmpty()) {
+			listSeason.add(season);
+		}
+		ReturnSeriesDTO dto = SeriesMapper.toDto(entity);
+		return dto;
+	}
+
+	@Override
+	public ReturnSeriesDTO addActor(UUID id, CreateActorDTO actorDto) {
+		SeriesModel entity = findModelById(id);
+		ActorModel actor = ActorMapper.toEntityForSeries(actorDto, entity);
+		List<ActorModel> listActor = entity.getAtores();
+		if(!listActor.isEmpty()) {
+			listActor.add(actor);
+		}
+		ReturnSeriesDTO dto = SeriesMapper.toDto(entity);
+		return dto;
 	}
 }

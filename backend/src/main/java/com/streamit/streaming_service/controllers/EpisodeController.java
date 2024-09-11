@@ -15,9 +15,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.streamit.streaming_service.constants.ApiConstants;
+import com.streamit.streaming_service.dtos.audio.CreateAudioDTO;
 import com.streamit.streaming_service.dtos.episode.CreateEpisodeDTO;
 import com.streamit.streaming_service.dtos.episode.ReturnEpisodeDTO;
 import com.streamit.streaming_service.dtos.episode.UpdateEpisodeDTO;
+import com.streamit.streaming_service.dtos.subtitle.CreateSubtitleDTO;
 import com.streamit.streaming_service.response.ApiResponse;
 import com.streamit.streaming_service.response.ResponseUtil;
 import com.streamit.streaming_service.services.IEpisodeService;
@@ -32,10 +34,10 @@ public class EpisodeController {
 
     private final IEpisodeService episodeService;
 
-    @PostMapping("/{idSeason}")
+    @PostMapping("/{seasonId}")
     public ResponseEntity<ApiResponse<ReturnEpisodeDTO>> createEpisode(@Valid @RequestBody CreateEpisodeDTO createEpisodeDTO, 
-                                                                       @PathVariable UUID idSeason) {
-        ReturnEpisodeDTO createdEpisode = episodeService.create(createEpisodeDTO, idSeason);
+                                                                       @PathVariable UUID seasonId) {
+        ReturnEpisodeDTO createdEpisode = episodeService.create(createEpisodeDTO, seasonId);
         ApiResponse<ReturnEpisodeDTO> response = ResponseUtil.success(createdEpisode, 
                                                                       ApiConstants.MESSAGE_RESOURCE_CREATED, 
                                                                       ApiConstants.HTTP_STATUS_CREATED, 
@@ -69,6 +71,28 @@ public class EpisodeController {
                                                                       ApiConstants.MESSAGE_RESOURCE_UPDATED, 
                                                                       ApiConstants.HTTP_STATUS_OK, 
                                                                       ApiConstants.PATH_EPISODES_ID);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+    
+    @PutMapping("/{id}/audio")
+    public ResponseEntity<ApiResponse<ReturnEpisodeDTO>> addAudio(@PathVariable UUID id, 
+                                                                   @Valid @RequestBody CreateAudioDTO audioDTO) {
+        ReturnEpisodeDTO updatedEpisode = episodeService.addAudio(id, audioDTO);
+        ApiResponse<ReturnEpisodeDTO> response = ResponseUtil.success(updatedEpisode, 
+                                                                      ApiConstants.MESSAGE_RESOURCE_ADDED, 
+                                                                      ApiConstants.HTTP_STATUS_OK, 
+                                                                      ApiConstants.PATH_EPISODES_ID_AUDIO);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @PutMapping("/{id}/subtitle")
+    public ResponseEntity<ApiResponse<ReturnEpisodeDTO>> addSubtitle(@PathVariable UUID id, 
+                                                                      @Valid @RequestBody CreateSubtitleDTO subtitleDTO) {
+        ReturnEpisodeDTO updatedEpisode = episodeService.addSubtitle(id, subtitleDTO);
+        ApiResponse<ReturnEpisodeDTO> response = ResponseUtil.success(updatedEpisode, 
+                                                                      ApiConstants.MESSAGE_RESOURCE_ADDED, 
+                                                                      ApiConstants.HTTP_STATUS_OK, 
+                                                                      ApiConstants.PATH_EPISODES_ID_SUBTITLE);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 

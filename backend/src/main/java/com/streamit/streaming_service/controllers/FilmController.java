@@ -17,9 +17,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.streamit.streaming_service.constants.ApiConstants;
+import com.streamit.streaming_service.dtos.actor.CreateActorDTO;
+import com.streamit.streaming_service.dtos.audio.CreateAudioDTO;
 import com.streamit.streaming_service.dtos.film.CreateFilmDTO;
 import com.streamit.streaming_service.dtos.film.ReturnFilmDTO;
 import com.streamit.streaming_service.dtos.film.UpdateFilmDTO;
+import com.streamit.streaming_service.dtos.subtitle.CreateSubtitleDTO;
 import com.streamit.streaming_service.response.ApiResponse;
 import com.streamit.streaming_service.response.ResponseUtil;
 import com.streamit.streaming_service.services.IFilmService;
@@ -68,6 +71,39 @@ public class FilmController {
 				ApiConstants.HTTP_STATUS_OK, ApiConstants.PATH_FILMS_ID);
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
+	
+    @PutMapping("/{id}/audio")
+    public ResponseEntity<ApiResponse<ReturnFilmDTO>> addAudio(@PathVariable UUID id, 
+                                                                   @Valid @RequestBody CreateAudioDTO audioDTO) {
+    	ReturnFilmDTO updatedFilm = filmService.addAudio(id, audioDTO);
+        ApiResponse<ReturnFilmDTO> response = ResponseUtil.success(updatedFilm, 
+                                                                      ApiConstants.MESSAGE_RESOURCE_ADDED, 
+                                                                      ApiConstants.HTTP_STATUS_OK, 
+                                                                      ApiConstants.PATH_FILMS_ID_AUDIO);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @PutMapping("/{id}/subtitle")
+    public ResponseEntity<ApiResponse<ReturnFilmDTO>> addSubtitle(@PathVariable UUID id, 
+                                                                      @Valid @RequestBody CreateSubtitleDTO subtitleDTO) {
+    	ReturnFilmDTO updatedFilm = filmService.addSubtitle(id, subtitleDTO);
+        ApiResponse<ReturnFilmDTO> response = ResponseUtil.success(updatedFilm, 
+                                                                      ApiConstants.MESSAGE_RESOURCE_ADDED, 
+                                                                      ApiConstants.HTTP_STATUS_OK, 
+                                                                      ApiConstants.PATH_FILMS_ID_SUBTITLE);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+    
+    @PutMapping("/{id}/actor")
+    public ResponseEntity<ApiResponse<ReturnFilmDTO>> addActor(@PathVariable UUID id, 
+    		@Valid @RequestBody CreateActorDTO actorDto) {
+    	ReturnFilmDTO updatedFilm = filmService.addActor(id, actorDto);
+    	ApiResponse<ReturnFilmDTO> response = ResponseUtil.success(updatedFilm, 
+    			ApiConstants.MESSAGE_RESOURCE_ADDED, 
+    			ApiConstants.HTTP_STATUS_OK, 
+    			ApiConstants.PATH_FILMS_ID_ACTOR);
+    	return new ResponseEntity<>(response, HttpStatus.OK);
+    }
 
 	@DeleteMapping("/{id}")
 	public ResponseEntity<ApiResponse<Void>> deleteFilm(@PathVariable UUID id) {

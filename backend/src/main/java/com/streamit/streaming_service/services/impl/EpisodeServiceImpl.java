@@ -6,15 +6,21 @@ import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
+import com.streamit.streaming_service.dtos.audio.CreateAudioDTO;
 import com.streamit.streaming_service.dtos.episode.CreateEpisodeDTO;
 import com.streamit.streaming_service.dtos.episode.ReturnEpisodeDTO;
 import com.streamit.streaming_service.dtos.episode.UpdateEpisodeDTO;
+import com.streamit.streaming_service.dtos.subtitle.CreateSubtitleDTO;
 import com.streamit.streaming_service.exceptions.ResourceAlreadyExistsException;
 import com.streamit.streaming_service.exceptions.ResourceNotFoundException;
+import com.streamit.streaming_service.mappers.AudioMapper;
 import com.streamit.streaming_service.mappers.EpisodeMapper;
+import com.streamit.streaming_service.mappers.SubtitleMapper;
+import com.streamit.streaming_service.model.AudioModel;
 import com.streamit.streaming_service.model.EpisodeModel;
 import com.streamit.streaming_service.model.SeasonModel;
 import com.streamit.streaming_service.model.SeriesModel;
+import com.streamit.streaming_service.model.SubtitleModel;
 import com.streamit.streaming_service.repositories.EpisodeRepository;
 import com.streamit.streaming_service.services.IEpisodeService;
 
@@ -110,5 +116,29 @@ public class EpisodeServiceImpl implements IEpisodeService {
         episode.setTemporada(null);
         episodeRepository.delete(episode);
     }
+
+	@Override
+	public ReturnEpisodeDTO addAudio(UUID id, CreateAudioDTO audioDTO) {
+		EpisodeModel entity = findModelById(id);
+		AudioModel audio = AudioMapper.toEntity(audioDTO);
+		List<AudioModel> listAudio = entity.getAudiosDisponiveis();
+		if(!listAudio.isEmpty()) {
+			listAudio.add(audio);
+		}
+		ReturnEpisodeDTO dto = EpisodeMapper.toDto(entity);
+		return dto;
+	}
+
+	@Override
+	public ReturnEpisodeDTO addSubtitle(UUID id, CreateSubtitleDTO subtitleDTO) {
+		EpisodeModel entity = findModelById(id);
+		SubtitleModel subtitle = SubtitleMapper.toEntity(subtitleDTO);
+		List<SubtitleModel> listSubtitle = entity.getLegendasDisponiveis();
+		if(!listSubtitle.isEmpty()) {
+			listSubtitle.add(subtitle);
+		}
+		ReturnEpisodeDTO dto = EpisodeMapper.toDto(entity);
+		return dto;
+	}
 
 }

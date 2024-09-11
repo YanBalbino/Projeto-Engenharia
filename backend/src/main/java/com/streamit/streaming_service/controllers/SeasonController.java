@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.streamit.streaming_service.constants.ApiConstants;
+import com.streamit.streaming_service.dtos.episode.CreateEpisodeDTO;
 import com.streamit.streaming_service.dtos.season.CreateSeasonDTO;
 import com.streamit.streaming_service.dtos.season.ReturnSeasonDTO;
 import com.streamit.streaming_service.dtos.season.UpdateSeasonDTO;
@@ -60,6 +61,17 @@ public class SeasonController {
         ApiResponse<ReturnSeasonDTO> response = ResponseUtil.success(updatedSeason, ApiConstants.MESSAGE_RESOURCE_UPDATED,
                 ApiConstants.HTTP_STATUS_OK, ApiConstants.PATH_SEASONS_ID);
         return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+    
+    @PutMapping("/{id}/episode")
+    public ResponseEntity<ApiResponse<ReturnSeasonDTO>> addEpisode(@PathVariable UUID id, 
+    		@Valid @RequestBody CreateEpisodeDTO episodeDto) {
+    	ReturnSeasonDTO updatedFilm = seasonService.addEpisode(id, episodeDto);
+    	ApiResponse<ReturnSeasonDTO> response = ResponseUtil.success(updatedFilm, 
+    			ApiConstants.MESSAGE_RESOURCE_ADDED, 
+    			ApiConstants.HTTP_STATUS_OK, 
+    			ApiConstants.PATH_SEASONS_ID_EPISODE);
+    	return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
