@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom"
-
-
+import { Checkbox } from "antd";
+import '../register/checkbox.css'
 
 const Login = () => {
 
@@ -25,8 +25,9 @@ const Login = () => {
                 </div>
                 <button onClick={() => handleClick('/catalogo')} className="w-11/12 h-10 rounded-lg bg-cyan-600 hover:bg-cyan-400">Continuar</button>
                 <div className="flex flex-row gap-3 mr-40">
-                    <input type="checkbox" name="" id="" className="w-4   "/> 
-                    <label htmlFor="">Mantenha-me conectado</label>
+                    <Checkbox 
+                    className='custom-checkbox text-white col-span-2 items-center'
+                    >Mantenha-me conectado</Checkbox>
                 </div>
             </div>
             <div className=" w-1/3 flex flex-row gap-1 justify-center" >
