@@ -1,0 +1,25 @@
+.custom-checkbox .ant-checkbox-inner {
+  border-color: #0891b2; 
+  background-color: #e6f7ff; 
+}
+
+.custom-checkbox .ant-checkbox-checked .ant-checkbox-inner {
+  background-color: #0891b2; 
+  border-color: #0891b2; 
+}
+
+.custom-checkbox .ant-checkbox-checked .ant-checkbox-inner::after {
+  border-color: #fff; 
+}
+
+
+.custom-checkbox:hover .ant-checkbox-inner {
+  border-color: #22d3ee !important; 
+  background-color: #e6f7ff !important; 
+}
+
+/* Estilo do checkbox quando marcado e em hover */
+.custom-checkbox:hover .ant-checkbox-checked .ant-checkbox-inner {
+  background-color: #22d3ee !important; 
+  border-color: #0891b2 !important; 
+}
