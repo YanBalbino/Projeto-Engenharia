@@ -13,6 +13,7 @@ public class MediaMapper {
         media.setGenero(dto.getGenero());
         media.setDescricao(dto.getDescricao());
         media.setDiretor(dto.getDiretor());
+        media.setImgUrl(dto.getImgUrl());
     }
 	
     public static void toEntity(CreateMediaDTO dto, MediaModel media) {
@@ -21,6 +22,7 @@ public class MediaMapper {
         media.setGenero(dto.getGenero());
         media.setDescricao(dto.getDescricao());
         media.setDiretor(dto.getDiretor());
+        media.setImgUrl(dto.getImgUrl());
     }
 
     public static ReturnMediaDTO toDto(MediaModel media) {
@@ -31,6 +33,7 @@ public class MediaMapper {
         dto.setGenero(media.getGenero());
         dto.setDescricao(media.getDescricao());
         dto.setDiretor(media.getDiretor());
+        dto.setImgUrl(media.getImgUrl());
         return dto;
     }
 }

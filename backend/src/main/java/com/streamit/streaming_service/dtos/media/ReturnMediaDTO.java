@@ -21,5 +21,6 @@ public class ReturnMediaDTO {
     private String genero;
     private String descricao;
     private String diretor;
+    private String imgUrl;
 }
 

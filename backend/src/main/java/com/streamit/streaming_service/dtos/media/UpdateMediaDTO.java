@@ -14,12 +14,9 @@ import lombok.ToString;
 public class UpdateMediaDTO {
 
     private String titulo;
-
     private Integer anoProducao;
-
     private String genero;
-
     private String descricao;
-
     private String diretor;
+    private String imgUrl;
 }

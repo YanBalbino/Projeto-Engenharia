@@ -34,5 +34,6 @@ public class MediaModel implements Serializable {
 	private String genero;
 	private String descricao;
 	private String diretor;
+	private String imgUrl;
 
 }
