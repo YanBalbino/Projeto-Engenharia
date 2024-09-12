@@ -39,8 +39,8 @@ public class SubtitleServiceImpl implements ISubtitleService {
     }
 
     @Override
-    public ReturnSubtitleDTO update(UUID id, UpdateSubtitleDTO subtitleDto) {
-        SubtitleModel entity = findModelById(id);
+    public ReturnSubtitleDTO update(UpdateSubtitleDTO subtitleDto) {
+        SubtitleModel entity = findModelById(subtitleDto.getId());
         
         List<SubtitleModel> entities = subtitleRepository.findAll();
         for (SubtitleModel subtitle : entities) {

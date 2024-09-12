@@ -50,8 +50,8 @@ public class MediaServiceImpl implements IMediaService {
     }
 
     @Override
-    public ReturnMediaDTO update(UUID id, UpdateMediaDTO mediaDto) {
-    	MediaModel entity = findModelById(id);
+    public ReturnMediaDTO update(UpdateMediaDTO mediaDto) {
+    	MediaModel entity = findModelById(mediaDto.getId());
 	    List<MediaModel> entities = mediaRepository.findAll();
 	    for (MediaModel media : entities) {
 	        if (media.getTitulo().equals(mediaDto.getTitulo()) && !entity.getId().equals(media.getId())) {

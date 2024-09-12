@@ -108,8 +108,8 @@ public class FilmServiceImpl implements IFilmService {
 	}
 
 	@Override
-	public ReturnFilmDTO update(UUID id, UpdateFilmDTO filmDto) {
-		FilmModel entity = findModelById(id);
+	public ReturnFilmDTO update(UpdateFilmDTO filmDto) {
+		FilmModel entity = findModelById(filmDto.getId());
 		List<FilmModel> entities = filmRepository.findAll();
 		for(FilmModel film : entities) {
 			if(film.getMedia().getTitulo().equals(filmDto.getMedia().getTitulo()) && !entity.getId().equals(film.getId())) {

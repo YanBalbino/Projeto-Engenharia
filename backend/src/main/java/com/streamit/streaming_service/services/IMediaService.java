@@ -12,5 +12,5 @@ public interface IMediaService {
 
 	ReturnMediaDTO findById(UUID id);
 	List<ReturnMediaDTO> findAll(Pageable pageable);
-	ReturnMediaDTO update(UUID id, UpdateMediaDTO mediaDto);
+	ReturnMediaDTO update(UpdateMediaDTO mediaDto);
 }

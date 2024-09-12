@@ -17,12 +17,10 @@ import lombok.Setter;
 @Setter
 @Getter
 public class UpdateSeriesDTO {
-
+	
+	private UUID id;
     private UpdateMediaDTO media;
-
     private List<UpdateSeasonDTO> seasons;
-
     private List<UpdateActorDTO> atores;
-    
     private List<UUID> actorIds;
 }

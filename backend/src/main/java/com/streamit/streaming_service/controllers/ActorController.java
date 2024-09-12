@@ -46,17 +46,15 @@ public class ActorController {
         return ResponseEntity.ok(actors);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<ApiResponse<ReturnActorDTO>> updateActor(
-            @PathVariable UUID id,
-            @Valid @RequestBody UpdateActorDTO actorDto) {
+    @PutMapping
+    public ResponseEntity<ApiResponse<ReturnActorDTO>> updateActor(@Valid @RequestBody UpdateActorDTO actorDto) {
 
-        ReturnActorDTO updatedActor = actorService.update(id, actorDto);
+        ReturnActorDTO updatedActor = actorService.update(actorDto);
         ApiResponse<ReturnActorDTO> response = ResponseUtil.success(
                 updatedActor,
                 ApiConstants.MESSAGE_RESOURCE_UPDATED,
                 ApiConstants.HTTP_STATUS_OK,
-                ApiConstants.PATH_ACTORS_ID
+                ApiConstants.PATH_ACTORS
         );
         return new ResponseEntity<>(response, HttpStatus.OK);
     }

@@ -1,6 +1,5 @@
-package com.streamit.streaming_service.dtos.profile;
+package com.streamit.streaming_service.dtos.user;
 
-import java.util.List;
 import java.util.UUID;
 
 import lombok.AllArgsConstructor;
@@ -14,12 +13,9 @@ import lombok.ToString;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-public class ReturnProfileDTO {
+public class UpdateUserDTO {
 	
 	private UUID id;
     private String nome;
-    private String iconUrl;
-    private Boolean perfilInfantil;
-    private List<String> generosPreferidos;
+    
 }
-

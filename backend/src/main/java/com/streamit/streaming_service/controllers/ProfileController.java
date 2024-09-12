@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.streamit.streaming_service.constants.ApiConstants;
 import com.streamit.streaming_service.dtos.profile.CreateProfileDTO;
 import com.streamit.streaming_service.dtos.profile.ReturnProfileDTO;
+import com.streamit.streaming_service.dtos.profile.UpdateProfileDTO;
 import com.streamit.streaming_service.response.ApiResponse;
 import com.streamit.streaming_service.response.ResponseUtil;
 import com.streamit.streaming_service.services.IProfileService;
@@ -32,10 +33,14 @@ public class ProfileController {
     private final IProfileService profileService;
 
     @PostMapping("/user/{idUser}")
-    public ResponseEntity<ReturnProfileDTO> createProfile(@Valid @RequestBody CreateProfileDTO profileDto, @PathVariable UUID idUser) {
+    public ResponseEntity<ApiResponse<ReturnProfileDTO>> createProfile(@Valid @RequestBody CreateProfileDTO profileDto, @PathVariable UUID idUser) {
     	ReturnProfileDTO createdProfile = profileService.create(profileDto, idUser);
     	
-        return new ResponseEntity<>(createdProfile, HttpStatus.CREATED);
+        ApiResponse<ReturnProfileDTO> response = ResponseUtil.success(createdProfile, 
+                ApiConstants.MESSAGE_RESOURCE_CREATED, 
+                ApiConstants.HTTP_STATUS_OK, 
+                ApiConstants.PATH_PROFILES);
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
     @GetMapping("/{id}")
@@ -50,10 +55,14 @@ public class ProfileController {
         return new ResponseEntity<>(profiles, HttpStatus.OK);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<ReturnProfileDTO> updateProfile(@RequestBody CreateProfileDTO profileDTO, @PathVariable UUID id) {
-    	ReturnProfileDTO updatedProfile = profileService.updateProfile(profileDTO, id);
-    	return new ResponseEntity<>(updatedProfile, HttpStatus.OK);
+    @PutMapping
+    public ResponseEntity<ApiResponse<ReturnProfileDTO>> updateProfile(@RequestBody UpdateProfileDTO profileDTO) {
+    	ReturnProfileDTO updatedProfile = profileService.updateProfile(profileDTO);
+        ApiResponse<ReturnProfileDTO> response = ResponseUtil.success(updatedProfile, 
+                ApiConstants.MESSAGE_RESOURCE_UPDATED, 
+                ApiConstants.HTTP_STATUS_OK, 
+                ApiConstants.PATH_PROFILES);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")

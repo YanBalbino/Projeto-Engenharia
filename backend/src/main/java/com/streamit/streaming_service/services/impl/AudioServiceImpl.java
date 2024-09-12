@@ -39,8 +39,8 @@ public class AudioServiceImpl implements IAudioService {
     }
 
     @Override
-    public ReturnAudioDTO update(UUID id, UpdateAudioDTO audioDto) {
-        AudioModel entity = findModelById(id);
+    public ReturnAudioDTO update(UpdateAudioDTO audioDto) {
+        AudioModel entity = findModelById(audioDto.getId());
         
         List<AudioModel> entities = audioRepository.findAll();
         for (AudioModel Audio : entities) {

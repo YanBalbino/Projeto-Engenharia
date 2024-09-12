@@ -17,7 +17,7 @@ public interface ISeriesService {
 	ReturnSeriesDTO findById(UUID id);
 	List<ReturnSeriesDTO> findByGenre(String genre, Pageable pageable);
 	List<ReturnSeriesDTO> findAll(Pageable pageable);
-	ReturnSeriesDTO update(UUID id, UpdateSeriesDTO seriesDto);
+	ReturnSeriesDTO update(UpdateSeriesDTO seriesDto);
 	ReturnSeriesDTO addSeason(UUID id, CreateSeasonDTO seasonDto);
 	ReturnSeriesDTO addActor(UUID id, CreateActorDTO actorDto);
 	void delete(UUID id);

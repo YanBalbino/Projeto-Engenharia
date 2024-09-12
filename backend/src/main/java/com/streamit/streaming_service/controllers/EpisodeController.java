@@ -63,10 +63,9 @@ public class EpisodeController {
         return new ResponseEntity<>(episodes, HttpStatus.OK);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<ApiResponse<ReturnEpisodeDTO>> updateEpisode(@PathVariable UUID id, 
-                                                                       @Valid @RequestBody UpdateEpisodeDTO updateEpisodeDTO) {
-        ReturnEpisodeDTO updatedEpisode = episodeService.update(id, updateEpisodeDTO);
+    @PutMapping
+    public ResponseEntity<ApiResponse<ReturnEpisodeDTO>> updateEpisode(@Valid @RequestBody UpdateEpisodeDTO updateEpisodeDTO) {
+        ReturnEpisodeDTO updatedEpisode = episodeService.update(updateEpisodeDTO);
         ApiResponse<ReturnEpisodeDTO> response = ResponseUtil.success(updatedEpisode, 
                                                                       ApiConstants.MESSAGE_RESOURCE_UPDATED, 
                                                                       ApiConstants.HTTP_STATUS_OK, 

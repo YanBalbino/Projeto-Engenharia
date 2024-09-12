@@ -13,7 +13,7 @@ public interface ISeasonService {
 	ReturnSeasonDTO create(CreateSeasonDTO seasonDto, UUID idSeries);
 	ReturnSeasonDTO findById(UUID id);
 	List<ReturnSeasonDTO> findAllBySeries(UUID seriesId);
-	ReturnSeasonDTO update(UUID id, UpdateSeasonDTO seasonDto);
+	ReturnSeasonDTO update(UpdateSeasonDTO seasonDto);
 	ReturnSeasonDTO addEpisode(UUID id, CreateEpisodeDTO episodeDto);
 	void delete(UUID id);
 }

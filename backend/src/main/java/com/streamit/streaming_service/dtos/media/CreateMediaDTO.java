@@ -1,5 +1,6 @@
 package com.streamit.streaming_service.dtos.media;
 
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -33,4 +34,7 @@ public class CreateMediaDTO {
     @NotEmpty(message = "Diretor não pode ser vazio.")
     @Size(max = 255, message = "O nome do diretor não pode ter mais que 255 caracteres.")
     private String diretor;
+    
+    @NotBlank(message = "A URL da imagem da mídia não pode ser vazia.")
+    private String imgUrl;
 }

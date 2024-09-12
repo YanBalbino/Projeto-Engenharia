@@ -52,8 +52,8 @@ public class ActorServiceImpl implements IActorService {
     }
 
 	@Override
-	public ReturnActorDTO update(UUID id, UpdateActorDTO actorDto) {
-		ActorModel entity = findModelById(id);
+	public ReturnActorDTO update(UpdateActorDTO actorDto) {
+		ActorModel entity = findModelById(actorDto.getId());
         
         List<ActorModel> entities = actorRepository.findAll();
         for (ActorModel actor : entities) {

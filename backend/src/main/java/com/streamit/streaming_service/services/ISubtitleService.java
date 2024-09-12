@@ -8,6 +8,6 @@ import com.streamit.streaming_service.dtos.subtitle.UpdateSubtitleDTO;
 public interface ISubtitleService {
 
 	ReturnSubtitleDTO findById(UUID id);
-	ReturnSubtitleDTO update (UUID id, UpdateSubtitleDTO subtitleDto);
+	ReturnSubtitleDTO update (UpdateSubtitleDTO subtitleDto);
 	void delete(UUID id);
 }

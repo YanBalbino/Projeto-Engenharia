@@ -54,12 +54,11 @@ public class SeasonController {
         return new ResponseEntity<>(seasonsList, HttpStatus.OK);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<ApiResponse<ReturnSeasonDTO>> updateSeason(@PathVariable UUID id,
-            @RequestBody UpdateSeasonDTO updateSeasonDTO) {
-        ReturnSeasonDTO updatedSeason = seasonService.update(id, updateSeasonDTO);
+    @PutMapping
+    public ResponseEntity<ApiResponse<ReturnSeasonDTO>> updateSeason(@RequestBody UpdateSeasonDTO updateSeasonDTO) {
+        ReturnSeasonDTO updatedSeason = seasonService.update(updateSeasonDTO);
         ApiResponse<ReturnSeasonDTO> response = ResponseUtil.success(updatedSeason, ApiConstants.MESSAGE_RESOURCE_UPDATED,
-                ApiConstants.HTTP_STATUS_OK, ApiConstants.PATH_SEASONS_ID);
+                ApiConstants.HTTP_STATUS_OK, ApiConstants.PATH_SEASONS);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
     

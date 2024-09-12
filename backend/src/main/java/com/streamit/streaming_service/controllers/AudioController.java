@@ -35,17 +35,15 @@ public class AudioController {
         return new ResponseEntity<>(audioDto, HttpStatus.OK);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<ApiResponse<ReturnAudioDTO>> updateAudio(
-            @PathVariable UUID id,
-            @Valid @RequestBody UpdateAudioDTO audioDto) {
+    @PutMapping
+    public ResponseEntity<ApiResponse<ReturnAudioDTO>> updateAudio(@Valid @RequestBody UpdateAudioDTO audioDto) {
 
-        ReturnAudioDTO updatedAudio = audioService.update(id, audioDto);
+        ReturnAudioDTO updatedAudio = audioService.update(audioDto);
         ApiResponse<ReturnAudioDTO> response = ResponseUtil.success(
                 updatedAudio,
                 ApiConstants.MESSAGE_RESOURCE_UPDATED,
                 ApiConstants.HTTP_STATUS_OK,
-                ApiConstants.PATH_AUDIOS_ID
+                ApiConstants.PATH_AUDIOS
         );
         return new ResponseEntity<>(response, HttpStatus.OK);
     }

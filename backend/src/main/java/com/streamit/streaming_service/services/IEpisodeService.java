@@ -15,7 +15,7 @@ public interface IEpisodeService {
 	ReturnEpisodeDTO findById(UUID id);
 	List<ReturnEpisodeDTO> findAllBySeries(UUID idSeries);
 	List<ReturnEpisodeDTO> findAllBySeason(UUID idSeason);
-	ReturnEpisodeDTO update(UUID id, UpdateEpisodeDTO episodeDto);
+	ReturnEpisodeDTO update(UpdateEpisodeDTO episodeDto);
 	ReturnEpisodeDTO addAudio(UUID id, CreateAudioDTO audioDTO);
 	ReturnEpisodeDTO addSubtitle(UUID id, CreateSubtitleDTO subtitleDTO);
 	void delete(UUID id);
