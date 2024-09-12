@@ -23,11 +23,11 @@ const Profile = () => {
     }
     return(
         <div className="w-screen h-screen bg-gradient-to-b from-black to-cyan-950 text-white flex flex-col flex-wrap items-center gap-20">
-            <h1 className="text-[64px] mt-[100px]">Perfis de Usuário</h1>
+            <h1 className="text-[64px] mt-[50px]">Perfis de Usuário</h1>
             <div className="flex flex-row gap-24">
                 {profiles.map((profile,index) => {
                     return(
-                        <div className="flex flex-col items-center gap-5 ">
+                        <div className="flex flex-col items-center gap-5 hover:cursor-pointer  ">
                             <p className="text-[25px]">{profile.nome}</p> 
                             <img className={`${userProfile == index ? "w-56" : "w-40"}`} src = {`${process.env.PUBLIC_URL}/profile_icon.png`} alt="icone de perfil" onClick={() => handleUserProfile(index)} />
                         </div>

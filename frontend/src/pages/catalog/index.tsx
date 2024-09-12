@@ -1,7 +1,9 @@
-import Navbar from "./navbar"
-import CatalogCard from "./catalogCard"
-import { Movie } from "./types"
-import CatalogRow from "./catalogRow"
+import React, { useState } from 'react';
+import Navbar from "./navbar";
+import CatalogRow from "./catalogRow";
+import { Movie } from "./types";
+import WatchList from './watchList/index';
+import Profile from '../profile';
 
 const moviesAcao: Movie[] = [
     {
@@ -144,25 +146,38 @@ const moviesAcao: Movie[] = [
         duration: "2h 12min",
         pictureUrl: "../assets/sobreviventes.png"
     }
-    
-    
-    
-]
-
-
-
+];
 
 const Catalog = () => {
-    return(
-        <div className="pt-5 text-white font-inter  w-screen h-screen bg-gradient-to-b from-black to-cyan-950 flex flex-col  gap-4 overflow-x-hidden ">
-            <Navbar/>
-            <CatalogRow  gender="Ação" movies={moviesAcao}/>
-            <CatalogRow gender="Ficção" movies={moviesAcao} />            
+  // Estado movido para o componente pai
+  const [navbarSelect, setNavbarSelect] = useState(1);
+
+  const handleNavbar = (n: number) => {
+    setNavbarSelect(n);
+  };
+
+  return (
+    <div className="pt-5 text-white font-inter w-screen h-screen bg-gradient-to-b from-black to-cyan-950 flex flex-col gap-4 overflow-x-hidden ">
+        <Navbar navbarSelect={navbarSelect} onNavbarSelect={handleNavbar} />
+        {navbarSelect == 1 && (
+        <div>
+            <CatalogRow gender="Ação" movies={moviesAcao} />
+            <CatalogRow gender="Ficção" movies={moviesAcao} />
             <CatalogRow gender="Romance" movies={moviesAcao} />
-        
-        </div>  
-        
-    )
-}
+        </div>
+        )}
+        {navbarSelect == 6 &&(
+            <div>
+                <WatchList gender = "Watchlist" movies={moviesAcao}/>
+            </div>
+        )}
+        {navbarSelect == 7 && (
+            <Profile/>
+        )}
+      
+      
+    </div>
+  );
+};
 
 export default Catalog;

@@ -10,7 +10,7 @@ const Login = () => {
         navigate(rota)
     }
     return (
-       <div className="text-white font-inter  w-screen h-screen bg-gradient-to-b from-black to-cyan-950 flex flex-col pt-5 items-center  gap-4 ">
+       <div className="text-white font-inter  w-screen h-screen bg-gradient-to-b from-black to-cyan-950 flex flex-col pt-5 items-center gap-4 ">
             <h1 className=" text-6xl">StreamIt!</h1>
             <div className=" w-1/3 flex flex-col border-2 border-white rounded-xl bg-black p-10 gap-5 items-center">
                 <h2 className="text-3xl">Entrar</h2>
