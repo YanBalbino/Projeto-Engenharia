@@ -35,6 +35,6 @@ public class CreateMediaDTO {
     @Size(max = 255, message = "O nome do diretor não pode ter mais que 255 caracteres.")
     private String diretor;
     
-    @NotBlank(message = "A URL da imagem do filme não pode ser vazia.")
+    @NotBlank(message = "A URL da imagem da mídia não pode ser vazia.")
     private String imgUrl;
 }
