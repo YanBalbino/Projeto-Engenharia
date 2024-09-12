@@ -34,12 +34,16 @@ public final class ApiConstants {
     public static final String PATH_CATALOGS = "/api/catalogs";
     public static final String PATH_CATALOGS_ID = "/api/catalogs/{id}";
     
+    public static final String PATH_MEDIAS = "/api/medias";
     public static final String PATH_MEDIAS_ID = "/api/medias/{id}";
     
+    public static final String PATH_SUBTITLES = "/api/subtitles";
     public static final String PATH_SUBTITLES_ID = "/api/subtitles/{id}";
     
+    public static final String PATH_AUDIOS = "/api/audios";
     public static final String PATH_AUDIOS_ID = "/api/audios/{id}";
     
+    public static final String PATH_ACTORS = "/api/actors";
     public static final String PATH_ACTORS_ID = "/api/actors/{id}";
     
     public static final String PATH_SEASONS = "/api/seasons";

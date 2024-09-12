@@ -7,6 +7,6 @@ import com.streamit.streaming_service.dtos.audio.UpdateAudioDTO;
 
 public interface IAudioService {
 	ReturnAudioDTO findById(UUID id);
-	ReturnAudioDTO update (UUID id, UpdateAudioDTO subtitleDto);
+	ReturnAudioDTO update (UpdateAudioDTO subtitleDto);
 	void delete(UUID id);
 }

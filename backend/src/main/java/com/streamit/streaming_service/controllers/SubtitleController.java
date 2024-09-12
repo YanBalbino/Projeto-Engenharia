@@ -35,17 +35,15 @@ public class SubtitleController {
         return new ResponseEntity<>(subtitleDto, HttpStatus.OK);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<ApiResponse<ReturnSubtitleDTO>> updateSubtitle(
-            @PathVariable UUID id,
-            @Valid @RequestBody UpdateSubtitleDTO subtitleDto) {
+    @PutMapping
+    public ResponseEntity<ApiResponse<ReturnSubtitleDTO>> updateSubtitle(@Valid @RequestBody UpdateSubtitleDTO subtitleDto) {
 
-        ReturnSubtitleDTO updatedSubtitle = subtitleService.update(id, subtitleDto);
+        ReturnSubtitleDTO updatedSubtitle = subtitleService.update(subtitleDto);
         ApiResponse<ReturnSubtitleDTO> response = ResponseUtil.success(
                 updatedSubtitle,
                 ApiConstants.MESSAGE_RESOURCE_UPDATED,
                 ApiConstants.HTTP_STATUS_OK,
-                ApiConstants.PATH_SUBTITLES_ID
+                ApiConstants.PATH_SUBTITLES
         );
         return new ResponseEntity<>(response, HttpStatus.OK);
     }

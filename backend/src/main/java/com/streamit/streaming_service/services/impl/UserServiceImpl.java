@@ -13,6 +13,7 @@ import com.streamit.streaming_service.dtos.payment.CreatePaymentDTO;
 import com.streamit.streaming_service.dtos.profile.CreateProfileDTO;
 import com.streamit.streaming_service.dtos.user.CreateUserDTO;
 import com.streamit.streaming_service.dtos.user.ReturnUserDTO;
+import com.streamit.streaming_service.dtos.user.UpdateUserDTO;
 import com.streamit.streaming_service.exceptions.ResourceAlreadyExistsException;
 import com.streamit.streaming_service.exceptions.ResourceNotFoundException;
 import com.streamit.streaming_service.mappers.ProfileMapper;
@@ -93,9 +94,9 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public ReturnUserDTO update(String name, UUID id) {
-    	UserModel entity = findUserModelById(id);
-    	entity.setNome(name);
+    public ReturnUserDTO update(UpdateUserDTO userDto) {
+    	UserModel entity = findUserModelById(userDto.getId());
+    	entity.setNome(userDto.getNome());
         UserModel entitySaved = userRepository.save(entity);
         return UserMapper.toDtoReturn(entitySaved);
     }

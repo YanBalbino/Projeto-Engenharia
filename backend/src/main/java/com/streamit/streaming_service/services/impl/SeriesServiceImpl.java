@@ -92,8 +92,8 @@ public class SeriesServiceImpl implements ISeriesService {
 	}
 
 	@Override
-	public ReturnSeriesDTO update(UUID id, UpdateSeriesDTO seriesDto) {
-	    SeriesModel entity = findModelById(id);
+	public ReturnSeriesDTO update(UpdateSeriesDTO seriesDto) {
+	    SeriesModel entity = findModelById(seriesDto.getId());
 
 	    List<SeriesModel> entities = seriesRepository.findAll();
 	    for (SeriesModel series : entities) {

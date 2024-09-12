@@ -77,9 +77,8 @@ public class SeasonServiceImpl implements ISeasonService {
     }
 
     @Override
-    public ReturnSeasonDTO update(UUID id, UpdateSeasonDTO seasonDto) {
-        SeasonModel entity = seasonRepository.findById(id)
-            .orElseThrow(() -> new ResourceNotFoundException("Temporada não encontrada com o ID: " + id));
+    public ReturnSeasonDTO update(UpdateSeasonDTO seasonDto) {
+        SeasonModel entity = findModelById(seasonDto.getId());
         
         SeasonMapper.toUpdateEntity(seasonDto, entity);
         

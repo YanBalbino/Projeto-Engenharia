@@ -64,12 +64,11 @@ public class SeriesController {
 		return new ResponseEntity<>(seriesList, HttpStatus.OK);
 	}
 
-	@PutMapping("/{id}")
-	public ResponseEntity<ApiResponse<ReturnSeriesDTO>> updateSeries(@PathVariable UUID id,
-			@RequestBody UpdateSeriesDTO createSeriesDTO) {
-		ReturnSeriesDTO updatedSeries = seriesService.update(id, createSeriesDTO);
+	@PutMapping
+	public ResponseEntity<ApiResponse<ReturnSeriesDTO>> updateSeries(@RequestBody UpdateSeriesDTO createSeriesDTO) {
+		ReturnSeriesDTO updatedSeries = seriesService.update(createSeriesDTO);
 		ApiResponse<ReturnSeriesDTO> response = ResponseUtil.success(updatedSeries,
-				ApiConstants.MESSAGE_RESOURCE_UPDATED, ApiConstants.HTTP_STATUS_OK, ApiConstants.PATH_SERIES_ID);
+				ApiConstants.MESSAGE_RESOURCE_UPDATED, ApiConstants.HTTP_STATUS_OK, ApiConstants.PATH_SERIES);
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 	

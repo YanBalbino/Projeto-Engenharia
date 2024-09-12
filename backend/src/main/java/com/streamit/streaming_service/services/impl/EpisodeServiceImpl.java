@@ -97,9 +97,8 @@ public class EpisodeServiceImpl implements IEpisodeService {
     }
 
     @Override
-    public ReturnEpisodeDTO update(UUID id, UpdateEpisodeDTO episodeDto) {
-        EpisodeModel entity = episodeRepository.findById(id)
-            .orElseThrow(() -> new ResourceNotFoundException("Temporada não encontrada com o ID: " + id));
+    public ReturnEpisodeDTO update(UpdateEpisodeDTO episodeDto) {
+        EpisodeModel entity = findModelById(episodeDto.getId());
         
         EpisodeMapper.toUpdateEntity(episodeDto, entity);
         

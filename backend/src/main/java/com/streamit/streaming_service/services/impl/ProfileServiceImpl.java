@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.streamit.streaming_service.dtos.profile.CreateProfileDTO;
 import com.streamit.streaming_service.dtos.profile.ReturnProfileDTO;
+import com.streamit.streaming_service.dtos.profile.UpdateProfileDTO;
 import com.streamit.streaming_service.exceptions.MaxProfilesLimitReachedException;
 import com.streamit.streaming_service.exceptions.ResourceNotFoundException;
 import com.streamit.streaming_service.mappers.ProfileMapper;
@@ -58,8 +59,8 @@ public class ProfileServiceImpl implements IProfileService {
 	}
 
 	@Override
-	public ReturnProfileDTO updateProfile(CreateProfileDTO profileDTO, UUID id) {
-	    ProfileModel entity = findProfileModelById(id);
+	public ReturnProfileDTO updateProfile(UpdateProfileDTO profileDTO) {
+	    ProfileModel entity = findProfileModelById(profileDTO.getId());
 	    
 	    if (profileDTO.getNome() != null) {
 	        entity.setNome(profileDTO.getNome());

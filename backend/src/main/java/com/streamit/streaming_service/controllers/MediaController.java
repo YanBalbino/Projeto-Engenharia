@@ -43,10 +43,9 @@ public class MediaController {
 	}
 
 	@PutMapping("/{id}")
-	public ResponseEntity<ApiResponse<ReturnMediaDTO>> updateMedia(@PathVariable UUID id,
-			@Valid @RequestBody UpdateMediaDTO mediaDto) {
+	public ResponseEntity<ApiResponse<ReturnMediaDTO>> updateMedia(@Valid @RequestBody UpdateMediaDTO mediaDto) {
 
-		ReturnMediaDTO updatedMedia = mediaService.update(id, mediaDto);
+		ReturnMediaDTO updatedMedia = mediaService.update(mediaDto);
 		ApiResponse<ReturnMediaDTO> response = ResponseUtil.success(updatedMedia, ApiConstants.MESSAGE_RESOURCE_UPDATED,
 				ApiConstants.HTTP_STATUS_OK, ApiConstants.PATH_MEDIAS_ID);
 		return new ResponseEntity<>(response, HttpStatus.OK);

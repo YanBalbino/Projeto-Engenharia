@@ -14,7 +14,7 @@ import lombok.ToString;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-public class ReturnProfileDTO {
+public class UpdateProfileDTO {
 	
 	private UUID id;
     private String nome;

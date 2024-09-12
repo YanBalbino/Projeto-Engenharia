@@ -12,6 +12,6 @@ public interface IActorService {
 
 	ReturnActorDTO findById(UUID id);
 	List<ReturnActorDTO> findByName(String name, Pageable pageable);
-	ReturnActorDTO update(UUID id, UpdateActorDTO dto);
+	ReturnActorDTO update(UpdateActorDTO dto);
 	void delete(UUID id);
 }
