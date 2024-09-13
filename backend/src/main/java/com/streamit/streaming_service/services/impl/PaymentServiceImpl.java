@@ -23,6 +23,7 @@ public class PaymentServiceImpl implements IPaymentService {
 
 	PaymentRepository paymentRepository;
 
+	@Override
 	public PaymentModel processarPagamento(CreatePaymentDTO paymentDTO, UUID id) {
 		PaymentModel entity = paymentRepository.findById(id)
 				.orElseThrow(() -> new ResourceNotFoundException("Pagamento não encontrado com id " + id));
@@ -45,6 +46,7 @@ public class PaymentServiceImpl implements IPaymentService {
 		return PaymentMapper.toDto(payment);
 	}
 
+	@Override
 	public PaymentModel createPayment(UserModel user, CreateUserDTO userDto, LocalDateTime currentDate) {
 
         PaymentModel payment = new PaymentModel();

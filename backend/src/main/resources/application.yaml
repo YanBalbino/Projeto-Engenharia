@@ -12,7 +12,18 @@ spring:
     hibernate:
       ddl-auto: update
     show-sql: false
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${EMAIL_USERNAME:seuemail@example.com}
+    password: ${EMAIL_PASSWORD:suasenha}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
 api:
  streamit:
    token:
-     secret: "default-secret-key"
+     secret: ${JWT_SECRET:default-secret-key}

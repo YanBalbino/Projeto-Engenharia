@@ -15,6 +15,8 @@ import com.streamit.streaming_service.model.EpisodeModel;
 import com.streamit.streaming_service.model.FilmModel;
 import com.streamit.streaming_service.repositories.AudioRepository;
 import com.streamit.streaming_service.services.IAudioService;
+import com.streamit.streaming_service.services.IEpisodeService;
+import com.streamit.streaming_service.services.IFilmService;
 
 import lombok.AllArgsConstructor;
 
@@ -23,8 +25,8 @@ import lombok.AllArgsConstructor;
 public class AudioServiceImpl implements IAudioService {
 
     private AudioRepository audioRepository;
-    private FilmServiceImpl filmServiceImpl;
-    private EpisodeServiceImpl episodeServiceImpl;
+    private IFilmService filmService;
+    private IEpisodeService episodeService;
 
     public AudioModel findModelById(UUID id) {
         return audioRepository.findById(id)
@@ -59,8 +61,8 @@ public class AudioServiceImpl implements IAudioService {
 	@Override
 	public void delete(UUID id) {
 		AudioModel entity = findModelById(id);
-		FilmModel film = filmServiceImpl.getFilmByAudioId(id);
-		EpisodeModel episode = episodeServiceImpl.getEpisodeByAudioId(id);
+		FilmModel film = filmService.getFilmByAudioId(id);
+		EpisodeModel episode = episodeService.getEpisodeByAudioId(id);
 		if(film != null) {
 			film.getAudiosDisponiveis().remove(entity);
 		}else {

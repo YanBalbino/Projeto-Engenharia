@@ -5,20 +5,23 @@ import java.util.UUID;
 
 import org.springframework.data.domain.Pageable;
 
-import com.streamit.streaming_service.dtos.login.LoginDTO;
 import com.streamit.streaming_service.dtos.payment.CreatePaymentDTO;
 import com.streamit.streaming_service.dtos.user.CreateUserDTO;
 import com.streamit.streaming_service.dtos.user.ReturnUserDTO;
 import com.streamit.streaming_service.dtos.user.UpdateUserDTO;
+import com.streamit.streaming_service.model.UserModel;
 
 public interface IUserService {
 
-	ReturnUserDTO create(CreateUserDTO userPaymentDto);
+	ReturnUserDTO register(CreateUserDTO userPaymentDto);
 	ReturnUserDTO findUserDtoById(UUID id);
 	List<ReturnUserDTO> findAll(Pageable pageable);
 	ReturnUserDTO updateName(UpdateUserDTO userDto);
 	void delete(UUID id);
 	ReturnUserDTO renovarInscricao(UUID userId, UUID paymentId, UUID subscriptionId, CreatePaymentDTO paymentDto);
 	boolean getProfilesQuantity(UUID id);
-	String login(LoginDTO loginDto);
+	public void solicitarAlteracaoSenha(String email);
+	public boolean verificarCodigo(String email, String codigo);
+	public void alterarSenha(String email, String novaSenha);
+	UserModel findUserModelById(UUID idUser);
 }

@@ -14,10 +14,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.streamit.streaming_service.constants.ApiConstants;
-import com.streamit.streaming_service.dtos.login.LoginDTO;
 import com.streamit.streaming_service.dtos.payment.CreatePaymentDTO;
 import com.streamit.streaming_service.dtos.user.CreateUserDTO;
 import com.streamit.streaming_service.dtos.user.ReturnUserDTO;
@@ -27,6 +27,8 @@ import com.streamit.streaming_service.response.ResponseUtil;
 import com.streamit.streaming_service.services.IUserService;
 
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 
 @RestController
@@ -36,16 +38,10 @@ import lombok.AllArgsConstructor;
 public class UserController {
 
 	private final IUserService userService;
-	
-	@PostMapping("/login")
-	public ResponseEntity<String> login(@Valid @RequestBody LoginDTO loginDto) {
-		String token = userService.login(loginDto);
-		return new ResponseEntity<>(token, HttpStatus.OK);
-	}
 
 	@PostMapping("/register")
 	public ResponseEntity<ApiResponse<ReturnUserDTO>> register(@Valid @RequestBody CreateUserDTO userPaymentDto) {
-		ReturnUserDTO createdUser = userService.create(userPaymentDto);
+		ReturnUserDTO createdUser = userService.register(userPaymentDto);
 		ApiResponse<ReturnUserDTO> response = ResponseUtil.success(createdUser, ApiConstants.MESSAGE_RESOURCE_CREATED,
 				ApiConstants.HTTP_STATUS_CREATED, ApiConstants.PATH_USERS);
 		return new ResponseEntity<>(response, HttpStatus.CREATED);
@@ -97,4 +93,26 @@ public class UserController {
 		boolean hasMaxProfiles = userService.getProfilesQuantity(id);
 		return ResponseEntity.ok(hasMaxProfiles);
 	}
+	
+    @PostMapping("/solicitar-alteracao-senha")
+    public ResponseEntity<String> solicitarAlteracaoSenha(@Email @NotBlank(message = "Email não pode ser vazio") @RequestParam String email) {
+        userService.solicitarAlteracaoSenha(email);
+        return new ResponseEntity<>("Solicitação de alteração de senha enviada com sucesso.", HttpStatus.OK);
+    }
+    
+    @PostMapping("/verificar-codigo")
+    public ResponseEntity<String> verificarCodigo(@Email @NotBlank(message = "Email não pode ser vazio") @RequestParam String email, @RequestParam String codigo) {
+        boolean valido = userService.verificarCodigo(email, codigo);
+        if (valido) {
+            return new ResponseEntity<>("Código de verificação válido.", HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("Código de verificação inválido.", HttpStatus.BAD_REQUEST);
+        }
+    }
+    
+    @PostMapping("/alterar-senha")
+    public ResponseEntity<String> alterarSenha(@Email @NotBlank(message = "Email não pode ser vazio") @RequestParam String email, @NotBlank(message = "Senha não pode ser vazia") @RequestParam String novaSenha) {
+    	userService.alterarSenha(email, novaSenha);
+        return new ResponseEntity<>("Senha alterada com sucesso.", HttpStatus.OK);
+    }
 }

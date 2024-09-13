@@ -11,7 +11,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import com.streamit.streaming_service.constants.ApiConstants;
 import com.streamit.streaming_service.exceptions.ResourceNotFoundException;
 import com.streamit.streaming_service.repositories.PersonRepository;
-import com.streamit.streaming_service.services.ITokenService;
+import com.streamit.streaming_service.services.ITokenJWTService;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -23,7 +23,7 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class SecurityFilter extends OncePerRequestFilter {
 
-	ITokenService tokenService;	
+	ITokenJWTService tokenService;	
 	
 	PersonRepository personRepository;
 	

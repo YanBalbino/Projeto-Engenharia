@@ -7,6 +7,7 @@ import com.streamit.streaming_service.dtos.episode.CreateEpisodeDTO;
 import com.streamit.streaming_service.dtos.season.CreateSeasonDTO;
 import com.streamit.streaming_service.dtos.season.ReturnSeasonDTO;
 import com.streamit.streaming_service.dtos.season.UpdateSeasonDTO;
+import com.streamit.streaming_service.model.SeasonModel;
 
 public interface ISeasonService {
 
@@ -16,4 +17,5 @@ public interface ISeasonService {
 	ReturnSeasonDTO update(UpdateSeasonDTO seasonDto);
 	ReturnSeasonDTO addEpisode(UUID id, CreateEpisodeDTO episodeDto);
 	void delete(UUID id);
+	SeasonModel findModelById(UUID idSeason);
 }

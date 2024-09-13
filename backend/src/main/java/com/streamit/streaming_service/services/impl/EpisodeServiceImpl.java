@@ -23,6 +23,8 @@ import com.streamit.streaming_service.model.SeriesModel;
 import com.streamit.streaming_service.model.SubtitleModel;
 import com.streamit.streaming_service.repositories.EpisodeRepository;
 import com.streamit.streaming_service.services.IEpisodeService;
+import com.streamit.streaming_service.services.ISeasonService;
+import com.streamit.streaming_service.services.ISeriesService;
 
 import lombok.AllArgsConstructor;
 
@@ -31,12 +33,12 @@ import lombok.AllArgsConstructor;
 public class EpisodeServiceImpl implements IEpisodeService {
 
     private final EpisodeRepository episodeRepository;
-    private final SeasonServiceImpl seasonServiceImpl;
-    private final SeriesServiceImpl seriesServiceImpl;
+    private final ISeasonService seasonService;
+    private final ISeriesService seriesService;
 
     @Override
     public ReturnEpisodeDTO create(CreateEpisodeDTO episodeDto, UUID idSeason) {
-    	SeasonModel season = seasonServiceImpl.findModelById(idSeason);
+    	SeasonModel season = seasonService.findModelById(idSeason);
     	
     	for(EpisodeModel episode : season.getEpisodes()) {
     		if(episode.getNumeroEpisodio().equals(episodeDto.getNumeroEpisodio())) {
@@ -68,7 +70,7 @@ public class EpisodeServiceImpl implements IEpisodeService {
     
 	@Override
 	public List<ReturnEpisodeDTO> findAllBySeason(UUID seasonId) {
-    	SeasonModel season = seasonServiceImpl.findModelById(seasonId);
+    	SeasonModel season = seasonService.findModelById(seasonId);
         List<ReturnEpisodeDTO> episodeDtoList = new ArrayList<>();
         
         for (EpisodeModel episode : season.getEpisodes()) {
@@ -79,7 +81,7 @@ public class EpisodeServiceImpl implements IEpisodeService {
 
     @Override
     public List<ReturnEpisodeDTO> findAllBySeries(UUID seriesId) {
-    	SeriesModel series = seriesServiceImpl.findModelById(seriesId);
+    	SeriesModel series = seriesService.findModelById(seriesId);
     	List<SeasonModel> seasonList = series.getSeasons();
     	List<EpisodeModel> episodeList = new ArrayList<>();
         List<ReturnEpisodeDTO> episodeDtoList = new ArrayList<>();

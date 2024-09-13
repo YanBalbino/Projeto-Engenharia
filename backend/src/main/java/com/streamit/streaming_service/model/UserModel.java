@@ -48,7 +48,6 @@ public class UserModel implements Serializable{
 	
     private LocalDateTime createdDate;
     
-    private UUID tokenPagamento;
-    
+    private String codigoEmail;
 }
 

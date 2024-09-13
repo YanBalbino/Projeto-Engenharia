@@ -8,6 +8,7 @@ import com.streamit.streaming_service.dtos.episode.CreateEpisodeDTO;
 import com.streamit.streaming_service.dtos.episode.ReturnEpisodeDTO;
 import com.streamit.streaming_service.dtos.episode.UpdateEpisodeDTO;
 import com.streamit.streaming_service.dtos.subtitle.CreateSubtitleDTO;
+import com.streamit.streaming_service.model.EpisodeModel;
 
 public interface IEpisodeService {
 
@@ -19,4 +20,6 @@ public interface IEpisodeService {
 	ReturnEpisodeDTO addAudio(UUID id, CreateAudioDTO audioDTO);
 	ReturnEpisodeDTO addSubtitle(UUID id, CreateSubtitleDTO subtitleDTO);
 	void delete(UUID id);
+	EpisodeModel getEpisodeByAudioId(UUID id);
+	EpisodeModel getEpisodeBySubtitleId(UUID id);
 }

@@ -7,15 +7,9 @@ import java.util.UUID;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.InternalAuthenticationServiceException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.streamit.streaming_service.dtos.login.LoginDTO;
 import com.streamit.streaming_service.dtos.payment.CreatePaymentDTO;
 import com.streamit.streaming_service.dtos.profile.CreateProfileDTO;
 import com.streamit.streaming_service.dtos.user.CreateUserDTO;
@@ -24,6 +18,7 @@ import com.streamit.streaming_service.dtos.user.UpdateUserDTO;
 import com.streamit.streaming_service.enums.UserRole;
 import com.streamit.streaming_service.exceptions.ResourceAlreadyExistsException;
 import com.streamit.streaming_service.exceptions.ResourceNotFoundException;
+import com.streamit.streaming_service.mappers.PersonMapper;
 import com.streamit.streaming_service.mappers.ProfileMapper;
 import com.streamit.streaming_service.mappers.UserMapper;
 import com.streamit.streaming_service.model.PaymentModel;
@@ -32,7 +27,9 @@ import com.streamit.streaming_service.model.ProfileModel;
 import com.streamit.streaming_service.model.SubscriptionModel;
 import com.streamit.streaming_service.model.UserModel;
 import com.streamit.streaming_service.repositories.UserRepository;
-import com.streamit.streaming_service.services.ITokenService;
+import com.streamit.streaming_service.services.IEmailService;
+import com.streamit.streaming_service.services.IPaymentService;
+import com.streamit.streaming_service.services.ISubscriptionService;
 import com.streamit.streaming_service.services.IUserService;
 
 import jakarta.transaction.Transactional;
@@ -43,61 +40,49 @@ import lombok.AllArgsConstructor;
 public class UserServiceImpl implements IUserService {
 
     private UserRepository userRepository;
-    PaymentServiceImpl paymentServiceImpl;
-    SubscriptionServiceImpl subscriptionServiceImpl;
-    private AuthenticationManager authenticationManager;
-    private ITokenService tokenService;
+    IPaymentService paymentService;
+    ISubscriptionService subscriptionService;
+    IEmailService emailService;
     PasswordEncoder passwordEncoder;
 
     @Transactional
     @Override
-    public ReturnUserDTO create(CreateUserDTO userDto) {
+    public ReturnUserDTO register(CreateUserDTO userDto) {
         if (userRepository.findByEmail(userDto.getEmail()).isPresent()) {
             throw new ResourceAlreadyExistsException("Email " + userDto.getEmail() + " já cadastrado.");
         }
 
         LocalDateTime currentDate = LocalDateTime.now();
-        
-        PersonModel person = new PersonModel();
-        person.setEmail(userDto.getEmail());
-        person.setNome(userDto.getNome());
+
+        PersonModel person = PersonMapper.toModel(userDto); 
         person.setSenha(passwordEncoder.encode(userDto.getSenha()));
         person.setRole(UserRole.USER);
 
-        UserModel entity = new UserModel();
-        entity.setPerson(person);
-        entity.setCreatedDate(currentDate);
-        
-        List<CreateProfileDTO> profiles = userDto.getPerfis();
-        List<ProfileModel> profilesModel = new ArrayList<>();
-        
-        // cria os perfis
-        for(CreateProfileDTO profile : profiles) {
-        	profilesModel.add(ProfileMapper.toModel(profile, entity));
+        UserModel user = new UserModel();
+        user.setPerson(person);
+        user.setCreatedDate(currentDate);
+
+        List<ProfileModel> profiles = new ArrayList<>();
+        for (CreateProfileDTO profileDto : userDto.getPerfis()) {
+            ProfileModel profile = ProfileMapper.toModel(profileDto, user);
+            profiles.add(profile);
         }
-        entity.setPerfis(profilesModel);
-        
-        // cria a inscrição
-        SubscriptionModel subscription = subscriptionServiceImpl.createSubscription(entity, currentDate);
-        entity.setSubscription(subscription);
+        user.setPerfis(profiles);
 
-        // cria o pagamento
-        PaymentModel payment = paymentServiceImpl.createPayment(entity, userDto, currentDate);
-        entity.setPayment(payment);
+        SubscriptionModel subscription = subscriptionService.createSubscription(user, currentDate);
+        PaymentModel payment = paymentService.createPayment(user, userDto, currentDate);
 
-        UserModel entitySaved = userRepository.save(entity);
-        
-        return UserMapper.toDtoReturn(entitySaved);
+        user.setSubscription(subscription);
+        user.setPayment(payment);
+
+        UserModel savedUser = userRepository.save(user);
+
+        return UserMapper.toDtoReturn(savedUser);
     }
 
     @Override
     public ReturnUserDTO findUserDtoById(UUID id) {
         return UserMapper.toDtoReturn(findUserModelById(id));
-    }
-
-    public UserModel findUserModelById(UUID id) {
-        return userRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado com id " + id));
     }
 
     @Override
@@ -128,8 +113,8 @@ public class UserServiceImpl implements IUserService {
     @Override
     public ReturnUserDTO renovarInscricao(UUID userId, UUID subscriptionId, UUID paymentId, CreatePaymentDTO paymentDto) {
     	UserModel entity = findUserModelById(userId);
-        PaymentModel payment = paymentServiceImpl.processarPagamento(paymentDto, paymentId);
-        SubscriptionModel subscription = subscriptionServiceImpl.renovarInscricao(subscriptionId);
+        PaymentModel payment = paymentService.processarPagamento(paymentDto, paymentId);
+        SubscriptionModel subscription = subscriptionService.renovarInscricao(subscriptionId);
         entity.setPayment(payment);
         entity.setSubscription(subscription);
         UserModel entitySaved = userRepository.save(entity);
@@ -144,23 +129,46 @@ public class UserServiceImpl implements IUserService {
 		}
 		return false;
 	}
+	
+    @Override
+    public void solicitarAlteracaoSenha(String email) {
+    	UserModel user = findUserModelByEmail(email);
 
-	@Override
-	public String login(LoginDTO loginDto) {
-    	var email = userRepository.findByEmail(loginDto.getEmail());
-    	if(email == null) {
-    		throw new UsernameNotFoundException("O email " + loginDto.getEmail() + " não existe.");
-    	}
-        try {
-            var usernamePassword = new UsernamePasswordAuthenticationToken(loginDto.getEmail(), loginDto.getSenha());
-            var auth = authenticationManager.authenticate(usernamePassword);
-            PersonModel user = (PersonModel) auth.getPrincipal();
-            String token = tokenService.generateToken(user);
-            return token;
-        } catch (BadCredentialsException ex) {
-            throw new BadCredentialsException("Senha incorreta. Tente novamente.", ex);
-        } catch (InternalAuthenticationServiceException ex) {
-            throw new InternalAuthenticationServiceException("Erro interno de autenticação", ex);
+        String codigoVerificacao = UUID.randomUUID().toString();
+        user.setCodigoEmail(codigoVerificacao);
+        userRepository.save(user);
+
+        emailService.enviarEmailVerificacao(user.getPerson().getEmail(), codigoVerificacao);
+    }
+
+    @Override
+    public boolean verificarCodigo(String email, String codigo) {
+    	UserModel user = findUserModelByEmail(email);
+        if (!user.getCodigoEmail().equals(codigo)) {
+            return false;
         }
-	}
+        user.setCodigoEmail(null);
+        userRepository.save(user);
+        return true;
+    }
+
+    @Override
+    public void alterarSenha(String email, String novaSenha) {
+    	UserModel user = findUserModelByEmail(email);
+        
+        String senhaCodificada = passwordEncoder.encode(novaSenha);
+        user.getPerson().setSenha(senhaCodificada);
+        userRepository.save(user);
+    }
+    
+    public UserModel findUserModelById(UUID id) {
+        return userRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado com id " + id));
+    }
+    
+    public UserModel findUserModelByEmail(String email) {
+    	return userRepository.findByEmail(email)
+    			.orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado com email " + email));
+    }
+
 }

@@ -12,10 +12,10 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.streamit.streaming_service.model.PersonModel;
-import com.streamit.streaming_service.services.ITokenService;
+import com.streamit.streaming_service.services.ITokenJWTService;
 
 @Service
-public class TokenServiceImpl implements ITokenService{
+public class TokenJWTServiceImpl implements ITokenJWTService{
 
 	@Value("${api.streamit.token.secret}")
 	private String secret;

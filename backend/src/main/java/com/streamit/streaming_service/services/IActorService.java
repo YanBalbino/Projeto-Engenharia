@@ -7,6 +7,7 @@ import org.springframework.data.domain.Pageable;
 
 import com.streamit.streaming_service.dtos.actor.ReturnActorDTO;
 import com.streamit.streaming_service.dtos.actor.UpdateActorDTO;
+import com.streamit.streaming_service.model.ActorModel;
 
 public interface IActorService {
 
@@ -14,4 +15,5 @@ public interface IActorService {
 	List<ReturnActorDTO> findByName(String name, Pageable pageable);
 	ReturnActorDTO update(UpdateActorDTO dto);
 	void delete(UUID id);
+	ActorModel findModelById(UUID actorId);
 }

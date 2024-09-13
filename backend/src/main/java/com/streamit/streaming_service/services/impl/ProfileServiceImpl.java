@@ -16,6 +16,7 @@ import com.streamit.streaming_service.model.ProfileModel;
 import com.streamit.streaming_service.model.UserModel;
 import com.streamit.streaming_service.repositories.ProfileRepository;
 import com.streamit.streaming_service.services.IProfileService;
+import com.streamit.streaming_service.services.IUserService;
 
 import lombok.AllArgsConstructor;
 
@@ -24,11 +25,11 @@ import lombok.AllArgsConstructor;
 public class ProfileServiceImpl implements IProfileService {
 
 	private ProfileRepository profileRepository;
-	private UserServiceImpl userServiceImpl;
+	private IUserService userService;
 
 	@Override
 	public ReturnProfileDTO create(CreateProfileDTO profile, UUID idUser) {
-		UserModel user = userServiceImpl.findUserModelById(idUser);
+		UserModel user = userService.findUserModelById(idUser);
 		if(user.getPerfis().size() == 4) {
 			throw new MaxProfilesLimitReachedException("Limite de perfis atingido para o usuário " + user.getPerson().getNome());
 		}

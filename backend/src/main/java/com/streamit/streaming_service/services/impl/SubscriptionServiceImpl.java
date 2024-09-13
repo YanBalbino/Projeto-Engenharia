@@ -21,6 +21,7 @@ public class SubscriptionServiceImpl implements ISubscriptionService {
 
 	SubscriptionRepository subscriptionRepository;
 
+	@Override
 	public SubscriptionModel renovarInscricao(UUID id) {
 		SubscriptionModel entity = subscriptionRepository.findById(id)
 				.orElseThrow(() -> new ResourceNotFoundException("Inscrição não encontrada com id " + id));
@@ -43,6 +44,7 @@ public class SubscriptionServiceImpl implements ISubscriptionService {
 
 	}
 
+	@Override
 	public SubscriptionModel createSubscription(UserModel user, LocalDateTime currentDate) {
 		SubscriptionModel subscription = new SubscriptionModel();
 		subscription.setUser(user);

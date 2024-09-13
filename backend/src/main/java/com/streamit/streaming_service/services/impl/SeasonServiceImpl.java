@@ -18,6 +18,7 @@ import com.streamit.streaming_service.model.SeasonModel;
 import com.streamit.streaming_service.model.SeriesModel;
 import com.streamit.streaming_service.repositories.SeasonRepository;
 import com.streamit.streaming_service.services.ISeasonService;
+import com.streamit.streaming_service.services.ISeriesService;
 
 import lombok.AllArgsConstructor;
 
@@ -26,7 +27,7 @@ import lombok.AllArgsConstructor;
 public class SeasonServiceImpl implements ISeasonService {
 
     private final SeasonRepository seasonRepository;
-    private final SeriesServiceImpl seriesServiceImpl;
+    private final ISeriesService seriesService;
 
     @Override
     public ReturnSeasonDTO create(CreateSeasonDTO seasonDto, UUID idSeries) {
@@ -34,7 +35,7 @@ public class SeasonServiceImpl implements ISeasonService {
     		throw new IllegalArgumentException("A temporada deve possuir pelo menos 1 episódio.");
     	}
     	
-    	SeriesModel series = seriesServiceImpl.findModelById(idSeries);
+    	SeriesModel series = seriesService.findModelById(idSeries);
     	
     	for(SeasonModel season : series.getSeasons()) {
     		if(season.getSeasonNumber().equals(seasonDto.getSeasonNumber())) {
@@ -66,7 +67,7 @@ public class SeasonServiceImpl implements ISeasonService {
 
     @Override
     public List<ReturnSeasonDTO> findAllBySeries(UUID seriesId) {
-    	SeriesModel series = seriesServiceImpl.findModelById(seriesId);
+    	SeriesModel series = seriesService.findModelById(seriesId);
     	List<SeasonModel> seasonList = series.getSeasons();
         List<ReturnSeasonDTO> seasonDtoList = new ArrayList<>();
         

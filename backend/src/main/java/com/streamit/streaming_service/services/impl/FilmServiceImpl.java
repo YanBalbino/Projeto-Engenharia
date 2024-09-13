@@ -25,6 +25,7 @@ import com.streamit.streaming_service.model.AudioModel;
 import com.streamit.streaming_service.model.FilmModel;
 import com.streamit.streaming_service.model.SubtitleModel;
 import com.streamit.streaming_service.repositories.FilmRepository;
+import com.streamit.streaming_service.services.IActorService;
 import com.streamit.streaming_service.services.IFilmService;
 
 import lombok.AllArgsConstructor;
@@ -34,7 +35,7 @@ import lombok.AllArgsConstructor;
 public class FilmServiceImpl implements IFilmService {
 
     private FilmRepository filmRepository;
-    private ActorServiceImpl actorServiceImpl;
+    private IActorService actorService;
 
     //supor que filmes sem atores podem ser criados, usando IA, por exemplo
     @Override
@@ -59,7 +60,7 @@ public class FilmServiceImpl implements IFilmService {
     	if(!actorIds.isEmpty()) {
     		List<ActorModel> actors = new ArrayList<>();
     		for(UUID actorId : actorIds) {
-    			ActorModel actor = actorServiceImpl.findModelById(actorId);
+    			ActorModel actor = actorService.findModelById(actorId);
     			actors.add(actor);
     		}
     		if(entityMapped.getAtores().isEmpty()) {
@@ -122,7 +123,7 @@ public class FilmServiceImpl implements IFilmService {
     	if(!actorIds.isEmpty()) {
     		List<ActorModel> actors = new ArrayList<>();
     		for(UUID actorId : actorIds) {
-    			ActorModel actor = actorServiceImpl.findModelById(actorId);
+    			ActorModel actor = actorService.findModelById(actorId);
     			actors.add(actor);
     		}
     		if(entity.getAtores().isEmpty()) {

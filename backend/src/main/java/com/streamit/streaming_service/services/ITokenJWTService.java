@@ -4,7 +4,7 @@ import java.time.Instant;
 
 import com.streamit.streaming_service.model.PersonModel;
 
-public interface ITokenService {
+public interface ITokenJWTService {
 
 	String generateToken(PersonModel user);
 	String validateToken(String token);

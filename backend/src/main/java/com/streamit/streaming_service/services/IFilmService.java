@@ -11,6 +11,7 @@ import com.streamit.streaming_service.dtos.film.CreateFilmDTO;
 import com.streamit.streaming_service.dtos.film.ReturnFilmDTO;
 import com.streamit.streaming_service.dtos.film.UpdateFilmDTO;
 import com.streamit.streaming_service.dtos.subtitle.CreateSubtitleDTO;
+import com.streamit.streaming_service.model.FilmModel;
 
 public interface IFilmService {
 
@@ -23,4 +24,6 @@ public interface IFilmService {
 	ReturnFilmDTO addSubtitle(UUID id, CreateSubtitleDTO subtitleDto);
 	ReturnFilmDTO addActor(UUID id, CreateActorDTO actorDto);
 	void delete(UUID id);
+	FilmModel getFilmByAudioId(UUID id);
+	FilmModel getFilmBySubtitleId(UUID id);
 }

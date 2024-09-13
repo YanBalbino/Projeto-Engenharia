@@ -12,8 +12,44 @@ import com.streamit.streaming_service.model.PersonModel;
 import com.streamit.streaming_service.repositories.AdminRepository;
 import com.streamit.streaming_service.repositories.PersonRepository;
 
+import io.swagger.v3.oas.annotations.ExternalDocumentation;
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.annotations.info.Contact;
+import io.swagger.v3.oas.annotations.info.Info;
+import io.swagger.v3.oas.annotations.info.License;
+import io.swagger.v3.oas.annotations.servers.Server;
+
 
 @SpringBootApplication
+@OpenAPIDefinition(
+	    info = @Info(
+	        title = "StreamIt - API para serviço de streaming",
+	        description = "Documentação da API REST para o serviço de streaming",
+	        version = "v1",
+	                contact = @Contact(
+	                        name = "Equipe StreamIt",
+	                        email = "contato@streamit.com"
+	                    ),
+	        license = @License(
+	            name = "Apache 2.0",
+	            url = "https://www.apache.org/licenses/LICENSE-2.0"
+	        )
+	    ),
+	    servers = {
+	        @Server(
+	            url = "http://localhost:8080",
+	            description = "Servidor local"
+	        ),
+	        @Server(
+	            url = "https://api.streamit.com.br",
+	            description = "Servidor de produção"
+	        )
+	    },
+	    externalDocs = @ExternalDocumentation(
+	        description = "Documentação completa da API REST da StreamIt",
+	        url = "http://localhost:8080/swagger-ui.html"
+	    )
+	)
 public class StreamingServiceApplication {
 
 	public static void main(String[] args) {

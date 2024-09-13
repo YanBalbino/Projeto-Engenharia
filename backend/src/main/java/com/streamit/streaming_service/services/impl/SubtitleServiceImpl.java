@@ -14,6 +14,8 @@ import com.streamit.streaming_service.model.EpisodeModel;
 import com.streamit.streaming_service.model.FilmModel;
 import com.streamit.streaming_service.model.SubtitleModel;
 import com.streamit.streaming_service.repositories.SubtitleRepository;
+import com.streamit.streaming_service.services.IEpisodeService;
+import com.streamit.streaming_service.services.IFilmService;
 import com.streamit.streaming_service.services.ISubtitleService;
 
 import lombok.AllArgsConstructor;
@@ -23,8 +25,8 @@ import lombok.AllArgsConstructor;
 public class SubtitleServiceImpl implements ISubtitleService {
 
     private SubtitleRepository subtitleRepository;
-    private FilmServiceImpl filmServiceImpl;
-    private EpisodeServiceImpl episodeServiceImpl;
+    private IFilmService filmService;
+    private IEpisodeService episodeService;
 
     public SubtitleModel findModelById(UUID id) {
         return subtitleRepository.findById(id)
@@ -59,8 +61,8 @@ public class SubtitleServiceImpl implements ISubtitleService {
 	@Override
 	public void delete(UUID id) {
 		SubtitleModel entity = findModelById(id);
-		FilmModel film = filmServiceImpl.getFilmBySubtitleId(id);
-		EpisodeModel episode = episodeServiceImpl.getEpisodeBySubtitleId(id);
+		FilmModel film = filmService.getFilmBySubtitleId(id);
+		EpisodeModel episode = episodeService.getEpisodeBySubtitleId(id);
 		if(film != null) {
 			film.getLegendasDisponiveis().remove(entity);
 		}else {

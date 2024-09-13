@@ -22,6 +22,7 @@ import com.streamit.streaming_service.model.ActorModel;
 import com.streamit.streaming_service.model.SeasonModel;
 import com.streamit.streaming_service.model.SeriesModel;
 import com.streamit.streaming_service.repositories.SeriesRepository;
+import com.streamit.streaming_service.services.IActorService;
 import com.streamit.streaming_service.services.ISeriesService;
 
 import lombok.AllArgsConstructor;
@@ -31,7 +32,7 @@ import lombok.AllArgsConstructor;
 public class SeriesServiceImpl implements ISeriesService {
 
     private SeriesRepository seriesRepository;
-    private ActorServiceImpl actorServiceImpl;
+    private IActorService actorService;
 
     @Override
     public ReturnSeriesDTO create(CreateSeriesDTO seriesDto) {
@@ -44,7 +45,7 @@ public class SeriesServiceImpl implements ISeriesService {
     	if(!actorIds.isEmpty()) {
     		List<ActorModel> actors = new ArrayList<>();
     		for(UUID actorId : actorIds) {
-    			ActorModel actor = actorServiceImpl.findModelById(actorId);
+    			ActorModel actor = actorService.findModelById(actorId);
     			actors.add(actor);
     		}
     		if(entityMapped.getAtores().isEmpty()) {
@@ -107,7 +108,7 @@ public class SeriesServiceImpl implements ISeriesService {
     	if(!actorIds.isEmpty()) {
     		List<ActorModel> actors = new ArrayList<>();
     		for(UUID actorId : actorIds) {
-    			ActorModel actor = actorServiceImpl.findModelById(actorId);
+    			ActorModel actor = actorService.findModelById(actorId);
     			actors.add(actor);
     		}
     		if(entity.getAtores().isEmpty()) {
