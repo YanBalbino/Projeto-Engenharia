@@ -18,16 +18,4 @@ public class SubscriptionMapper {
         return dto;
     }
 
-    public static SubscriptionModel toModel(ReturnSubscriptionDTO dto) {
-        if (dto == null) {
-            return null;
-        }
-
-        SubscriptionModel model = new SubscriptionModel();
-        model.setId(dto.getId());
-        model.setDataInicio(dto.getDataInicio());
-        model.setDataTermino(dto.getDataTermino());
-        model.setStatusAtivo(dto.isStatusAtivo());
-        return model;
-    }
 }

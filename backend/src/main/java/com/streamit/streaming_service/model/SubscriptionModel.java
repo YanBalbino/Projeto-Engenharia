@@ -1,7 +1,7 @@
 package com.streamit.streaming_service.model;
 
 import java.io.Serializable;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 import jakarta.persistence.Entity;
@@ -32,7 +32,7 @@ public class SubscriptionModel implements Serializable{
 	@OneToOne
 	@JoinColumn(name = "user_id")
     private UserModel user;
-    private LocalDate dataInicio;
-    private LocalDate dataTermino;
+    private LocalDateTime dataInicio;
+    private LocalDateTime dataTermino;
     private boolean statusAtivo;
 }

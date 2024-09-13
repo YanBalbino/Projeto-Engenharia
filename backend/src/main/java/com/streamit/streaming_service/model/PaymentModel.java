@@ -1,7 +1,7 @@
 package com.streamit.streaming_service.model;
 
 import java.io.Serializable;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 import jakarta.persistence.Entity;
@@ -31,9 +31,9 @@ public class PaymentModel implements Serializable{
 	private UUID id;
 	@OneToOne
 	@JoinColumn(name = "user_id")
-    private UserModel user;
-    private String metodoPagamento; // "Cartão de Crédito" ou "Boleto Bancário"
-    private LocalDate dataPagamento;
+    private UserModel user;	
+    private String metodoPagamento; 
+    private LocalDateTime dataPagamento;
     private double valor;
 }
 

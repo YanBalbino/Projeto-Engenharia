@@ -18,16 +18,4 @@ public class PaymentMapper {
         return dto;
     }
 
-    public static PaymentModel toModel(ReturnPaymentDTO dto) {
-        if (dto == null) {
-            return null;
-        }
-
-        PaymentModel model = new PaymentModel();
-        model.setId(dto.getId());
-        model.setMetodoPagamento(dto.getMetodoPagamento());
-        model.setValor(dto.getValor());
-        model.setDataPagamento(dto.getDataPagamento());
-        return model;
-    }
 }

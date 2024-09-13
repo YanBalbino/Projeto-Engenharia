@@ -30,7 +30,7 @@ public class ProfileServiceImpl implements IProfileService {
 	public ReturnProfileDTO create(CreateProfileDTO profile, UUID idUser) {
 		UserModel user = userServiceImpl.findUserModelById(idUser);
 		if(user.getPerfis().size() == 4) {
-			throw new MaxProfilesLimitReachedException("Limite de perfis atingido para o usuário " + user.getNome());
+			throw new MaxProfilesLimitReachedException("Limite de perfis atingido para o usuário " + user.getPerson().getNome());
 		}
 		ProfileModel entity = ProfileMapper.toModel(profile, user);
 		ProfileModel entitySaved = profileRepository.save(entity);

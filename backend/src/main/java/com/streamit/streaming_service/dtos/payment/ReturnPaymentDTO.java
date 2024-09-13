@@ -1,6 +1,6 @@
 package com.streamit.streaming_service.dtos.payment;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 import lombok.AllArgsConstructor;
@@ -22,7 +22,7 @@ public class ReturnPaymentDTO {
     
     private double valor;
     
-    private LocalDate dataPagamento;
+    private LocalDateTime dataPagamento;
 
 }
 

@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.streamit.streaming_service.constants.ApiConstants;
+import com.streamit.streaming_service.dtos.login.LoginDTO;
 import com.streamit.streaming_service.dtos.payment.CreatePaymentDTO;
 import com.streamit.streaming_service.dtos.user.CreateUserDTO;
 import com.streamit.streaming_service.dtos.user.ReturnUserDTO;
@@ -35,9 +36,15 @@ import lombok.AllArgsConstructor;
 public class UserController {
 
 	private final IUserService userService;
+	
+	@PostMapping("/login")
+	public ResponseEntity<String> login(@Valid @RequestBody LoginDTO loginDto) {
+		String token = userService.login(loginDto);
+		return new ResponseEntity<>(token, HttpStatus.OK);
+	}
 
-	@PostMapping
-	public ResponseEntity<ApiResponse<ReturnUserDTO>> createUser(@Valid @RequestBody CreateUserDTO userPaymentDto) {
+	@PostMapping("/register")
+	public ResponseEntity<ApiResponse<ReturnUserDTO>> register(@Valid @RequestBody CreateUserDTO userPaymentDto) {
 		ReturnUserDTO createdUser = userService.create(userPaymentDto);
 		ApiResponse<ReturnUserDTO> response = ResponseUtil.success(createdUser, ApiConstants.MESSAGE_RESOURCE_CREATED,
 				ApiConstants.HTTP_STATUS_CREATED, ApiConstants.PATH_USERS);
@@ -70,7 +77,7 @@ public class UserController {
 
 	@PutMapping
 	public ResponseEntity<ApiResponse<ReturnUserDTO>> updateUser(@Valid @RequestBody UpdateUserDTO userDto) {
-		ReturnUserDTO createdUser = userService.update(userDto);
+		ReturnUserDTO createdUser = userService.updateName(userDto);
 
 		ApiResponse<ReturnUserDTO> response = ResponseUtil.success(createdUser, ApiConstants.MESSAGE_RESOURCE_UPDATED,
 				ApiConstants.HTTP_STATUS_OK, ApiConstants.PATH_USERS);

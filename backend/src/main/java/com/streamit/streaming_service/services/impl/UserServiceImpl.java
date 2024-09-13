@@ -1,28 +1,38 @@
 package com.streamit.streaming_service.services.impl;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.InternalAuthenticationServiceException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.streamit.streaming_service.dtos.login.LoginDTO;
 import com.streamit.streaming_service.dtos.payment.CreatePaymentDTO;
 import com.streamit.streaming_service.dtos.profile.CreateProfileDTO;
 import com.streamit.streaming_service.dtos.user.CreateUserDTO;
 import com.streamit.streaming_service.dtos.user.ReturnUserDTO;
 import com.streamit.streaming_service.dtos.user.UpdateUserDTO;
+import com.streamit.streaming_service.enums.UserRole;
 import com.streamit.streaming_service.exceptions.ResourceAlreadyExistsException;
 import com.streamit.streaming_service.exceptions.ResourceNotFoundException;
 import com.streamit.streaming_service.mappers.ProfileMapper;
 import com.streamit.streaming_service.mappers.UserMapper;
 import com.streamit.streaming_service.model.PaymentModel;
+import com.streamit.streaming_service.model.PersonModel;
 import com.streamit.streaming_service.model.ProfileModel;
 import com.streamit.streaming_service.model.SubscriptionModel;
 import com.streamit.streaming_service.model.UserModel;
 import com.streamit.streaming_service.repositories.UserRepository;
+import com.streamit.streaming_service.services.ITokenService;
 import com.streamit.streaming_service.services.IUserService;
 
 import jakarta.transaction.Transactional;
@@ -35,21 +45,28 @@ public class UserServiceImpl implements IUserService {
     private UserRepository userRepository;
     PaymentServiceImpl paymentServiceImpl;
     SubscriptionServiceImpl subscriptionServiceImpl;
+    private AuthenticationManager authenticationManager;
+    private ITokenService tokenService;
+    PasswordEncoder passwordEncoder;
 
     @Transactional
     @Override
     public ReturnUserDTO create(CreateUserDTO userDto) {
         if (userRepository.findByEmail(userDto.getEmail()).isPresent()) {
-            throw new ResourceAlreadyExistsException("Email já cadastrado.");
+            throw new ResourceAlreadyExistsException("Email " + userDto.getEmail() + " já cadastrado.");
         }
 
-        LocalDate currentDate = LocalDate.now();
+        LocalDateTime currentDate = LocalDateTime.now();
+        
+        PersonModel person = new PersonModel();
+        person.setEmail(userDto.getEmail());
+        person.setNome(userDto.getNome());
+        person.setSenha(passwordEncoder.encode(userDto.getSenha()));
+        person.setRole(UserRole.USER);
 
         UserModel entity = new UserModel();
-        entity.setEmail(userDto.getEmail());
-        entity.setNome(userDto.getNome());
-        entity.setSenha(userDto.getSenha());
-        entity.setDataCadastro(currentDate);
+        entity.setPerson(person);
+        entity.setCreatedDate(currentDate);
         
         List<CreateProfileDTO> profiles = userDto.getPerfis();
         List<ProfileModel> profilesModel = new ArrayList<>();
@@ -94,9 +111,9 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public ReturnUserDTO update(UpdateUserDTO userDto) {
+    public ReturnUserDTO updateName(UpdateUserDTO userDto) {
     	UserModel entity = findUserModelById(userDto.getId());
-    	entity.setNome(userDto.getNome());
+    	entity.getPerson().setNome(userDto.getNome());
         UserModel entitySaved = userRepository.save(entity);
         return UserMapper.toDtoReturn(entitySaved);
     }
@@ -126,5 +143,24 @@ public class UserServiceImpl implements IUserService {
 			return true;
 		}
 		return false;
+	}
+
+	@Override
+	public String login(LoginDTO loginDto) {
+    	var email = userRepository.findByEmail(loginDto.getEmail());
+    	if(email == null) {
+    		throw new UsernameNotFoundException("O email " + loginDto.getEmail() + " não existe.");
+    	}
+        try {
+            var usernamePassword = new UsernamePasswordAuthenticationToken(loginDto.getEmail(), loginDto.getSenha());
+            var auth = authenticationManager.authenticate(usernamePassword);
+            PersonModel user = (PersonModel) auth.getPrincipal();
+            String token = tokenService.generateToken(user);
+            return token;
+        } catch (BadCredentialsException ex) {
+            throw new BadCredentialsException("Senha incorreta. Tente novamente.", ex);
+        } catch (InternalAuthenticationServiceException ex) {
+            throw new InternalAuthenticationServiceException("Erro interno de autenticação", ex);
+        }
 	}
 }

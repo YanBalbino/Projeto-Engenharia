@@ -1,6 +1,6 @@
 package com.streamit.streaming_service.services.impl;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 import org.springframework.stereotype.Service;
@@ -25,7 +25,7 @@ public class SubscriptionServiceImpl implements ISubscriptionService {
 		SubscriptionModel entity = subscriptionRepository.findById(id)
 				.orElseThrow(() -> new ResourceNotFoundException("Inscrição não encontrada com id " + id));
 
-		LocalDate currentDate = LocalDate.now();
+		LocalDateTime currentDate = LocalDateTime.now();
 
 		entity.setDataInicio(currentDate);
 		entity.setDataTermino(currentDate.plusMonths(1));
@@ -43,7 +43,7 @@ public class SubscriptionServiceImpl implements ISubscriptionService {
 
 	}
 
-	public SubscriptionModel createSubscription(UserModel user, LocalDate currentDate) {
+	public SubscriptionModel createSubscription(UserModel user, LocalDateTime currentDate) {
 		SubscriptionModel subscription = new SubscriptionModel();
 		subscription.setUser(user);
 		subscription.setDataInicio(currentDate);

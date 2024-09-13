@@ -1,6 +1,6 @@
 package com.streamit.streaming_service.dtos.subscription;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 import lombok.AllArgsConstructor;
@@ -18,9 +18,9 @@ public class ReturnSubscriptionDTO {
     
 	private UUID id;
 	
-    private LocalDate dataInicio;
+    private LocalDateTime dataInicio;
     
-    private LocalDate dataTermino;
+    private LocalDateTime dataTermino;
     
     private boolean statusAtivo;
     

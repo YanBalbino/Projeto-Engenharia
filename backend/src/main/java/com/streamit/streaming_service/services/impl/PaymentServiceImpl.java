@@ -1,6 +1,6 @@
 package com.streamit.streaming_service.services.impl;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 import org.springframework.stereotype.Service;
@@ -27,7 +27,7 @@ public class PaymentServiceImpl implements IPaymentService {
 		PaymentModel entity = paymentRepository.findById(id)
 				.orElseThrow(() -> new ResourceNotFoundException("Pagamento não encontrado com id " + id));
 		
-        LocalDate currentDate = LocalDate.now();
+		LocalDateTime currentDate = LocalDateTime.now();
 
 		entity.setDataPagamento(currentDate);
 		entity.setMetodoPagamento(paymentDTO.getMetodoPagamento());
@@ -45,7 +45,7 @@ public class PaymentServiceImpl implements IPaymentService {
 		return PaymentMapper.toDto(payment);
 	}
 
-	public PaymentModel createPayment(UserModel user, CreateUserDTO userDto, LocalDate currentDate) {
+	public PaymentModel createPayment(UserModel user, CreateUserDTO userDto, LocalDateTime currentDate) {
 
         PaymentModel payment = new PaymentModel();
         payment.setUser(user);

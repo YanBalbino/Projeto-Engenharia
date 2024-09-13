@@ -47,4 +47,5 @@ public class CreateUserDTO {
 
     @DecimalMin(value = "30.0", inclusive = true, message = "O valor deve ser igual a 30")
     private double valor;
+    
 }

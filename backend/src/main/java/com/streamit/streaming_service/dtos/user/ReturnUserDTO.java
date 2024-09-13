@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.UUID;
 
 import com.streamit.streaming_service.dtos.profile.ReturnProfileDTO;
+import com.streamit.streaming_service.enums.UserRole;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -25,4 +26,6 @@ public class ReturnUserDTO {
     private String email;
     
     private List<ReturnProfileDTO> perfis;
+    
+    private UserRole role;
 }

@@ -12,4 +12,7 @@ spring:
     hibernate:
       ddl-auto: update
     show-sql: false
- 
+api:
+ streamit:
+   token:
+     secret: "default-secret-key"
