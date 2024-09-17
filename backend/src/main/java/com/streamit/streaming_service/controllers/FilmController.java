@@ -63,7 +63,7 @@ public class FilmController {
 		return new ResponseEntity<>(filmsList, HttpStatus.OK);
 	}
 
-	@PutMapping("/{id}")
+	@PutMapping
 	public ResponseEntity<ApiResponse<ReturnFilmDTO>> updateFilm(@RequestBody UpdateFilmDTO createFilmDTO) {
 		ReturnFilmDTO updatedFilm = filmService.update(createFilmDTO);
 		ApiResponse<ReturnFilmDTO> response = ResponseUtil.success(updatedFilm, ApiConstants.MESSAGE_RESOURCE_UPDATED,

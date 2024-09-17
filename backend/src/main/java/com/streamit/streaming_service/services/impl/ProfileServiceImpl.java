@@ -18,6 +18,7 @@ import com.streamit.streaming_service.repositories.ProfileRepository;
 import com.streamit.streaming_service.services.IProfileService;
 import com.streamit.streaming_service.services.IUserService;
 
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 
 @Service
@@ -27,6 +28,7 @@ public class ProfileServiceImpl implements IProfileService {
 	private ProfileRepository profileRepository;
 	private IUserService userService;
 
+	@Transactional
 	@Override
 	public ReturnProfileDTO create(CreateProfileDTO profile, UUID idUser) {
 		UserModel user = userService.findUserModelById(idUser);
@@ -34,6 +36,14 @@ public class ProfileServiceImpl implements IProfileService {
 			throw new MaxProfilesLimitReachedException("Limite de perfis atingido para o usuário " + user.getPerson().getNome());
 		}
 		ProfileModel entity = ProfileMapper.toModel(profile, user);
+		
+	    if(user.getPerfis() == null) {
+	    	user.setPerfis(new ArrayList<>());
+	    	user.getPerfis().add(entity);
+	    }else {
+	    	user.getPerfis().add(entity);
+	    }
+	    
 		ProfileModel entitySaved = profileRepository.save(entity);
 		return ProfileMapper.toDTO(entitySaved);
 	}

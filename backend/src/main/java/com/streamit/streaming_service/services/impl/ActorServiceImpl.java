@@ -84,5 +84,25 @@ public class ActorServiceImpl implements IActorService {
 	    }
 	    actorRepository.delete(entity);
 	}
+	
+	@Override
+    public List<ReturnActorDTO> findAllByFilm(UUID filmId) {
+        List<ActorModel> entities = actorRepository.findActorsByFilmId(filmId);
+        List<ReturnActorDTO> dtos = new ArrayList<>();
+        for (ActorModel entity : entities) {
+            dtos.add(ActorMapper.toDto(entity));
+        }
+        return dtos;
+    }
+
+	@Override
+    public List<ReturnActorDTO> findAllBySeries(UUID seriesId) {
+        List<ActorModel> entities = actorRepository.findActorsBySeriesId(seriesId);
+        List<ReturnActorDTO> dtos = new ArrayList<>();
+        for (ActorModel entity : entities) {
+            dtos.add(ActorMapper.toDto(entity));
+        }
+        return dtos;
+    }
 
 }

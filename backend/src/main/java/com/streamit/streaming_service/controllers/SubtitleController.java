@@ -1,5 +1,6 @@
 package com.streamit.streaming_service.controllers;
 
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.http.HttpStatus;
@@ -33,6 +34,18 @@ public class SubtitleController {
     public ResponseEntity<ReturnSubtitleDTO> getSubtitleById(@PathVariable UUID id) {
         ReturnSubtitleDTO subtitleDto = subtitleService.findById(id);
         return new ResponseEntity<>(subtitleDto, HttpStatus.OK);
+    }
+    
+    @GetMapping("/films/{filmId}")
+    public ResponseEntity<List<ReturnSubtitleDTO>> getAllSubtitleByFilm(@PathVariable UUID filmId) {
+    	List<ReturnSubtitleDTO> subtitleDto = subtitleService.findAllByFilm(filmId);
+    	return new ResponseEntity<>(subtitleDto, HttpStatus.OK);
+    }
+    
+    @GetMapping("/episodes/{episodeId}")
+    public ResponseEntity<List<ReturnSubtitleDTO>> getAllSubtitleBySeries(@PathVariable UUID episodeId) {
+    	List<ReturnSubtitleDTO> subtitleDto = subtitleService.findAllByEpisode(episodeId);
+    	return new ResponseEntity<>(subtitleDto, HttpStatus.OK);
     }
 
     @PutMapping

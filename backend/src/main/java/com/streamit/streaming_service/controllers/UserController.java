@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.streamit.streaming_service.constants.ApiConstants;
-import com.streamit.streaming_service.dtos.payment.CreatePaymentDTO;
+import com.streamit.streaming_service.dtos.renew.RenewDTO;
 import com.streamit.streaming_service.dtos.user.CreateUserDTO;
 import com.streamit.streaming_service.dtos.user.ReturnUserDTO;
 import com.streamit.streaming_service.dtos.user.UpdateUserDTO;
@@ -59,12 +59,10 @@ public class UserController {
 		return new ResponseEntity<>(users, HttpStatus.OK);
 	}
 
-	@PutMapping("/{userId}/subscriptions/{subscriptionId}/payments/{paymentId}/renew")
-	public ResponseEntity<ApiResponse<ReturnUserDTO>> renovarInscricao(@PathVariable UUID userId,
-			@PathVariable UUID subscriptionId, @PathVariable UUID paymentId,
-			@Valid @RequestBody CreatePaymentDTO paymentDto) {
+	@PutMapping("/renew")
+	public ResponseEntity<ApiResponse<ReturnUserDTO>> renovarInscricao(@Valid @RequestBody RenewDTO renewDto) {
 
-		ReturnUserDTO createdUser = userService.renovarInscricao(userId, subscriptionId, paymentId, paymentDto);
+		ReturnUserDTO createdUser = userService.renovarInscricao(renewDto);
 
 		ApiResponse<ReturnUserDTO> response = ResponseUtil.success(createdUser, ApiConstants.MESSAGE_RESOURCE_UPDATED,
 				ApiConstants.HTTP_STATUS_OK, ApiConstants.PATH_USERS_RENEW);

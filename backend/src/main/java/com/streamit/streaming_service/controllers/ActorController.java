@@ -45,6 +45,18 @@ public class ActorController {
         List<ReturnActorDTO> actors = actorService.findByName(nome, pageable);
         return ResponseEntity.ok(actors);
     }
+    
+    @GetMapping("/films/{filmId}")
+    public ResponseEntity<List<ReturnActorDTO>> getAllActorsByFilm(@PathVariable UUID filmId) {
+        List<ReturnActorDTO> actorDto = actorService.findAllByFilm(filmId);
+        return new ResponseEntity<>(actorDto, HttpStatus.OK);
+    }
+
+    @GetMapping("/series/{seriesId}")
+    public ResponseEntity<List<ReturnActorDTO>> getAllActorsBySeries(@PathVariable UUID seriesId) {
+        List<ReturnActorDTO> actorDto = actorService.findAllBySeries(seriesId);
+        return new ResponseEntity<>(actorDto, HttpStatus.OK);
+    }
 
     @PutMapping
     public ResponseEntity<ApiResponse<ReturnActorDTO>> updateActor(@Valid @RequestBody UpdateActorDTO actorDto) {

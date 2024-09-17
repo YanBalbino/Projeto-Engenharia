@@ -5,7 +5,6 @@ import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
-import com.streamit.streaming_service.dtos.payment.CreatePaymentDTO;
 import com.streamit.streaming_service.dtos.payment.ReturnPaymentDTO;
 import com.streamit.streaming_service.dtos.user.CreateUserDTO;
 import com.streamit.streaming_service.exceptions.ResourceNotFoundException;
@@ -24,15 +23,15 @@ public class PaymentServiceImpl implements IPaymentService {
 	PaymentRepository paymentRepository;
 
 	@Override
-	public PaymentModel processarPagamento(CreatePaymentDTO paymentDTO, UUID id) {
+	public PaymentModel processarPagamento(String metodo, double valor, UUID id) {
 		PaymentModel entity = paymentRepository.findById(id)
 				.orElseThrow(() -> new ResourceNotFoundException("Pagamento não encontrado com id " + id));
 		
 		LocalDateTime currentDate = LocalDateTime.now();
 
 		entity.setDataPagamento(currentDate);
-		entity.setMetodoPagamento(paymentDTO.getMetodoPagamento());
-		entity.setValor(paymentDTO.getValor());
+		entity.setMetodoPagamento(metodo);
+		entity.setValor(valor);
 		
 		PaymentModel entitySaved = paymentRepository.save(entity);
 		

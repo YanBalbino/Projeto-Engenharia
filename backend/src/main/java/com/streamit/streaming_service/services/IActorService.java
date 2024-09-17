@@ -16,4 +16,6 @@ public interface IActorService {
 	ReturnActorDTO update(UpdateActorDTO dto);
 	void delete(UUID id);
 	ActorModel findModelById(UUID actorId);
+	List<ReturnActorDTO> findAllBySeries(UUID seriesId);
+	List<ReturnActorDTO> findAllByFilm(UUID filmId);
 }

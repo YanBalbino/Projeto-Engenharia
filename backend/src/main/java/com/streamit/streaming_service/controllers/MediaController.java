@@ -42,7 +42,7 @@ public class MediaController {
 		return new ResponseEntity<>(mediaList, HttpStatus.OK);
 	}
 
-	@PutMapping("/{id}")
+	@PutMapping
 	public ResponseEntity<ApiResponse<ReturnMediaDTO>> updateMedia(@Valid @RequestBody UpdateMediaDTO mediaDto) {
 
 		ReturnMediaDTO updatedMedia = mediaService.update(mediaDto);

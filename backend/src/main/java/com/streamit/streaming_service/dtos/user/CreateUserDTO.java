@@ -1,9 +1,6 @@
 package com.streamit.streaming_service.dtos.user;
 
 import java.time.LocalDate;
-import java.util.List;
-
-import com.streamit.streaming_service.dtos.profile.CreateProfileDTO;
 
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Email;
@@ -35,9 +32,6 @@ public class CreateUserDTO {
     @NotBlank(message = "Senha é obrigatória")
     @Size(min = 8, message = "Senha deve ter no mínimo 8 caracteres")
     private String senha;
-    
-    @Size(max = 4, message = "Um usuário pode ter no máximo 4 perfis")
-    private List<CreateProfileDTO> perfis;
     
     private String metodoPagamento; 
     

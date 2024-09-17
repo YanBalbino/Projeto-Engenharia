@@ -10,8 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.streamit.streaming_service.dtos.payment.CreatePaymentDTO;
-import com.streamit.streaming_service.dtos.profile.CreateProfileDTO;
+import com.streamit.streaming_service.dtos.renew.RenewDTO;
 import com.streamit.streaming_service.dtos.user.CreateUserDTO;
 import com.streamit.streaming_service.dtos.user.ReturnUserDTO;
 import com.streamit.streaming_service.dtos.user.UpdateUserDTO;
@@ -19,11 +18,9 @@ import com.streamit.streaming_service.enums.UserRole;
 import com.streamit.streaming_service.exceptions.ResourceAlreadyExistsException;
 import com.streamit.streaming_service.exceptions.ResourceNotFoundException;
 import com.streamit.streaming_service.mappers.PersonMapper;
-import com.streamit.streaming_service.mappers.ProfileMapper;
 import com.streamit.streaming_service.mappers.UserMapper;
 import com.streamit.streaming_service.model.PaymentModel;
 import com.streamit.streaming_service.model.PersonModel;
-import com.streamit.streaming_service.model.ProfileModel;
 import com.streamit.streaming_service.model.SubscriptionModel;
 import com.streamit.streaming_service.model.UserModel;
 import com.streamit.streaming_service.repositories.UserRepository;
@@ -61,13 +58,6 @@ public class UserServiceImpl implements IUserService {
         UserModel user = new UserModel();
         user.setPerson(person);
         user.setCreatedDate(currentDate);
-
-        List<ProfileModel> profiles = new ArrayList<>();
-        for (CreateProfileDTO profileDto : userDto.getPerfis()) {
-            ProfileModel profile = ProfileMapper.toModel(profileDto, user);
-            profiles.add(profile);
-        }
-        user.setPerfis(profiles);
 
         SubscriptionModel subscription = subscriptionService.createSubscription(user, currentDate);
         PaymentModel payment = paymentService.createPayment(user, userDto, currentDate);
@@ -111,10 +101,10 @@ public class UserServiceImpl implements IUserService {
     
     @Transactional
     @Override
-    public ReturnUserDTO renovarInscricao(UUID userId, UUID subscriptionId, UUID paymentId, CreatePaymentDTO paymentDto) {
-    	UserModel entity = findUserModelById(userId);
-        PaymentModel payment = paymentService.processarPagamento(paymentDto, paymentId);
-        SubscriptionModel subscription = subscriptionService.renovarInscricao(subscriptionId);
+    public ReturnUserDTO renovarInscricao(RenewDTO renewDto) {
+    	UserModel entity = findUserModelById(renewDto.getIdUser());
+        PaymentModel payment = paymentService.processarPagamento(renewDto.getMetodoPagamento(), renewDto.getValor(), renewDto.getIdPayment());
+        SubscriptionModel subscription = subscriptionService.renovarInscricao(renewDto.getIdSubscription());
         entity.setPayment(payment);
         entity.setSubscription(subscription);
         UserModel entitySaved = userRepository.save(entity);
