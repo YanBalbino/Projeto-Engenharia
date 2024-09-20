@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -18,12 +17,14 @@ import com.streamit.streaming_service.model.MediaModel;
 import com.streamit.streaming_service.repositories.MediaRepository;
 import com.streamit.streaming_service.services.IMediaService;
 
+import lombok.AllArgsConstructor;
+
 @Service
+@AllArgsConstructor
 public class MediaServiceImpl implements IMediaService {
 
-    @Autowired
     private MediaRepository mediaRepository;
-    
+
     public MediaModel findModelById(UUID id) {
     	return mediaRepository.findById(id)
     			.orElseThrow(() -> new ResourceNotFoundException("Mídia não encontrada com id " + id));

@@ -14,8 +14,7 @@ import com.streamit.streaming_service.exceptions.ResourceAlreadyExistsException;
 import com.streamit.streaming_service.exceptions.ResourceNotFoundException;
 import com.streamit.streaming_service.mappers.ActorMapper;
 import com.streamit.streaming_service.model.ActorModel;
-import com.streamit.streaming_service.model.FilmModel;
-import com.streamit.streaming_service.model.SeriesModel;
+import com.streamit.streaming_service.model.MediaModel;
 import com.streamit.streaming_service.repositories.ActorRepository;
 import com.streamit.streaming_service.services.IActorService;
 
@@ -72,32 +71,17 @@ public class ActorServiceImpl implements IActorService {
 	@Override
 	public void delete(UUID id) {
 		ActorModel entity = findModelById(id);
-	    if (entity.getFilme() != null) {
-	        for (FilmModel film : entity.getFilme()) {
-	        	film.getAtores().remove(entity);
+	    if (entity.getMidias() != null) {
+	        for (MediaModel media : entity.getMidias()) {
+	        	media.getAtores().remove(entity);
 	        }
-	    }
-	    if (entity.getSerie() != null) {
-	    	for (SeriesModel series: entity.getSerie()) {
-	    		series.getAtores().remove(entity);
-	    	}
 	    }
 	    actorRepository.delete(entity);
 	}
 	
 	@Override
-    public List<ReturnActorDTO> findAllByFilm(UUID filmId) {
-        List<ActorModel> entities = actorRepository.findActorsByFilmId(filmId);
-        List<ReturnActorDTO> dtos = new ArrayList<>();
-        for (ActorModel entity : entities) {
-            dtos.add(ActorMapper.toDto(entity));
-        }
-        return dtos;
-    }
-
-	@Override
-    public List<ReturnActorDTO> findAllBySeries(UUID seriesId) {
-        List<ActorModel> entities = actorRepository.findActorsBySeriesId(seriesId);
+    public List<ReturnActorDTO> findActorsByMediaId(UUID filmId) {
+        List<ActorModel> entities = actorRepository.findActorsByMediaId(filmId);
         List<ReturnActorDTO> dtos = new ArrayList<>();
         for (ActorModel entity : entities) {
             dtos.add(ActorMapper.toDto(entity));

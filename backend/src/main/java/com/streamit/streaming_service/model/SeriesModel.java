@@ -10,8 +10,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
@@ -43,11 +41,4 @@ public class SeriesModel implements Serializable {
     @OneToMany(mappedBy = "serie", cascade = CascadeType.ALL)
     private List<SeasonModel> seasons;
     
-    @ManyToMany(cascade = CascadeType.PERSIST)
-    @JoinTable(
-        name = "series_actors",
-        joinColumns = @JoinColumn(name = "series_id"),
-        inverseJoinColumns = @JoinColumn(name = "actor_id")
-    )
-    private List<ActorModel> atores;
 }

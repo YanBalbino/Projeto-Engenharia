@@ -56,20 +56,20 @@ public class FilmServiceImpl implements IFilmService {
     	FilmModel entityMapped = FilmMapper.toEntity(filmDto, new FilmModel());
     	
     	// lógica para adicionar atores que já existem no bd
-    	List<UUID> actorIds = filmDto.getActorIds();
+    	List<UUID> actorIds = filmDto.getMedia().getActorIds();
     	if(!actorIds.isEmpty()) {
     		List<ActorModel> actors = new ArrayList<>();
     		for(UUID actorId : actorIds) {
     			ActorModel actor = actorService.findModelById(actorId);
     			actors.add(actor);
     		}
-    		if(entityMapped.getAtores().isEmpty()) {
-    			entityMapped.setAtores(actors);
+    		if(entityMapped.getMedia().getAtores().isEmpty()) {
+    			entityMapped.getMedia().setAtores(actors);
     		}else {
-    			entityMapped.getAtores().addAll(actors);
+    			entityMapped.getMedia().getAtores().addAll(actors);
     		}
-    		
     	}
+    	
     	ReturnFilmDTO entityDto = FilmMapper.toDto(filmRepository.save(entityMapped));
         return entityDto; 
     }
@@ -119,17 +119,17 @@ public class FilmServiceImpl implements IFilmService {
 		}
 		FilmMapper.toUpdateEntity(filmDto, entity);
     	// lógica para adicionar atores que já existem no bd
-    	List<UUID> actorIds = filmDto.getActorIds();
+    	List<UUID> actorIds = filmDto.getMedia().getActorIds();
     	if(!actorIds.isEmpty()) {
     		List<ActorModel> actors = new ArrayList<>();
     		for(UUID actorId : actorIds) {
     			ActorModel actor = actorService.findModelById(actorId);
     			actors.add(actor);
     		}
-    		if(entity.getAtores().isEmpty()) {
-    			entity.setAtores(actors);
+    		if(entity.getMedia().getAtores().isEmpty()) {
+    			entity.getMedia().setAtores(actors);
     		}else {
-    			entity.getAtores().addAll(actors);
+    			entity.getMedia().getAtores().addAll(actors);
     		}
     	}
     	ReturnFilmDTO entityDto = FilmMapper.toDto(filmRepository.save(entity));
@@ -179,8 +179,8 @@ public class FilmServiceImpl implements IFilmService {
 	@Override
 	public ReturnFilmDTO addActor(UUID id, CreateActorDTO actorDto) {
 		FilmModel entity = findModelById(id);
-		ActorModel actor = ActorMapper.toEntityForFilm(actorDto, entity);
-		List<ActorModel> listActor = entity.getAtores();
+		ActorModel actor = ActorMapper.toEntity(actorDto, entity.getMedia());
+		List<ActorModel> listActor = entity.getMedia().getAtores();
 		if(!listActor.isEmpty()) {
 			listActor.add(actor);
 		}

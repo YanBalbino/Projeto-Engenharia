@@ -39,22 +39,22 @@ public class SeriesServiceImpl implements ISeriesService {
         if (seriesRepository.existsByTitle(seriesDto.getMedia().getTitulo())) {
             throw new ResourceAlreadyExistsException("Série já cadastrada.");
         }
-        SeriesModel entityMapped = SeriesMapper.toEntity(seriesDto, new SeriesModel());
+        SeriesModel entity = SeriesMapper.toEntity(seriesDto, new SeriesModel());
     	// lógica para adicionar atores que já existem no bd
-    	List<UUID> actorIds = seriesDto.getActorIds();
+    	List<UUID> actorIds = seriesDto.getMedia().getActorIds();
     	if(!actorIds.isEmpty()) {
     		List<ActorModel> actors = new ArrayList<>();
     		for(UUID actorId : actorIds) {
     			ActorModel actor = actorService.findModelById(actorId);
     			actors.add(actor);
     		}
-    		if(entityMapped.getAtores().isEmpty()) {
-    			entityMapped.setAtores(actors);
+    		if(entity.getMedia().getAtores().isEmpty()) {
+    			entity.getMedia().setAtores(actors);
     		}else {
-    			entityMapped.getAtores().addAll(actors);
+    			entity.getMedia().getAtores().addAll(actors);
     		}
     	}
-    	ReturnSeriesDTO entityDto = SeriesMapper.toDto(seriesRepository.save(entityMapped));
+    	ReturnSeriesDTO entityDto = SeriesMapper.toDto(seriesRepository.save(entity));
         return entityDto; 
     }
  
@@ -104,17 +104,17 @@ public class SeriesServiceImpl implements ISeriesService {
 	    }
 	    SeriesMapper.toUpdateEntity(seriesDto, entity);
     	// lógica para adicionar atores que já existem no bd
-    	List<UUID> actorIds = seriesDto.getActorIds();
+    	List<UUID> actorIds = seriesDto.getMedia().getActorIds();
     	if(!actorIds.isEmpty()) {
     		List<ActorModel> actors = new ArrayList<>();
     		for(UUID actorId : actorIds) {
     			ActorModel actor = actorService.findModelById(actorId);
     			actors.add(actor);
     		}
-    		if(entity.getAtores().isEmpty()) {
-    			entity.setAtores(actors);
+    		if(entity.getMedia().getAtores().isEmpty()) {
+    			entity.getMedia().setAtores(actors);
     		}else {
-    			entity.getAtores().addAll(actors);
+    			entity.getMedia().getAtores().addAll(actors);
     		}
     	}
     	ReturnSeriesDTO entityDto = SeriesMapper.toDto(seriesRepository.save(entity));
@@ -142,8 +142,8 @@ public class SeriesServiceImpl implements ISeriesService {
 	@Override
 	public ReturnSeriesDTO addActor(UUID id, CreateActorDTO actorDto) {
 		SeriesModel entity = findModelById(id);
-		ActorModel actor = ActorMapper.toEntityForSeries(actorDto, entity);
-		List<ActorModel> listActor = entity.getAtores();
+		ActorModel actor = ActorMapper.toEntity(actorDto, entity.getMedia());
+		List<ActorModel> listActor = entity.getMedia().getAtores();
 		if(!listActor.isEmpty()) {
 			listActor.add(actor);
 		}

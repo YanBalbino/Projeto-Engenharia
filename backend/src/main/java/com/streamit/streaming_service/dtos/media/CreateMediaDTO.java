@@ -1,5 +1,10 @@
 package com.streamit.streaming_service.dtos.media;
 
+import java.util.List;
+import java.util.UUID;
+
+import com.streamit.streaming_service.dtos.actor.CreateActorDTO;
+
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -36,4 +41,8 @@ public class CreateMediaDTO {
     
     @NotBlank(message = "A URL da imagem da mídia não pode ser vazia.")
     private String imgUrl;
+    
+    private List<UUID> actorIds;
+    
+    private List<CreateActorDTO> atores;
 }

@@ -15,9 +15,8 @@ public interface ActorRepository extends JpaRepository<ActorModel, UUID>{
 
 	Page<ActorModel> findByNomeContainingIgnoreCase(String nome, Pageable pageable);
 	
-    @Query("SELECT a FROM ActorModel a JOIN FilmModel f ON a MEMBER OF f.atores WHERE f.id = :filmId")
-    List<ActorModel> findActorsByFilmId(@Param("filmId") UUID filmId);
+    @Query("SELECT a FROM ActorModel a JOIN MediaModel f ON a MEMBER OF f.atores WHERE f.id = :mediaId")
+    List<ActorModel> findActorsByMediaId(@Param("mediaId") UUID mediaId);
 
-    @Query("SELECT a FROM ActorModel a JOIN SeriesModel s ON a MEMBER OF s.atores WHERE s.id = :seriesId")
-    List<ActorModel> findActorsBySeriesId(@Param("seriesId") UUID seriesId);
+
 }

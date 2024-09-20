@@ -3,7 +3,6 @@ package com.streamit.streaming_service.dtos.series;
 import java.util.List;
 import java.util.UUID;
 
-import com.streamit.streaming_service.dtos.actor.UpdateActorDTO;
 import com.streamit.streaming_service.dtos.media.UpdateMediaDTO;
 import com.streamit.streaming_service.dtos.season.UpdateSeasonDTO;
 
@@ -21,6 +20,4 @@ public class UpdateSeriesDTO {
 	private UUID id;
     private UpdateMediaDTO media;
     private List<UpdateSeasonDTO> seasons;
-    private List<UpdateActorDTO> atores;
-    private List<UUID> actorIds;
 }

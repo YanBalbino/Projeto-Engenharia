@@ -1,6 +1,9 @@
 package com.streamit.streaming_service.dtos.media;
 
+import java.util.List;
 import java.util.UUID;
+
+import com.streamit.streaming_service.dtos.actor.UpdateActorDTO;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -16,10 +19,12 @@ import lombok.ToString;
 public class UpdateMediaDTO {
 
 	private UUID id;
-    private String titulo;
-    private Integer anoProducao;
-    private String genero;
-    private String descricao;
-    private String diretor;
-    private String imgUrl;
+	private String titulo;
+	private Integer anoProducao;
+	private String genero;
+	private String descricao;
+	private String diretor;
+	private String imgUrl;
+	private List<UpdateActorDTO> atores;
+	private List<UUID> actorIds;
 }

@@ -1,6 +1,9 @@
 package com.streamit.streaming_service.dtos.media;
 
+import java.util.List;
 import java.util.UUID;
+
+import com.streamit.streaming_service.dtos.actor.ReturnActorDTO;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -22,5 +25,6 @@ public class ReturnMediaDTO {
     private String descricao;
     private String diretor;
     private String imgUrl;
+    private List<ReturnActorDTO> atores;
 }
 

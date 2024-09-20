@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.UUID;
 
-import com.streamit.streaming_service.dtos.actor.UpdateActorDTO;
 import com.streamit.streaming_service.dtos.audio.UpdateAudioDTO;
 import com.streamit.streaming_service.dtos.media.UpdateMediaDTO;
 import com.streamit.streaming_service.dtos.subtitle.UpdateSubtitleDTO;
@@ -35,7 +34,4 @@ public class UpdateFilmDTO implements Serializable {
 
     private List<UpdateAudioDTO> audiosDisponiveis;
 
-    private List<UpdateActorDTO> atores;
-    
-    private List<UUID> actorIds;
 }

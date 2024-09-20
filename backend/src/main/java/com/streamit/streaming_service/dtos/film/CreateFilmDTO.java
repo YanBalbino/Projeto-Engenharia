@@ -2,9 +2,7 @@ package com.streamit.streaming_service.dtos.film;
 
 import java.io.Serializable;
 import java.util.List;
-import java.util.UUID;
 
-import com.streamit.streaming_service.dtos.actor.CreateActorDTO;
 import com.streamit.streaming_service.dtos.audio.CreateAudioDTO;
 import com.streamit.streaming_service.dtos.media.CreateMediaDTO;
 import com.streamit.streaming_service.dtos.subtitle.CreateSubtitleDTO;
@@ -41,8 +39,5 @@ public class CreateFilmDTO implements Serializable {
     private List<CreateSubtitleDTO> legendasDisponiveis;
 
     private List<CreateAudioDTO> audiosDisponiveis;
-
-    private List<CreateActorDTO> atores;
     
-    private List<UUID> actorIds;
 }

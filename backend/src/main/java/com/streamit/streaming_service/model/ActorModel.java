@@ -1,5 +1,6 @@
 package com.streamit.streaming_service.model;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.UUID;
 
@@ -24,21 +25,19 @@ import lombok.ToString;
 @Setter
 @Getter
 @ToString
-public class ActorModel {
-	
-	@Id
-	@GeneratedValue(strategy = GenerationType.UUID)
-	private UUID id;
-	
-	private String imagemUrl;
+public class ActorModel implements Serializable {
 
+    private static final long serialVersionUID = 1L;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID id;
+
+    private String imagemUrl;
     private String nome;
 
     @JsonIgnore
     @ManyToMany(mappedBy = "atores")
-    private List<FilmModel> filme;
-    
-    @JsonIgnore
-    @ManyToMany(mappedBy = "atores")
-    private List<SeriesModel> serie;
+    private List<MediaModel> midias;
 }
+

@@ -16,7 +16,7 @@ public interface SeriesRepository extends JpaRepository<SeriesModel, UUID>{
     boolean existsByTitle(@Param("titulo") String titulo);
     
     // Busca por ator com paginação
-    @Query("SELECT s FROM SeriesModel s JOIN s.atores a WHERE a.nome = :nomeAtor")
+    @Query("SELECT s FROM SeriesModel s JOIN s.media.atores a WHERE a.nome = :nomeAtor")
     Page<SeriesModel> findSeriesByActorName(@Param("nomeAtor") String nomeAtor, Pageable pageable);
 
     // Busca por título com paginação

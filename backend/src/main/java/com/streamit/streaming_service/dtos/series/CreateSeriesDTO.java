@@ -1,9 +1,7 @@
 package com.streamit.streaming_service.dtos.series;
 
 import java.util.List;
-import java.util.UUID;
 
-import com.streamit.streaming_service.dtos.actor.CreateActorDTO;
 import com.streamit.streaming_service.dtos.media.CreateMediaDTO;
 import com.streamit.streaming_service.dtos.season.CreateSeasonDTO;
 
@@ -23,8 +21,4 @@ public class CreateSeriesDTO {
 
     @NotEmpty(message = "Deve haver pelo menos uma temporada.")
     private List<CreateSeasonDTO> seasons;
-
-    private List<CreateActorDTO> atores;
-    
-    private List<UUID> actorIds;
 }

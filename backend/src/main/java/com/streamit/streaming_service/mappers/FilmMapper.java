@@ -3,9 +3,6 @@ package com.streamit.streaming_service.mappers;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.streamit.streaming_service.dtos.actor.CreateActorDTO;
-import com.streamit.streaming_service.dtos.actor.ReturnActorDTO;
-import com.streamit.streaming_service.dtos.actor.UpdateActorDTO;
 import com.streamit.streaming_service.dtos.audio.CreateAudioDTO;
 import com.streamit.streaming_service.dtos.audio.ReturnAudioDTO;
 import com.streamit.streaming_service.dtos.audio.UpdateAudioDTO;
@@ -15,7 +12,6 @@ import com.streamit.streaming_service.dtos.film.UpdateFilmDTO;
 import com.streamit.streaming_service.dtos.subtitle.CreateSubtitleDTO;
 import com.streamit.streaming_service.dtos.subtitle.ReturnSubtitleDTO;
 import com.streamit.streaming_service.dtos.subtitle.UpdateSubtitleDTO;
-import com.streamit.streaming_service.model.ActorModel;
 import com.streamit.streaming_service.model.AudioModel;
 import com.streamit.streaming_service.model.FilmModel;
 import com.streamit.streaming_service.model.MediaModel;
@@ -46,15 +42,6 @@ public class FilmMapper {
             film.setAudiosDisponiveis(audios);
         }
 
-        if (dto.getAtores() != null) {
-            List<ActorModel> actors = new ArrayList<>();
-            for (CreateActorDTO actorDto : dto.getAtores()) {
-                ActorModel actor = ActorMapper.toEntityForFilm(actorDto, film);
-                actors.add(actor);
-            }
-            film.setAtores(actors);
-        }
-
         film.setDuracao(dto.getDuracao());
         film.setVideoUrl(dto.getVideoUrl());
 
@@ -83,14 +70,6 @@ public class FilmMapper {
                 }
             }
         }
-        if (dto.getAtores() != null) {
-            for (UpdateActorDTO actorDto : dto.getAtores()) {
-                ActorModel actorModel = ActorMapper.findActorModelById(actorDto.getId(), film.getAtores());
-                if (actorModel != null) {
-                    ActorMapper.toUpdateEntity(actorDto, actorModel);
-                }
-            }
-        }
         return film;
     }
 
@@ -112,12 +91,6 @@ public class FilmMapper {
             audioDtos.add(AudioMapper.toDto(audio));
         }
         dto.setAudiosDisponiveis(audioDtos);
-
-        List<ReturnActorDTO> actorDtos = new ArrayList<>();
-        for (ActorModel actor : film.getAtores()) {
-            actorDtos.add(ActorMapper.toDto(actor));
-        }
-        dto.setAtores(actorDtos);
 
         return dto;
     }

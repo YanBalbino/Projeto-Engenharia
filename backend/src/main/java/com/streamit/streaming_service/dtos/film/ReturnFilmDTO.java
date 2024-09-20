@@ -3,7 +3,6 @@ package com.streamit.streaming_service.dtos.film;
 import java.util.List;
 import java.util.UUID;
 
-import com.streamit.streaming_service.dtos.actor.ReturnActorDTO;
 import com.streamit.streaming_service.dtos.audio.ReturnAudioDTO;
 import com.streamit.streaming_service.dtos.media.ReturnMediaDTO;
 import com.streamit.streaming_service.dtos.subtitle.ReturnSubtitleDTO;
@@ -27,6 +26,5 @@ public class ReturnFilmDTO {
     private String videoUrl;
     private List<ReturnSubtitleDTO> legendasDisponiveis;
     private List<ReturnAudioDTO> audiosDisponiveis;
-    private List<ReturnActorDTO> atores;
 }
 

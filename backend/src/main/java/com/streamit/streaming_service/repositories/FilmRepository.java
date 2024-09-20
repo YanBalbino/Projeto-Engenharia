@@ -26,7 +26,7 @@ public interface FilmRepository extends JpaRepository<FilmModel, UUID>{
     Optional<FilmModel> findFilmBySubtitleId(@Param("legendaId") UUID legendaId);
     
     // Busca por ator com paginação
-    @Query("SELECT f FROM FilmModel f JOIN f.atores a WHERE a.nome = :nomeAtor")
+    @Query("SELECT f FROM FilmModel f JOIN f.media.atores a WHERE a.nome = :nomeAtor")
     Page<FilmModel> findFilmsByActorName(@Param("nomeAtor") String nomeAtor, Pageable pageable);
 
     // Busca por título com paginação

@@ -12,7 +12,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
@@ -61,11 +60,4 @@ public class FilmModel implements Serializable {
         )
     private List<AudioModel> audiosDisponiveis;
 
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(
-        name = "film_actors",
-        joinColumns = @JoinColumn(name = "film_id"),
-        inverseJoinColumns = @JoinColumn(name = "actor_id")
-    )
-    private List<ActorModel> atores;
 }

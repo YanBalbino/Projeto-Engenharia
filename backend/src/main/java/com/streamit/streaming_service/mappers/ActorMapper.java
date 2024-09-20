@@ -7,24 +7,15 @@ import com.streamit.streaming_service.dtos.actor.CreateActorDTO;
 import com.streamit.streaming_service.dtos.actor.ReturnActorDTO;
 import com.streamit.streaming_service.dtos.actor.UpdateActorDTO;
 import com.streamit.streaming_service.model.ActorModel;
-import com.streamit.streaming_service.model.FilmModel;
-import com.streamit.streaming_service.model.SeriesModel;
+import com.streamit.streaming_service.model.MediaModel;
 
 public class ActorMapper {
 
-    public static ActorModel toEntityForFilm(CreateActorDTO actorDTO, FilmModel film) {
+    public static ActorModel toEntity(CreateActorDTO actorDTO, MediaModel media) {
         ActorModel actor = new ActorModel();
         actor.setNome(actorDTO.getNome());
         actor.setImagemUrl(actorDTO.getImagemUrl());
-        actor.setFilme(List.of(film));
-        return actor;
-    }
-
-    public static ActorModel toEntityForSeries(CreateActorDTO actorDTO, SeriesModel series) {
-        ActorModel actor = new ActorModel();
-        actor.setNome(actorDTO.getNome());
-        actor.setImagemUrl(actorDTO.getImagemUrl());
-        actor.setSerie(List.of(series));
+        actor.setMidias(List.of(media));
         return actor;
     }
 
