@@ -1,13 +1,15 @@
 package com.streamit.streaming_service.services;
 
+import java.util.List;
+
 import org.springframework.data.domain.Pageable;
 
-import com.streamit.streaming_service.dtos.catalog.ReturnCatalogDTO;
+import com.streamit.streaming_service.dtos.media.ReturnMediaDTO;
 
 public interface ICatalogService {
 
-    ReturnCatalogDTO findFilmsAndSeriesByActorName(String nomeAtor, Pageable pageable);
-    ReturnCatalogDTO findFilmsAndSeriesByTitle(String titulo, Pageable pageable);
-    ReturnCatalogDTO findFilmsAndSeriesByGenre(String genero, Pageable pageable);
-    ReturnCatalogDTO findFilmsAndSeriesByDirector(String diretor, Pageable pageable);
+    List<ReturnMediaDTO> findFilmsAndSeriesByActorName(String nomeAtor, Pageable pageable);
+    List<ReturnMediaDTO> findFilmsAndSeriesByTitle(String titulo, Pageable pageable);
+    List<ReturnMediaDTO> findFilmsAndSeriesByGenre(String genero, Pageable pageable);
+    List<ReturnMediaDTO> findFilmsAndSeriesByDirector(String diretor, Pageable pageable);
 }

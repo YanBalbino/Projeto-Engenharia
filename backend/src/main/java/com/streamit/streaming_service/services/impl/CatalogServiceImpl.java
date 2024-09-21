@@ -7,15 +7,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import com.streamit.streaming_service.dtos.catalog.ReturnCatalogDTO;
-import com.streamit.streaming_service.dtos.film.ReturnFilmDTO;
-import com.streamit.streaming_service.dtos.series.ReturnSeriesDTO;
-import com.streamit.streaming_service.mappers.FilmMapper;
-import com.streamit.streaming_service.mappers.SeriesMapper;
-import com.streamit.streaming_service.model.FilmModel;
-import com.streamit.streaming_service.model.SeriesModel;
-import com.streamit.streaming_service.repositories.FilmRepository;
-import com.streamit.streaming_service.repositories.SeriesRepository;
+import com.streamit.streaming_service.dtos.media.ReturnMediaDTO;
+import com.streamit.streaming_service.mappers.MediaMapper;
+import com.streamit.streaming_service.model.MediaModel;
+import com.streamit.streaming_service.repositories.MediaRepository;
 
 import lombok.AllArgsConstructor;
 
@@ -23,78 +18,54 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class CatalogServiceImpl {
 
-    private final FilmRepository filmRepository;
-    private final SeriesRepository seriesRepository;
+    private final MediaRepository mediaRepository;
 
     // Busca por ator
-    public ReturnCatalogDTO findFilmsAndSeriesByActorName(String nomeAtor, Pageable pageable) {
-        Page<FilmModel> filmList = filmRepository.findFilmsByActorName(nomeAtor, pageable);
-        Page<SeriesModel> seriesList = seriesRepository.findSeriesByActorName(nomeAtor, pageable);
+    public List<ReturnMediaDTO> findMediaByActorName(String nomeAtor, Pageable pageable) {
+        Page<MediaModel> mediaList = mediaRepository.findByActorName(nomeAtor, pageable);
+        List<ReturnMediaDTO> mediaDtos = new ArrayList<>();
         
-        List<ReturnFilmDTO> filmDtos = new ArrayList<>();
-        for (FilmModel film : filmList.getContent()) {
-            filmDtos.add(FilmMapper.toDto(film));
+        for (MediaModel media : mediaList.getContent()) {
+            mediaDtos.add(MediaMapper.toDto(media));
         }
         
-        List<ReturnSeriesDTO> seriesDtos = new ArrayList<>();
-        for (SeriesModel series : seriesList.getContent()) {
-            seriesDtos.add(SeriesMapper.toDto(series));
-        }
-        
-        return new ReturnCatalogDTO(filmDtos, seriesDtos);
+        return mediaDtos;
     }
 
     // Busca por título
-    public ReturnCatalogDTO findFilmsAndSeriesByTitle(String titulo, Pageable pageable) {
-        Page<FilmModel> filmList = filmRepository.findFilmsByTitle(titulo, pageable);
-        Page<SeriesModel> seriesList = seriesRepository.findSeriesByTitle(titulo, pageable);
+    public List<ReturnMediaDTO> findMediaByTitle(String titulo, Pageable pageable) {
+        Page<MediaModel> mediaList = mediaRepository.findByTitle(titulo, pageable);
+        List<ReturnMediaDTO> mediaDtos = new ArrayList<>();
         
-        List<ReturnFilmDTO> filmDtos = new ArrayList<>();
-        for (FilmModel film : filmList.getContent()) {
-            filmDtos.add(FilmMapper.toDto(film));
+        for (MediaModel media : mediaList.getContent()) {
+            mediaDtos.add(MediaMapper.toDto(media));
         }
         
-        List<ReturnSeriesDTO> seriesDtos = new ArrayList<>();
-        for (SeriesModel series : seriesList.getContent()) {
-            seriesDtos.add(SeriesMapper.toDto(series));
-        }
-        
-        return new ReturnCatalogDTO(filmDtos, seriesDtos);
+        return mediaDtos;
     }
 
     // Busca por gênero
-    public ReturnCatalogDTO findFilmsAndSeriesByGenre(String genero, Pageable pageable) {
-        Page<FilmModel> filmList = filmRepository.findFilmsByGenre(genero, pageable);
-        Page<SeriesModel> seriesList = seriesRepository.findSeriesByGenre(genero, pageable);
+    public List<ReturnMediaDTO> findMediaByGenre(String genero, Pageable pageable) {
+        Page<MediaModel> mediaList = mediaRepository.findByGenre(genero, pageable);
+        List<ReturnMediaDTO> mediaDtos = new ArrayList<>();
         
-        List<ReturnFilmDTO> filmDtos = new ArrayList<>();
-        for (FilmModel film : filmList.getContent()) {
-            filmDtos.add(FilmMapper.toDto(film));
+        for (MediaModel media : mediaList.getContent()) {
+            mediaDtos.add(MediaMapper.toDto(media));
         }
         
-        List<ReturnSeriesDTO> seriesDtos = new ArrayList<>();
-        for (SeriesModel series : seriesList.getContent()) {
-            seriesDtos.add(SeriesMapper.toDto(series));
-        }
-        
-        return new ReturnCatalogDTO(filmDtos, seriesDtos);
+        return mediaDtos;
     }
 
     // Busca por diretor
-    public ReturnCatalogDTO findFilmsAndSeriesByDirector(String diretor, Pageable pageable) {
-        Page<FilmModel> filmList = filmRepository.findFilmsByDirector(diretor, pageable);
-        Page<SeriesModel> seriesList = seriesRepository.findSeriesByDirector(diretor, pageable);
+    public List<ReturnMediaDTO> findMediaByDirector(String diretor, Pageable pageable) {
+        Page<MediaModel> mediaList = mediaRepository.findByDirector(diretor, pageable);
+        List<ReturnMediaDTO> mediaDtos = new ArrayList<>();
         
-        List<ReturnFilmDTO> filmDtos = new ArrayList<>();
-        for (FilmModel film : filmList.getContent()) {
-            filmDtos.add(FilmMapper.toDto(film));
+        for (MediaModel media : mediaList.getContent()) {
+            mediaDtos.add(MediaMapper.toDto(media));
         }
         
-        List<ReturnSeriesDTO> seriesDtos = new ArrayList<>();
-        for (SeriesModel series : seriesList.getContent()) {
-            seriesDtos.add(SeriesMapper.toDto(series));
-        }
-        
-        return new ReturnCatalogDTO(filmDtos, seriesDtos);
+        return mediaDtos;
     }
 }
+
