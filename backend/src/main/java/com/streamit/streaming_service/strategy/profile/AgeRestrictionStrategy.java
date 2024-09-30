@@ -6,6 +6,7 @@ import com.streamit.streaming_service.dtos.film.ReturnFilmDTO;
 import com.streamit.streaming_service.dtos.media.ReturnMediaDTO;
 import com.streamit.streaming_service.dtos.series.ReturnSeriesDTO;
 
+
 public interface AgeRestrictionStrategy {
     List<ReturnMediaDTO> filterMedia(List<ReturnMediaDTO> mediaList);
     List<ReturnFilmDTO> filterFilm(List<ReturnFilmDTO> filmList);

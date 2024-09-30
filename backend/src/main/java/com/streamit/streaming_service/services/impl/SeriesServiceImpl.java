@@ -39,7 +39,6 @@ public class SeriesServiceImpl implements ISeriesService {
     private SeriesRepository seriesRepository;
     private IActorService actorService;
     private final IProfileService profileService;
-    private AgeRestrictionStrategy ageRestrictionStrategy;
 
     @Override
     public ReturnSeriesDTO create(CreateSeriesDTO seriesDto) {
@@ -80,6 +79,8 @@ public class SeriesServiceImpl implements ISeriesService {
     @Override
     public List<ReturnSeriesDTO> findByGenre(String genre, Pageable pageable, UUID profileId) {
         ProfileModel profile = profileService.findProfileModelById(profileId);
+        AgeRestrictionStrategy ageRestrictionStrategy;
+
         if (profile.isPerfilInfantil()) {
             ageRestrictionStrategy = new ChildProfileStrategy();
         } else {
@@ -102,6 +103,8 @@ public class SeriesServiceImpl implements ISeriesService {
     @Override
     public List<ReturnSeriesDTO> findAll(Pageable pageable, UUID profileId) {
         ProfileModel profile = profileService.findProfileModelById(profileId);
+        AgeRestrictionStrategy ageRestrictionStrategy;
+
         if (profile.isPerfilInfantil()) {
             ageRestrictionStrategy = new ChildProfileStrategy();
         } else {

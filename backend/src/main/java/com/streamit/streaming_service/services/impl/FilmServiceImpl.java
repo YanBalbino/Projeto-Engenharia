@@ -42,7 +42,6 @@ public class FilmServiceImpl implements IFilmService {
     private FilmRepository filmRepository;
     private IActorService actorService;
     private final IProfileService profileService;
-    private AgeRestrictionStrategy ageRestrictionStrategy;
 
     //supor que filmes sem atores podem ser criados, usando IA, por exemplo
     @Override
@@ -93,8 +92,11 @@ public class FilmServiceImpl implements IFilmService {
 				.orElseThrow(() -> new ResourceNotFoundException("Filme não encontrado com id " + id));
 	}
 
+    @Override
     public List<ReturnFilmDTO> findByGenre(String genre, Pageable pageable, UUID profileId) {
         ProfileModel profile = profileService.findProfileModelById(profileId);
+        AgeRestrictionStrategy ageRestrictionStrategy;
+
         if (profile.isPerfilInfantil()) {
             ageRestrictionStrategy = new ChildProfileStrategy();
         } else {
@@ -117,6 +119,8 @@ public class FilmServiceImpl implements IFilmService {
     @Override
     public List<ReturnFilmDTO> findAll(Pageable pageable, UUID profileId) {
         ProfileModel profile = profileService.findProfileModelById(profileId);
+        AgeRestrictionStrategy ageRestrictionStrategy;
+
         if (profile.isPerfilInfantil()) {
             ageRestrictionStrategy = new ChildProfileStrategy();
         } else {

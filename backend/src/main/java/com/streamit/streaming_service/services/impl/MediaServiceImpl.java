@@ -30,7 +30,6 @@ public class MediaServiceImpl implements IMediaService {
 
     private final MediaRepository mediaRepository;
     private final IProfileService profileService;
-    private AgeRestrictionStrategy ageRestrictionStrategy;
 
     // Busca todas as mídias com verificação de perfil
     @Override
@@ -38,6 +37,8 @@ public class MediaServiceImpl implements IMediaService {
 
         ProfileModel profile = profileService.findProfileModelById(profileId);
         // Definindo a estratégia com base no tipo de perfil
+        AgeRestrictionStrategy ageRestrictionStrategy;
+
         if (profile.isPerfilInfantil()) {
             ageRestrictionStrategy = new ChildProfileStrategy();
         } else {
@@ -61,7 +62,8 @@ public class MediaServiceImpl implements IMediaService {
     public List<ReturnMediaDTO> findMediaByActorName(String nomeAtor, Pageable pageable, UUID profileId) {
         ProfileModel profile = profileService.findProfileModelById(profileId);
 
-        // Definindo a estratégia com base no tipo de perfil
+        AgeRestrictionStrategy ageRestrictionStrategy;
+
         if (profile.isPerfilInfantil()) {
             ageRestrictionStrategy = new ChildProfileStrategy();
         } else {
@@ -84,7 +86,8 @@ public class MediaServiceImpl implements IMediaService {
     public List<ReturnMediaDTO> findMediaByTitle(String titulo, Pageable pageable, UUID profileId) {
         ProfileModel profile = profileService.findProfileModelById(profileId);
 
-        // Definindo a estratégia com base no tipo de perfil
+        AgeRestrictionStrategy ageRestrictionStrategy;
+
         if (profile.isPerfilInfantil()) {
             ageRestrictionStrategy = new ChildProfileStrategy();
         } else {
@@ -107,7 +110,8 @@ public class MediaServiceImpl implements IMediaService {
     public List<ReturnMediaDTO> findMediaByGenre(String genero, Pageable pageable, UUID profileId) {
         ProfileModel profile = profileService.findProfileModelById(profileId);
 
-        // Definindo a estratégia com base no tipo de perfil
+        AgeRestrictionStrategy ageRestrictionStrategy;
+
         if (profile.isPerfilInfantil()) {
             ageRestrictionStrategy = new ChildProfileStrategy();
         } else {
@@ -130,7 +134,8 @@ public class MediaServiceImpl implements IMediaService {
     public List<ReturnMediaDTO> findMediaByDirector(String diretor, Pageable pageable, UUID profileId) {
         ProfileModel profile = profileService.findProfileModelById(profileId);
 
-        // Definindo a estratégia com base no tipo de perfil
+        AgeRestrictionStrategy ageRestrictionStrategy;
+
         if (profile.isPerfilInfantil()) {
             ageRestrictionStrategy = new ChildProfileStrategy();
         } else {
