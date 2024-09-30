@@ -1,5 +1,7 @@
 package com.streamit.streaming_service.dtos.payment;
 
+import com.streamit.streaming_service.enums.PaymentMethod;
+
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -16,7 +18,7 @@ import lombok.ToString;
 public class CreatePaymentDTO {
     
     @NotBlank(message = "Método do pagamento é obrigatório.")
-    private String metodoPagamento;
+    private PaymentMethod metodoPagamento;
     
     @NotNull(message = "Valor não pode ser nulo.")
     private double valor;

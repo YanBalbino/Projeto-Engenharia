@@ -10,7 +10,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class CreditCardDTO {
+public class CreditCardDTO extends CreatePaymentDTO{
 
     @NotBlank(message = "Número do cartão não pode ser vazio.")
     private String cardNumber;
