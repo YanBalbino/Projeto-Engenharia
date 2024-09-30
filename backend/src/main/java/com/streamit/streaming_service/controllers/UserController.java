@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.streamit.streaming_service.constants.ApiConstants;
+import com.streamit.streaming_service.dtos.payment.CreditCardDTO;
 import com.streamit.streaming_service.dtos.renew.RenewDTO;
 import com.streamit.streaming_service.dtos.user.CreateUserDTO;
 import com.streamit.streaming_service.dtos.user.ReturnUserDTO;
@@ -39,11 +40,19 @@ public class UserController {
 
 	private final IUserService userService;
 
-	@PostMapping("/register")
-	public ResponseEntity<ApiResponse<ReturnUserDTO>> register(@Valid @RequestBody CreateUserDTO userPaymentDto) {
-		ReturnUserDTO createdUser = userService.register(userPaymentDto);
+	@PostMapping("/register/credit-card")
+	public ResponseEntity<ApiResponse<ReturnUserDTO>> register(@Valid @RequestBody CreateUserDTO userPaymentDto, CreditCardDTO creditCardDto) {
+		ReturnUserDTO createdUser = userService.registerWithCreditCard(userPaymentDto, creditCardDto);
 		ApiResponse<ReturnUserDTO> response = ResponseUtil.success(createdUser, ApiConstants.MESSAGE_RESOURCE_CREATED,
-				ApiConstants.HTTP_STATUS_CREATED, ApiConstants.PATH_USERS);
+				ApiConstants.HTTP_STATUS_CREATED, ApiConstants.PATH_USERS_REGISTER_CREDIT_CARD);
+		return new ResponseEntity<>(response, HttpStatus.CREATED);
+	}
+	
+	@PostMapping("/register/bank-slip")
+	public ResponseEntity<ApiResponse<ReturnUserDTO>> register(@Valid @RequestBody CreateUserDTO userPaymentDto) {
+		ReturnUserDTO createdUser = userService.registerWithBankSlip(userPaymentDto);
+		ApiResponse<ReturnUserDTO> response = ResponseUtil.success(createdUser, ApiConstants.MESSAGE_RESOURCE_CREATED,
+				ApiConstants.HTTP_STATUS_CREATED, ApiConstants.PATH_USERS_REGISTER_BANK_SLIP);
 		return new ResponseEntity<>(response, HttpStatus.CREATED);
 	}
 

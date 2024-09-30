@@ -1,5 +1,6 @@
 package com.streamit.streaming_service.repositories;
 
+import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.data.domain.Page;
@@ -11,6 +12,8 @@ import org.springframework.data.repository.query.Param;
 import com.streamit.streaming_service.model.SeriesModel;
 
 public interface SeriesRepository extends JpaRepository<SeriesModel, UUID>{
+	
+	Optional<SeriesModel> findByMediaId(UUID mediaId);
 
     @Query("SELECT COUNT(s) > 0 FROM SeriesModel s WHERE s.media.titulo = :titulo")
     boolean existsByTitle(@Param("titulo") String titulo);

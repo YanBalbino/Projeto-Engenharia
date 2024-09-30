@@ -54,6 +54,7 @@ public class ProfileServiceImpl implements IProfileService {
 		return ProfileMapper.toDTO(entity);
 	}
 
+	@Override
 	public ProfileModel findProfileModelById(UUID id) {
 		return profileRepository.findById(id)
 				.orElseThrow(() -> new ResourceNotFoundException("Perfil não encontrado com id " + id));

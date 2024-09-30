@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.UUID;
 
 import com.streamit.streaming_service.dtos.actor.ReturnActorDTO;
+import com.streamit.streaming_service.enums.FaixaEtaria;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -25,6 +26,7 @@ public class ReturnMediaDTO {
     private String descricao;
     private String diretor;
     private String imgUrl;
+    private FaixaEtaria faixaEtaria;
     private List<ReturnActorDTO> atores;
 }
 

@@ -17,8 +17,9 @@ public interface IFilmService {
 
 	ReturnFilmDTO create(CreateFilmDTO filmDto);
 	ReturnFilmDTO findById(UUID id);
-	List<ReturnFilmDTO> findByGenre(String genre, Pageable pageable);
-	List<ReturnFilmDTO> findAll(Pageable pageable);
+	List<ReturnFilmDTO> findByGenre(String genre, Pageable pageable, UUID profileId);
+	List<ReturnFilmDTO> findAll(Pageable pageable, UUID profileId);
+	ReturnFilmDTO findByMedia(UUID mediaId);
 	ReturnFilmDTO update(UpdateFilmDTO filmDto);
 	ReturnFilmDTO addAudio(UUID id, CreateAudioDTO audioDto);
 	ReturnFilmDTO addSubtitle(UUID id, CreateSubtitleDTO subtitleDto);

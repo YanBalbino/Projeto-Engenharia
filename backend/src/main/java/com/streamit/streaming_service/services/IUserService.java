@@ -5,6 +5,7 @@ import java.util.UUID;
 
 import org.springframework.data.domain.Pageable;
 
+import com.streamit.streaming_service.dtos.payment.CreditCardDTO;
 import com.streamit.streaming_service.dtos.renew.RenewDTO;
 import com.streamit.streaming_service.dtos.user.CreateUserDTO;
 import com.streamit.streaming_service.dtos.user.ReturnUserDTO;
@@ -13,7 +14,8 @@ import com.streamit.streaming_service.model.UserModel;
 
 public interface IUserService {
 
-	ReturnUserDTO register(CreateUserDTO userPaymentDto);
+	ReturnUserDTO registerWithCreditCard(CreateUserDTO userPaymentDto, CreditCardDTO creditCardDto);
+	ReturnUserDTO registerWithBankSlip(CreateUserDTO userPaymentDto);
 	ReturnUserDTO findUserDtoById(UUID id);
 	List<ReturnUserDTO> findAll(Pageable pageable);
 	ReturnUserDTO updateName(UpdateUserDTO userDto);

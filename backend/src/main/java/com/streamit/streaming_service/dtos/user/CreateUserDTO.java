@@ -2,6 +2,8 @@ package com.streamit.streaming_service.dtos.user;
 
 import java.time.LocalDate;
 
+import com.streamit.streaming_service.enums.PaymentMethod;
+
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -33,7 +35,7 @@ public class CreateUserDTO {
     @Size(min = 8, message = "Senha deve ter no mínimo 8 caracteres")
     private String senha;
     
-    private String metodoPagamento; 
+    private PaymentMethod metodoPagamento; 
     
     @PastOrPresent(message = "A data de pagamento não pode ser futura")
     @NotNull(message = "A data de pagamento não pode ser nula")

@@ -50,16 +50,22 @@ public class FilmController {
 		ReturnFilmDTO film = filmService.findById(id);
 		return new ResponseEntity<>(film, HttpStatus.OK);
 	}
+	
+	@GetMapping("/media/{mediaId}")
+	public ResponseEntity<ReturnFilmDTO> getFilmByMediaId(@PathVariable UUID mediaId) {
+		ReturnFilmDTO film = filmService.findByMedia(mediaId);
+		return new ResponseEntity<>(film, HttpStatus.OK);
+	}
 
-	@GetMapping("/genre")
-	public ResponseEntity<List<ReturnFilmDTO>> getFilmsByGenre(@RequestParam("genre") String genre, Pageable pageable) {
-		List<ReturnFilmDTO> filmsList = filmService.findByGenre(genre, pageable);
+	@GetMapping("/genre/{profileId}")
+	public ResponseEntity<List<ReturnFilmDTO>> getFilmsByGenre(@RequestParam("genre") String genre, Pageable pageable, UUID profileId) {
+		List<ReturnFilmDTO> filmsList = filmService.findByGenre(genre, pageable, profileId);
 		return new ResponseEntity<>(filmsList, HttpStatus.OK);
 	}
 
-	@GetMapping
-	public ResponseEntity<List<ReturnFilmDTO>> getAllFilms(Pageable pageable) {
-		List<ReturnFilmDTO> filmsList = filmService.findAll(pageable);
+	@GetMapping("/{profileId}")
+	public ResponseEntity<List<ReturnFilmDTO>> getAllFilms(Pageable pageable, UUID profileId) {
+		List<ReturnFilmDTO> filmsList = filmService.findAll(pageable, profileId);
 		return new ResponseEntity<>(filmsList, HttpStatus.OK);
 	}
 

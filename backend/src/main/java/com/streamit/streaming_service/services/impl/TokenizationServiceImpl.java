@@ -13,12 +13,20 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class TokenizationServiceImpl implements ITokenizationService {
 
-	//provisorio
     @Override
     public String generateTokenFromCardData(String cardNumber, String cardHolder, String expiryDate, String cvv) {
-        try {
-            String cardData = cardNumber + cardHolder + expiryDate + cvv;
+        return createHash(cardNumber + cardHolder + expiryDate + cvv);
+    }
 
+    @Override
+    public boolean validateToken(String token, String cardNumber, String cardHolder, String expiryDate, String cvv) {
+        String cardData = cardNumber + cardHolder + expiryDate + cvv;
+        String calculatedHash = createHash(cardData);
+        return calculatedHash.equals(token); 
+    }
+
+    private String createHash(String cardData) {
+        try {
             MessageDigest digest = MessageDigest.getInstance("SHA-256");
 
             byte[] hashBytes = digest.digest(cardData.getBytes());

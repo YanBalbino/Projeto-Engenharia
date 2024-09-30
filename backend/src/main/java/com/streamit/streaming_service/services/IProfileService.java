@@ -6,6 +6,7 @@ import java.util.UUID;
 import com.streamit.streaming_service.dtos.profile.CreateProfileDTO;
 import com.streamit.streaming_service.dtos.profile.ReturnProfileDTO;
 import com.streamit.streaming_service.dtos.profile.UpdateProfileDTO;
+import com.streamit.streaming_service.model.ProfileModel;
 
 public interface IProfileService {
 
@@ -14,4 +15,5 @@ public interface IProfileService {
 	List<ReturnProfileDTO> findProfileDetailsByUser(UUID idUser);
 	ReturnProfileDTO updateProfile(UpdateProfileDTO profileDTO);
 	void delete(UUID id);
+	ProfileModel findProfileModelById(UUID id);
 }

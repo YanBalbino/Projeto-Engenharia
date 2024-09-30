@@ -21,6 +21,7 @@ public class MediaMapper {
         media.setDescricao(dto.getDescricao());
         media.setDiretor(dto.getDiretor());
         media.setImgUrl(dto.getImgUrl());
+        media.setFaixaEtaria(dto.getFaixaEtaria());
 
         if (dto.getAtores() != null) {
             for (UpdateActorDTO actorDto : dto.getAtores()) {
@@ -39,6 +40,8 @@ public class MediaMapper {
         media.setDescricao(dto.getDescricao());
         media.setDiretor(dto.getDiretor());
         media.setImgUrl(dto.getImgUrl());
+        media.setFaixaEtaria(dto.getFaixaEtaria());
+        
         if (dto.getAtores() != null) {
             List<ActorModel> actorModels = new ArrayList<>();
             for (CreateActorDTO actorDTO : dto.getAtores()) {
@@ -58,6 +61,7 @@ public class MediaMapper {
         dto.setDescricao(media.getDescricao());
         dto.setDiretor(media.getDiretor());
         dto.setImgUrl(media.getImgUrl());
+        dto.setFaixaEtaria(media.getFaixaEtaria());
         
         List<ReturnActorDTO> actorDtos = new ArrayList<>();
         for (ActorModel actor : media.getAtores()) {

@@ -10,6 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.streamit.streaming_service.dtos.payment.CreditCardDTO;
 import com.streamit.streaming_service.dtos.renew.RenewDTO;
 import com.streamit.streaming_service.dtos.user.CreateUserDTO;
 import com.streamit.streaming_service.dtos.user.ReturnUserDTO;
@@ -19,14 +20,17 @@ import com.streamit.streaming_service.exceptions.ResourceAlreadyExistsException;
 import com.streamit.streaming_service.exceptions.ResourceNotFoundException;
 import com.streamit.streaming_service.mappers.PersonMapper;
 import com.streamit.streaming_service.mappers.UserMapper;
+import com.streamit.streaming_service.model.CreditCardTokenModel;
 import com.streamit.streaming_service.model.PaymentModel;
 import com.streamit.streaming_service.model.PersonModel;
 import com.streamit.streaming_service.model.SubscriptionModel;
 import com.streamit.streaming_service.model.UserModel;
+import com.streamit.streaming_service.repositories.CreditCardTokenRepository;
 import com.streamit.streaming_service.repositories.UserRepository;
 import com.streamit.streaming_service.services.IEmailService;
 import com.streamit.streaming_service.services.IPaymentService;
 import com.streamit.streaming_service.services.ISubscriptionService;
+import com.streamit.streaming_service.services.ITokenizationService;
 import com.streamit.streaming_service.services.IUserService;
 
 import jakarta.transaction.Transactional;
@@ -40,11 +44,13 @@ public class UserServiceImpl implements IUserService {
     IPaymentService paymentService;
     ISubscriptionService subscriptionService;
     IEmailService emailService;
+    ITokenizationService tokenizationService;
     PasswordEncoder passwordEncoder;
+    CreditCardTokenRepository creditCardTokenRepository;
 
     @Transactional
     @Override
-    public ReturnUserDTO register(CreateUserDTO userDto) {
+    public ReturnUserDTO registerWithCreditCard(CreateUserDTO userDto, CreditCardDTO creditCardDto) {
         if (userRepository.findByEmail(userDto.getEmail()).isPresent()) {
             throw new ResourceAlreadyExistsException("Email " + userDto.getEmail() + " já cadastrado.");
         }
@@ -66,9 +72,49 @@ public class UserServiceImpl implements IUserService {
         user.setPayment(payment);
 
         UserModel savedUser = userRepository.save(user);
-
+        
+        String token = tokenizationService.generateTokenFromCardData(
+                creditCardDto.getCardNumber(),
+                creditCardDto.getCardHolder(),
+                creditCardDto.getExpiryDate(),
+                creditCardDto.getCvv());
+        
+        CreditCardTokenModel cct = new CreditCardTokenModel();
+        cct.setUser(savedUser);
+        cct.setToken(token);
+        creditCardTokenRepository.save(cct);
+        
         return UserMapper.toDtoReturn(savedUser);
     }
+    
+    @Transactional
+    @Override
+    public ReturnUserDTO registerWithBankSlip(CreateUserDTO userDto) {
+        UserModel savedUser = processUserRegistration(userDto);
+        //gerar um qr code
+        return UserMapper.toDtoReturn(savedUser);
+    }
+    
+    private UserModel processUserRegistration(CreateUserDTO userDto) {
+        LocalDateTime currentDate = LocalDateTime.now();
+
+        PersonModel person = PersonMapper.toModel(userDto); 
+        person.setSenha(passwordEncoder.encode(userDto.getSenha()));
+        person.setRole(UserRole.USER);
+
+        UserModel user = new UserModel();
+        user.setPerson(person);
+        user.setCreatedDate(currentDate);
+
+        SubscriptionModel subscription = subscriptionService.createSubscription(user, currentDate);
+        PaymentModel payment = paymentService.createPayment(user, userDto, currentDate);
+
+        user.setSubscription(subscription);
+        user.setPayment(payment);
+
+        return userRepository.save(user);
+    }
+
 
     @Override
     public ReturnUserDTO findUserDtoById(UUID id) {

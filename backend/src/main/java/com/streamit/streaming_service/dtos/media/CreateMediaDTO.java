@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.UUID;
 
 import com.streamit.streaming_service.dtos.actor.CreateActorDTO;
+import com.streamit.streaming_service.enums.FaixaEtaria;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -41,6 +42,9 @@ public class CreateMediaDTO {
     
     @NotBlank(message = "A URL da imagem da mídia não pode ser vazia.")
     private String imgUrl;
+    
+    @NotBlank(message = "A faixa etária da mídia não pode ser vazia.")
+    private FaixaEtaria faixaEtaria;
     
     private List<UUID> actorIds;
     

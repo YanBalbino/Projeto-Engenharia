@@ -2,6 +2,8 @@ package com.streamit.streaming_service.dtos.renew;
 
 import java.util.UUID;
 
+import com.streamit.streaming_service.enums.PaymentMethod;
+
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -27,7 +29,7 @@ public class RenewDTO {
 	private UUID idPayment;
 	
     @NotBlank(message = "Método do pagamento é obrigatório.")
-    private String metodoPagamento;
+    private PaymentMethod metodoPagamento;
     
     @NotNull(message = "Valor não pode ser nulo.")
     private double valor;

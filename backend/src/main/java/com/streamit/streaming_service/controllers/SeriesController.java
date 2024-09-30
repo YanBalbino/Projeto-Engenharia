@@ -50,17 +50,23 @@ public class SeriesController {
 		ReturnSeriesDTO series = seriesService.findById(id);
 		return new ResponseEntity<>(series, HttpStatus.OK);
 	}
+	
+	@GetMapping("/media/{mediaId}")
+	public ResponseEntity<ReturnSeriesDTO> getFilmByMediaId(@PathVariable UUID mediaId) {
+		ReturnSeriesDTO series = seriesService.findByMedia(mediaId);
+		return new ResponseEntity<>(series, HttpStatus.OK);
+	}
 
-	@GetMapping("/genre")
+	@GetMapping("/genre/{profileId}")
 	public ResponseEntity<List<ReturnSeriesDTO>> getSeriesByGenre(@RequestParam("genre") String genre,
-			Pageable pageable) {
-		List<ReturnSeriesDTO> seriesList = seriesService.findByGenre(genre, pageable);
+			Pageable pageable, UUID profileId) {
+		List<ReturnSeriesDTO> seriesList = seriesService.findByGenre(genre, pageable, profileId);
 		return new ResponseEntity<>(seriesList, HttpStatus.OK);
 	}
 
-	@GetMapping
-	public ResponseEntity<List<ReturnSeriesDTO>> getAllSeries(Pageable pageable) {
-		List<ReturnSeriesDTO> seriesList = seriesService.findAll(pageable);
+	@GetMapping("/{profileId}")
+	public ResponseEntity<List<ReturnSeriesDTO>> getAllSeries(Pageable pageable, UUID profileId) {
+		List<ReturnSeriesDTO> seriesList = seriesService.findAll(pageable, profileId);
 		return new ResponseEntity<>(seriesList, HttpStatus.OK);
 	}
 

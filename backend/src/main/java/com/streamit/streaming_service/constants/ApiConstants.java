@@ -14,6 +14,8 @@ public final class ApiConstants {
 
     // Paths de API
     public static final String PATH_USERS = "/api/users";
+    public static final String PATH_USERS_REGISTER_CREDIT_CARD = "/api/users/register/credit-card";
+    public static final String PATH_USERS_REGISTER_BANK_SLIP = "/api/users/register/bank-slip";
     public static final String PATH_USERS_RENEW = "api/users/{userId}/subscriptions/{subscriptionId}/payments/{paymentId}/renew";
     public static final String PATH_USER_BY_ID = "/api/users/{id}";
     

@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+import com.streamit.streaming_service.enums.PaymentMethod;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -32,7 +34,7 @@ public class PaymentModel implements Serializable{
 	@OneToOne
 	@JoinColumn(name = "user_id")
     private UserModel user;	
-    private String metodoPagamento; 
+    private PaymentMethod metodoPagamento; 
     private LocalDateTime dataPagamento;
     private double valor;
 }

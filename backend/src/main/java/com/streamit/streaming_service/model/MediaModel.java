@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.UUID;
 
+import com.streamit.streaming_service.enums.FaixaEtaria;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -40,6 +42,7 @@ public class MediaModel implements Serializable {
 	private String descricao;
 	private String diretor;
 	private String imgUrl;
+	private FaixaEtaria faixaEtaria;
 
 	@ManyToMany(cascade = CascadeType.PERSIST)
 	@JoinTable(

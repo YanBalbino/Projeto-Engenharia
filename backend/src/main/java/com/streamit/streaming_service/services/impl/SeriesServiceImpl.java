@@ -19,11 +19,16 @@ import com.streamit.streaming_service.mappers.ActorMapper;
 import com.streamit.streaming_service.mappers.SeasonMapper;
 import com.streamit.streaming_service.mappers.SeriesMapper;
 import com.streamit.streaming_service.model.ActorModel;
+import com.streamit.streaming_service.model.ProfileModel;
 import com.streamit.streaming_service.model.SeasonModel;
 import com.streamit.streaming_service.model.SeriesModel;
 import com.streamit.streaming_service.repositories.SeriesRepository;
 import com.streamit.streaming_service.services.IActorService;
+import com.streamit.streaming_service.services.IProfileService;
 import com.streamit.streaming_service.services.ISeriesService;
+import com.streamit.streaming_service.strategy.profile.AgeRestrictionStrategy;
+import com.streamit.streaming_service.strategy.profile.ChildProfileStrategy;
+import com.streamit.streaming_service.strategy.profile.RegularProfileStrategy;
 
 import lombok.AllArgsConstructor;
 
@@ -33,6 +38,8 @@ public class SeriesServiceImpl implements ISeriesService {
 
     private SeriesRepository seriesRepository;
     private IActorService actorService;
+    private final IProfileService profileService;
+    private AgeRestrictionStrategy ageRestrictionStrategy;
 
     @Override
     public ReturnSeriesDTO create(CreateSeriesDTO seriesDto) {
@@ -70,27 +77,48 @@ public class SeriesServiceImpl implements ISeriesService {
         return entityDto; 
 	}
 	
-	@Override
-	public List<ReturnSeriesDTO> findByGenre(String genre, Pageable pageable) {
-	    Page<SeriesModel> seriesPage = seriesRepository.findSeriesByGenre(genre, pageable);
-	    List<ReturnSeriesDTO> dtos = new ArrayList<>();
-	    for(SeriesModel entity : seriesPage.getContent()) {
-	    	ReturnSeriesDTO entityDto = SeriesMapper.toDto(entity);
-	        dtos.add(entityDto);
-	    }
-	    return dtos;
-	}
+    @Override
+    public List<ReturnSeriesDTO> findByGenre(String genre, Pageable pageable, UUID profileId) {
+        ProfileModel profile = profileService.findProfileModelById(profileId);
+        if (profile.isPerfilInfantil()) {
+            ageRestrictionStrategy = new ChildProfileStrategy();
+        } else {
+            ageRestrictionStrategy = new RegularProfileStrategy();
+        }
 
-	@Override
-	public List<ReturnSeriesDTO> findAll(Pageable pageable) {
-		Page<SeriesModel> seriesPage = seriesRepository.findAll(pageable);
-		List<ReturnSeriesDTO> dtos = new ArrayList<>();
-		for(SeriesModel entity : seriesPage.getContent()) {
-			ReturnSeriesDTO entityDto = SeriesMapper.toDto(entity);
-			dtos.add(entityDto);
-		}
-		return dtos;
-	}
+        Page<SeriesModel> seriesPage = seriesRepository.findSeriesByGenre(genre, pageable);
+        List<ReturnSeriesDTO> dtos = new ArrayList<>();
+
+        for (SeriesModel entity : seriesPage.getContent()) {
+            ReturnSeriesDTO entityDto = SeriesMapper.toDto(entity);
+            dtos.add(entityDto);
+        }
+
+        // Aplicar filtro de restrição de idade
+        return ageRestrictionStrategy.filterSeries(dtos);
+    }
+
+    // Verificação de perfil infantil para todas as séries
+    @Override
+    public List<ReturnSeriesDTO> findAll(Pageable pageable, UUID profileId) {
+        ProfileModel profile = profileService.findProfileModelById(profileId);
+        if (profile.isPerfilInfantil()) {
+            ageRestrictionStrategy = new ChildProfileStrategy();
+        } else {
+            ageRestrictionStrategy = new RegularProfileStrategy();
+        }
+
+        Page<SeriesModel> seriesPage = seriesRepository.findAll(pageable);
+        List<ReturnSeriesDTO> dtos = new ArrayList<>();
+
+        for (SeriesModel entity : seriesPage.getContent()) {
+            ReturnSeriesDTO entityDto = SeriesMapper.toDto(entity);
+            dtos.add(entityDto);
+        }
+
+        // Aplicar filtro de restrição de idade
+        return ageRestrictionStrategy.filterSeries(dtos);
+    }
 
 	@Override
 	public ReturnSeriesDTO update(UpdateSeriesDTO seriesDto) {
@@ -147,6 +175,14 @@ public class SeriesServiceImpl implements ISeriesService {
 		if(!listActor.isEmpty()) {
 			listActor.add(actor);
 		}
+		ReturnSeriesDTO dto = SeriesMapper.toDto(entity);
+		return dto;
+	}
+	
+	@Override
+	public ReturnSeriesDTO findByMedia(UUID mediaId) {
+		SeriesModel entity = seriesRepository.findByMediaId(mediaId)
+				.orElseThrow(() -> new ResourceNotFoundException("Série não encontrada com id de mídia " + mediaId));
 		ReturnSeriesDTO dto = SeriesMapper.toDto(entity);
 		return dto;
 	}

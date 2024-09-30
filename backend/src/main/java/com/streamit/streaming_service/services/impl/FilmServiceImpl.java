@@ -23,10 +23,15 @@ import com.streamit.streaming_service.mappers.SubtitleMapper;
 import com.streamit.streaming_service.model.ActorModel;
 import com.streamit.streaming_service.model.AudioModel;
 import com.streamit.streaming_service.model.FilmModel;
+import com.streamit.streaming_service.model.ProfileModel;
 import com.streamit.streaming_service.model.SubtitleModel;
 import com.streamit.streaming_service.repositories.FilmRepository;
 import com.streamit.streaming_service.services.IActorService;
 import com.streamit.streaming_service.services.IFilmService;
+import com.streamit.streaming_service.services.IProfileService;
+import com.streamit.streaming_service.strategy.profile.AgeRestrictionStrategy;
+import com.streamit.streaming_service.strategy.profile.ChildProfileStrategy;
+import com.streamit.streaming_service.strategy.profile.RegularProfileStrategy;
 
 import lombok.AllArgsConstructor;
 
@@ -36,6 +41,8 @@ public class FilmServiceImpl implements IFilmService {
 
     private FilmRepository filmRepository;
     private IActorService actorService;
+    private final IProfileService profileService;
+    private AgeRestrictionStrategy ageRestrictionStrategy;
 
     //supor que filmes sem atores podem ser criados, usando IA, por exemplo
     @Override
@@ -86,27 +93,47 @@ public class FilmServiceImpl implements IFilmService {
 				.orElseThrow(() -> new ResourceNotFoundException("Filme não encontrado com id " + id));
 	}
 
-	@Override
-	public List<ReturnFilmDTO> findByGenre(String genre, Pageable pageable) {
-	    Page<FilmModel> filmPage = filmRepository.findFilmsByGenre(genre, pageable);
-	    List<ReturnFilmDTO> dtos = new ArrayList<>();
-	    for(FilmModel entity : filmPage.getContent()) {
-	        ReturnFilmDTO entityDto = FilmMapper.toDto(entity);
-	        dtos.add(entityDto);
-	    }
-	    return dtos;
-	}
+    public List<ReturnFilmDTO> findByGenre(String genre, Pageable pageable, UUID profileId) {
+        ProfileModel profile = profileService.findProfileModelById(profileId);
+        if (profile.isPerfilInfantil()) {
+            ageRestrictionStrategy = new ChildProfileStrategy();
+        } else {
+            ageRestrictionStrategy = new RegularProfileStrategy();
+        }
 
-	@Override
-	public List<ReturnFilmDTO> findAll(Pageable pageable) {
-	    Page<FilmModel> filmPage = filmRepository.findAll(pageable);
-	    List<ReturnFilmDTO> dtos = new ArrayList<>();
-	    for(FilmModel entity : filmPage.getContent()) {
-	        ReturnFilmDTO entityDto = FilmMapper.toDto(entity);
-	        dtos.add(entityDto);
-	    }
-	    return dtos;
-	}
+        Page<FilmModel> filmPage = filmRepository.findFilmsByGenre(genre, pageable);
+        List<ReturnFilmDTO> dtos = new ArrayList<>();
+
+        for (FilmModel entity : filmPage.getContent()) {
+            ReturnFilmDTO entityDto = FilmMapper.toDto(entity);
+            dtos.add(entityDto);
+        }
+        
+        // Aplicar filtro de restrição de idade
+        return ageRestrictionStrategy.filterFilm(dtos);
+    }
+
+    // Verificação de perfil infantil para todos os filmes
+    @Override
+    public List<ReturnFilmDTO> findAll(Pageable pageable, UUID profileId) {
+        ProfileModel profile = profileService.findProfileModelById(profileId);
+        if (profile.isPerfilInfantil()) {
+            ageRestrictionStrategy = new ChildProfileStrategy();
+        } else {
+            ageRestrictionStrategy = new RegularProfileStrategy();
+        }
+
+        Page<FilmModel> filmPage = filmRepository.findAll(pageable);
+        List<ReturnFilmDTO> dtos = new ArrayList<>();
+
+        for (FilmModel entity : filmPage.getContent()) {
+            ReturnFilmDTO entityDto = FilmMapper.toDto(entity);
+            dtos.add(entityDto);
+        }
+
+        // Aplicar filtro de restrição de idade
+        return ageRestrictionStrategy.filterFilm(dtos);
+    }
 
 	@Override
 	public ReturnFilmDTO update(UpdateFilmDTO filmDto) {
@@ -142,11 +169,13 @@ public class FilmServiceImpl implements IFilmService {
 	    filmRepository.delete(film);
 	}
 	
+	@Override
     public FilmModel getFilmByAudioId(UUID audioId) {
         return filmRepository.findFilmByAudioId(audioId)
         		.orElse(null);
     }
     
+	@Override
     public FilmModel getFilmBySubtitleId(UUID audioId) {
     	return filmRepository.findFilmBySubtitleId(audioId)
     			.orElse(null);
@@ -184,6 +213,14 @@ public class FilmServiceImpl implements IFilmService {
 		if(!listActor.isEmpty()) {
 			listActor.add(actor);
 		}
+		ReturnFilmDTO dto = FilmMapper.toDto(entity);
+		return dto;
+	}
+
+	@Override
+	public ReturnFilmDTO findByMedia(UUID mediaId) {
+		FilmModel entity = filmRepository.findByMediaId(mediaId)
+				.orElseThrow(() -> new ResourceNotFoundException("Filme não encontrado com id de mídia " + mediaId));
 		ReturnFilmDTO dto = FilmMapper.toDto(entity);
 		return dto;
 	}
