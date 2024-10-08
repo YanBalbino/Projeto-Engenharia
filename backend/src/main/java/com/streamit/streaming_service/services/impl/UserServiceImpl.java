@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import com.streamit.streaming_service.dtos.payment.CreditCardDTO;
 import com.streamit.streaming_service.dtos.renew.RenewDTO;
 import com.streamit.streaming_service.dtos.user.CreateUserDTO;
+import com.streamit.streaming_service.dtos.user.CreateUserDTOWithCreditCard;
 import com.streamit.streaming_service.dtos.user.ReturnUserDTO;
 import com.streamit.streaming_service.dtos.user.UpdateUserDTO;
 import com.streamit.streaming_service.enums.UserRole;
@@ -50,15 +51,15 @@ public class UserServiceImpl implements IUserService {
 
     @Transactional
     @Override
-    public ReturnUserDTO registerWithCreditCard(CreateUserDTO userDto, CreditCardDTO creditCardDto) {
-        if (userRepository.findByEmail(userDto.getEmail()).isPresent()) {
-            throw new ResourceAlreadyExistsException("Email " + userDto.getEmail() + " já cadastrado.");
+    public ReturnUserDTO registerWithCreditCard(CreateUserDTOWithCreditCard userDTOWithCreditCard) {
+        if (userRepository.findByEmail(userDTOWithCreditCard.getUserDTO().getEmail()).isPresent()) {
+            throw new ResourceAlreadyExistsException("Email " + userDTOWithCreditCard.getUserDTO().getEmail() + " já cadastrado.");
         }
 
         LocalDateTime currentDate = LocalDateTime.now();
 
-        PersonModel person = PersonMapper.toModel(userDto); 
-        person.setSenha(passwordEncoder.encode(userDto.getSenha()));
+        PersonModel person = PersonMapper.toModel(userDTOWithCreditCard.getUserDTO()); 
+        person.setSenha(passwordEncoder.encode(userDTOWithCreditCard.getUserDTO().getSenha()));
         person.setRole(UserRole.USER);
 
         UserModel user = new UserModel();
@@ -66,7 +67,7 @@ public class UserServiceImpl implements IUserService {
         user.setCreatedDate(currentDate);
 
         SubscriptionModel subscription = subscriptionService.createSubscription(user, currentDate);
-        PaymentModel payment = paymentService.createPayment(user, userDto, currentDate);
+        PaymentModel payment = paymentService.createPayment(user, userDTOWithCreditCard.getUserDTO(), currentDate);
 
         user.setSubscription(subscription);
         user.setPayment(payment);
@@ -74,10 +75,10 @@ public class UserServiceImpl implements IUserService {
         UserModel savedUser = userRepository.save(user);
         
         String token = tokenizationService.generateTokenFromCardData(
-                creditCardDto.getCardNumber(),
-                creditCardDto.getCardHolder(),
-                creditCardDto.getExpiryDate(),
-                creditCardDto.getCvv());
+            userDTOWithCreditCard.getCreditCardDTO().getCardNumber(),
+            userDTOWithCreditCard.getCreditCardDTO().getCardHolder(),
+            userDTOWithCreditCard.getCreditCardDTO().getExpiryDate(),
+            userDTOWithCreditCard.getCreditCardDTO().getCvv());
         
         CreditCardTokenModel cct = new CreditCardTokenModel();
         cct.setUser(savedUser);

@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 import { ArrowLeftOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import { Checkbox } from "antd";
@@ -37,14 +37,13 @@ const Register = () => {
     email: '',
     senha: '',
     metodoPagamento: '',
-    agencia: '',
+    numCartao: '',
     validade: '',
-    numeroConta: '',
+    nomeTitular: '',
     codigoSeguranca: '',
     nomePerfil: ''
   });
   
-  const [selectedGenders,setSelectedGenders] = useState<string[]>([]);
   
   const [vals, setVals] = useState({
     val1: '',
@@ -82,16 +81,7 @@ const Register = () => {
     }));
   };
 
-  const handleCheckbox:CheckboxProps['onChange'] = (e) => {
-    const { value, checked } = e.target;
-    setSelectedGenders((prevValues) => {
-      if (checked) {
-        return [...prevValues, value];
-      } 
-      return prevValues.filter((item) => item !== value);
-      
-    });
-  };
+
 
  
   const handleCurrentForm = (n:number) => {
@@ -109,24 +99,26 @@ const Register = () => {
   const handleSubmit = async () => {
     
     const data = {
-    email: formData.email,
-    nome: formData.nome,
-    senha: formData.senha,
-    perfis: [
-        {
-        nome: formData.nomePerfil,
-        iconUrl: "https://example.com/images/icon1.png",
-        perfilInfantil: false,
-        generosPreferidos: selectedGenders
-        }
-    ],
-    metodoPagamento: formData.metodoPagamento,
-    dataPagamento: getCurrentDate(),  
-    valor: 30,
+      "userDTO":{
+        email: formData.email,
+        nome: formData.nome,
+        senha: formData.senha,
+        metodoPagamento: formData.metodoPagamento,
+        dataPagamento: getCurrentDate(),  
+        valor: 30,
+        
+      },
+      "creditCardDTO":{
+        cardNumber: formData.numCartao,
+        cardHolder: formData.nomeTitular,
+        expiryDate: formData.validade,
+        cvv: formData.codigoSeguranca
+      }
+   
     };
 
     try {
-    const response = await fetch('http://localhost:8080/api/users', {
+    const response = await fetch('http://localhost:8080/api/users/register/credit-card', {
         method: 'POST',
         headers: {
         'Content-Type': 'application/json',
@@ -136,16 +128,14 @@ const Register = () => {
 
     if (!response.ok) {
         const errorData = await response.json();
+
+        setErrors({
+          nome: errorData.errors.find((msg:string) => msg.includes('Nome')) || '',
+          email: errorData.errors.find((msg:string) => msg.includes('E-mail')) || '',
+          senha: errorData.errors.find((msg:string) => msg.includes('Senha')) || '',
+          pagamento: errorData.errors.find((msg:string) => msg.includes('Pagamento')) || '',
+      });
         console.log(errorData);
-        if (errorData.errors) {
-            setErrors({
-                nome: errorData.errors.find((msg:string) => msg.includes('Nome')) || '',
-                email: errorData.errors.find((msg:string) => msg.includes('E-mail')) || '',
-                senha: errorData.errors.find((msg:string) => msg.includes('Senha')) || '',
-                pagamento: errorData.errors.find((msg:string) => msg.includes('Pagamento')) || '',
-               
-            });
-        }
         setCurrentForm(1); 
     } else {
 
@@ -190,13 +180,13 @@ const Register = () => {
             {errors.pagamento && <p className="text-red-500">{errors.pagamento}</p>}
             <div className="w-full flex flex-col justify-center gap-4">
               <div className="flex flex-row gap-1">
-                <input type="radio" name="metodoPagamento" value="Credit Card" onChange={handleInput}  />
+                <input type="radio" name="metodoPagamento" value="CREDIT_CARD" onChange={handleInput}  />
                 <label>Cartão de crédito</label>
               </div>
               <div className="w-full flex flex-row flex-wrap items-center gap-5">
                 <div className="w-3/5 flex flex-col">
                   <label>Número do cartão</label>
-                  <input type="text" name="agencia" value={formData.agencia} onChange={handleInput} className="h-10 rounded-lg text-black p-2"  />
+                  <input type="text" name="numCartao" value={formData.numCartao} onChange={handleInput} className="h-10 rounded-lg text-black p-2"  />
                 </div>
                 <div className="w-2/6 flex flex-col">
                   <label>Validade</label>
@@ -209,7 +199,7 @@ const Register = () => {
                 <div className="w-full flex flex-row flex-wrap items-center gap-5">
                   <div className="w-3/5 flex flex-col">
                     <label>Nome Titular</label>
-                    <input type="text" name="numeroConta" value={formData.numeroConta} onChange={handleInput} className="h-10 rounded-lg text-black p-2" />
+                    <input type="text" name="nomeTitular" value={formData.nomeTitular} onChange={handleInput} className="h-10 rounded-lg text-black p-2" />
                   </div>
                   <div className="w-2/6 flex flex-col">
                     <label>Código de seg.</label>
@@ -225,40 +215,10 @@ const Register = () => {
                 <p className="ml-2 text-sm">*Será enviado o pdf do boleto para o email cadastrado</p>
               </div>
             </div>
-            <button onClick={() => handleCurrentForm(3)} type="button" className="w-11/12 mt-10 h-10 rounded-lg bg-cyan-600 hover:bg-cyan-400">Continuar</button>
+            <button onClick={handleSubmit} type="button" className="w-11/12 mt-10 h-10 rounded-lg bg-cyan-600 hover:bg-cyan-400">Criar conta</button>
           </div>
         )}
-        {currentForm == 3 && (
-          <div className="w-1/3 flex flex-col border-2 border-white rounded-xl bg-black p-10 gap-5 items-center">
-              <ArrowLeftOutlined onClick={() => handleCurrentForm(2)} className="absolute scale-125 left-5 top-5 hover:cursor-pointer transition-transform transform hover:scale-150 " />
-              <h2 className="text-3xl">Criar perfil</h2>
-              <div className='flex flex-row gap-1'>
-                <div className='w-full flex flex-col gap-1'>
-                  <label htmlFor="nomePerfil">Nome do perfil</label>
-                  <input type="text" name="nomePerfil" id="nomePerfil" onChange={handleInput} className="h-10 rounded-lg text-black p-2" value={formData.nomePerfil}  />
-                </div>
-               
-              </div>
-              
-              <div className='w-full flex flex-col flex-wrap gap-1'>
-                <h3 className='self-center'>Gêneros preferidos</h3>
-                <div className='grid grid-cols-6 gap-1'>
-                {genders.map((gender) =>(
-                  <Checkbox 
-                  key={gender.value}
-                  value={gender.value}
-                  name = {gender.value}
-                  checked={selectedGenders.includes(gender.value)}
-                  onChange={handleCheckbox}
-                  className='custom-checkbox text-white col-span-2 items-center'
-                  >{gender.label}</Checkbox>
-                ))}
 
-                </div>
-              </div>
-              <button onClick={handleSubmit} type="button" className="w-11/12 mt-10 h-10 rounded-lg bg-cyan-600 hover:bg-cyan-400">Criar conta</button>
-          </div>
-        )}
     </div>
   );
 };

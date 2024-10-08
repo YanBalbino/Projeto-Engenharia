@@ -21,6 +21,7 @@ import com.streamit.streaming_service.constants.ApiConstants;
 import com.streamit.streaming_service.dtos.payment.CreditCardDTO;
 import com.streamit.streaming_service.dtos.renew.RenewDTO;
 import com.streamit.streaming_service.dtos.user.CreateUserDTO;
+import com.streamit.streaming_service.dtos.user.CreateUserDTOWithCreditCard;
 import com.streamit.streaming_service.dtos.user.ReturnUserDTO;
 import com.streamit.streaming_service.dtos.user.UpdateUserDTO;
 import com.streamit.streaming_service.response.ApiResponse;
@@ -41,8 +42,8 @@ public class UserController {
 	private final IUserService userService;
 
 	@PostMapping("/register/credit-card")
-	public ResponseEntity<ApiResponse<ReturnUserDTO>> register(@Valid @RequestBody CreateUserDTO userPaymentDto, CreditCardDTO creditCardDto) {
-		ReturnUserDTO createdUser = userService.registerWithCreditCard(userPaymentDto, creditCardDto);
+	public ResponseEntity<ApiResponse<ReturnUserDTO>> register(@Valid @RequestBody CreateUserDTOWithCreditCard userDTOWithCreditCard) {
+		ReturnUserDTO createdUser = userService.registerWithCreditCard(userDTOWithCreditCard);
 		ApiResponse<ReturnUserDTO> response = ResponseUtil.success(createdUser, ApiConstants.MESSAGE_RESOURCE_CREATED,
 				ApiConstants.HTTP_STATUS_CREATED, ApiConstants.PATH_USERS_REGISTER_CREDIT_CARD);
 		return new ResponseEntity<>(response, HttpStatus.CREATED);

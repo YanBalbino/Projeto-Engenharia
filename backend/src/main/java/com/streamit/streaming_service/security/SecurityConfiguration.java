@@ -39,7 +39,7 @@ public class SecurityConfiguration {
 	                @Override
 	                public CorsConfiguration getCorsConfiguration(HttpServletRequest request) {
 	                    CorsConfiguration config = new CorsConfiguration();
-	                    config.setAllowedOrigins(Collections.singletonList("*"));
+	                    config.setAllowedOrigins(Collections.singletonList("http://localhost:3000"));
 	                    config.setAllowedMethods(Collections.singletonList("*"));
 	                    config.setAllowCredentials(true);
 	                    config.setAllowedHeaders(Collections.singletonList("*"));
@@ -50,7 +50,7 @@ public class SecurityConfiguration {
 	            }))
 	            .authorizeHttpRequests(authorize -> authorize
 	                    .requestMatchers(HttpMethod.POST, "/api/login").permitAll()
-	                    .requestMatchers(HttpMethod.POST, "/api/users/register").permitAll()
+	                    .requestMatchers(HttpMethod.POST, "/api/users/register/credit-card").permitAll()
 	                    .anyRequest().permitAll()
 	            )
 	            .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
