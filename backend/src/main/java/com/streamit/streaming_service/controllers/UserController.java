@@ -42,8 +42,8 @@ public class UserController {
 	private final IUserService userService;
 
 	@PostMapping("/register/credit-card")
-	public ResponseEntity<ApiResponse<ReturnUserDTO>> register(@Valid @RequestBody CreateUserDTOWithCreditCard userDto) {
-		ReturnUserDTO createdUser = userService.registerWithCreditCard(userDto);
+	public ResponseEntity<ApiResponse<ReturnUserDTO>> register(@Valid @RequestBody CreateUserDTOWithCreditCard userDTOWithCreditCard) {
+		ReturnUserDTO createdUser = userService.registerWithCreditCard(userDTOWithCreditCard);
 		ApiResponse<ReturnUserDTO> response = ResponseUtil.success(createdUser, ApiConstants.MESSAGE_RESOURCE_CREATED,
 				ApiConstants.HTTP_STATUS_CREATED, ApiConstants.PATH_USERS_REGISTER_CREDIT_CARD);
 		return new ResponseEntity<>(response, HttpStatus.CREATED);

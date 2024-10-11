@@ -14,7 +14,7 @@ import com.streamit.streaming_service.model.UserModel;
 
 public interface IUserService {
 
-	ReturnUserDTO registerWithCreditCard(CreateUserDTOWithCreditCard userDto);
+	ReturnUserDTO registerWithCreditCard(CreateUserDTOWithCreditCard userDTOWithCreditCard);
 	ReturnUserDTO registerWithBankSlip(CreateUserDTO userPaymentDto);
 	ReturnUserDTO findUserDtoById(UUID id);
 	Page<ReturnUserDTO> findAll(Pageable pageable);

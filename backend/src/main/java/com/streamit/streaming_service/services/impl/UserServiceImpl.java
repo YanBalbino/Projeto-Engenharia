@@ -51,15 +51,15 @@ public class UserServiceImpl implements IUserService {
 
     @Transactional
     @Override
-    public ReturnUserDTO registerWithCreditCard(CreateUserDTOWithCreditCard userDto) {
-        if (userRepository.findByEmail(userDto.getUserDto().getEmail()).isPresent()) {
-            throw new ResourceAlreadyExistsException("Email " + userDto.getUserDto().getEmail() + " já cadastrado.");
+    public ReturnUserDTO registerWithCreditCard(CreateUserDTOWithCreditCard userDTOWithCreditCard) {
+        if (userRepository.findByEmail(userDTOWithCreditCard.getUserDTO().getEmail()).isPresent()) {
+            throw new ResourceAlreadyExistsException("Email " + userDTOWithCreditCard.getUserDTO().getEmail() + " já cadastrado.");
         }
 
         LocalDateTime currentDate = LocalDateTime.now();
 
-        PersonModel person = PersonMapper.toModel(userDto.getUserDto()); 
-        person.setSenha(passwordEncoder.encode(userDto.getUserDto().getSenha()));
+        PersonModel person = PersonMapper.toModel(userDTOWithCreditCard.getUserDTO()); 
+        person.setSenha(passwordEncoder.encode(userDTOWithCreditCard.getUserDTO().getSenha()));
         person.setRole(UserRole.USER);
 
         UserModel user = new UserModel();
@@ -67,7 +67,7 @@ public class UserServiceImpl implements IUserService {
         user.setCreatedDate(currentDate);
 
         SubscriptionModel subscription = subscriptionService.createSubscription(user, currentDate);
-        PaymentModel payment = paymentService.createPayment(user, userDto.getUserDto(), currentDate);
+        PaymentModel payment = paymentService.createPayment(user, userDTOWithCreditCard.getUserDTO(), currentDate);
 
         user.setSubscription(subscription);
         user.setPayment(payment);
@@ -75,10 +75,10 @@ public class UserServiceImpl implements IUserService {
         UserModel savedUser = userRepository.save(user);
         
         String token = tokenizationService.generateTokenFromCardData(
-        		userDto.getCreditCardDto().getCardNumber(),
-        		userDto.getCreditCardDto().getCardHolder(),
-        		userDto.getCreditCardDto().getExpiryDate(),
-        		userDto.getCreditCardDto().getCvv());
+            userDTOWithCreditCard.getCreditCardDTO().getCardNumber(),
+            userDTOWithCreditCard.getCreditCardDTO().getCardHolder(),
+            userDTOWithCreditCard.getCreditCardDTO().getExpiryDate(),
+            userDTOWithCreditCard.getCreditCardDTO().getCvv());
         
         CreditCardTokenModel cct = new CreditCardTokenModel();
         cct.setUser(savedUser);

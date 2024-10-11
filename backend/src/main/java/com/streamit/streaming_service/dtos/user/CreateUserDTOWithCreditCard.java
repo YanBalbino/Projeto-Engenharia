@@ -15,11 +15,11 @@ import lombok.ToString;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CreateUserDTOWithCreditCard {
-	
-	@NotNull(message = "Dados do usuário não podem ser nulos")
-	private CreateUserDTO userDto;
     
+    @NotNull(message = "Dados do usuário não podem ser nulos")
+    private CreateUserDTO userDTO;
+
     @NotNull(message = "Dados do cartão não podem ser nulos")
-    private CreditCardDTO creditCardDto;
+    private CreditCardDTO creditCardDTO;
     
 }
