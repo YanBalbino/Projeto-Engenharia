@@ -3,8 +3,10 @@ package com.streamit.streaming_service.services.impl;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -76,52 +78,49 @@ public class SeriesServiceImpl implements ISeriesService {
         return entityDto; 
 	}
 	
-    @Override
-    public List<ReturnSeriesDTO> findByGenre(String genre, Pageable pageable, UUID profileId) {
-        ProfileModel profile = profileService.findProfileModelById(profileId);
-        AgeRestrictionStrategy ageRestrictionStrategy;
+	@Override
+	public Page<ReturnSeriesDTO> findByGenre(UUID profileId, String genre, Pageable pageable) {
+	    ProfileModel profile = profileService.findProfileModelById(profileId);
+	    AgeRestrictionStrategy ageRestrictionStrategy;
 
-        if (profile.isPerfilInfantil()) {
-            ageRestrictionStrategy = new ChildProfileStrategy();
-        } else {
-            ageRestrictionStrategy = new RegularProfileStrategy();
-        }
+	    if (profile.isPerfilInfantil()) {
+	        ageRestrictionStrategy = new ChildProfileStrategy();
+	    } else {
+	        ageRestrictionStrategy = new RegularProfileStrategy();
+	    }
 
-        Page<SeriesModel> seriesPage = seriesRepository.findSeriesByGenre(genre, pageable);
-        List<ReturnSeriesDTO> dtos = new ArrayList<>();
+	    Page<SeriesModel> seriesPage = seriesRepository.findSeriesByGenre(genre, pageable);
+	    
+	    List<ReturnSeriesDTO> dtos = seriesPage.getContent().stream()
+	        .map(SeriesMapper::toDto) 
+	        .collect(Collectors.toList());
 
-        for (SeriesModel entity : seriesPage.getContent()) {
-            ReturnSeriesDTO entityDto = SeriesMapper.toDto(entity);
-            dtos.add(entityDto);
-        }
+	    List<ReturnSeriesDTO> filteredDtos = ageRestrictionStrategy.filterSeries(dtos);
 
-        // Aplicar filtro de restrição de idade
-        return ageRestrictionStrategy.filterSeries(dtos);
-    }
+	    return new PageImpl<>(filteredDtos, pageable, seriesPage.getTotalElements());
+	}
 
-    // Verificação de perfil infantil para todas as séries
-    @Override
-    public List<ReturnSeriesDTO> findAll(Pageable pageable, UUID profileId) {
-        ProfileModel profile = profileService.findProfileModelById(profileId);
-        AgeRestrictionStrategy ageRestrictionStrategy;
+	@Override
+	public Page<ReturnSeriesDTO> findAll(UUID profileId, Pageable pageable) {
+	    ProfileModel profile = profileService.findProfileModelById(profileId);
+	    AgeRestrictionStrategy ageRestrictionStrategy;
 
-        if (profile.isPerfilInfantil()) {
-            ageRestrictionStrategy = new ChildProfileStrategy();
-        } else {
-            ageRestrictionStrategy = new RegularProfileStrategy();
-        }
+	    if (profile.isPerfilInfantil()) {
+	        ageRestrictionStrategy = new ChildProfileStrategy();
+	    } else {
+	        ageRestrictionStrategy = new RegularProfileStrategy();
+	    }
 
-        Page<SeriesModel> seriesPage = seriesRepository.findAll(pageable);
-        List<ReturnSeriesDTO> dtos = new ArrayList<>();
+	    Page<SeriesModel> seriesPage = seriesRepository.findAll(pageable);
+	    
+	    List<ReturnSeriesDTO> dtos = seriesPage.getContent().stream()
+	        .map(SeriesMapper::toDto) 
+	        .collect(Collectors.toList());
 
-        for (SeriesModel entity : seriesPage.getContent()) {
-            ReturnSeriesDTO entityDto = SeriesMapper.toDto(entity);
-            dtos.add(entityDto);
-        }
+	    List<ReturnSeriesDTO> filteredDtos = ageRestrictionStrategy.filterSeries(dtos);
 
-        // Aplicar filtro de restrição de idade
-        return ageRestrictionStrategy.filterSeries(dtos);
-    }
+	    return new PageImpl<>(filteredDtos, pageable, seriesPage.getTotalElements());
+	}
 
 	@Override
 	public ReturnSeriesDTO update(UpdateSeriesDTO seriesDto) {

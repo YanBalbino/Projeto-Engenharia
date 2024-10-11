@@ -1,8 +1,9 @@
 package com.streamit.streaming_service.controllers;
 
-import java.util.List;
 import java.util.UUID;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -58,15 +59,22 @@ public class FilmController {
 	}
 
 	@GetMapping("/genre/{profileId}")
-	public ResponseEntity<List<ReturnFilmDTO>> getFilmsByGenre(@RequestParam("genre") String genre, Pageable pageable, UUID profileId) {
-		List<ReturnFilmDTO> filmsList = filmService.findByGenre(genre, pageable, profileId);
-		return new ResponseEntity<>(filmsList, HttpStatus.OK);
+	public ResponseEntity<Page<ReturnFilmDTO>> getFilmsByGenre(@RequestParam("genre") String genre, 
+	                                                            @PathVariable UUID profileId,
+	                                                            @RequestParam(defaultValue = "0") int page, 
+	                                                            @RequestParam(defaultValue = "10") int size) {
+	    Pageable pageable = PageRequest.of(page, size);
+	    Page<ReturnFilmDTO> filmsPage = filmService.findByGenre(genre, pageable, profileId);
+	    return new ResponseEntity<>(filmsPage, HttpStatus.OK);
 	}
 
 	@GetMapping("/{profileId}")
-	public ResponseEntity<List<ReturnFilmDTO>> getAllFilms(Pageable pageable, UUID profileId) {
-		List<ReturnFilmDTO> filmsList = filmService.findAll(pageable, profileId);
-		return new ResponseEntity<>(filmsList, HttpStatus.OK);
+	public ResponseEntity<Page<ReturnFilmDTO>> getAllFilms(@PathVariable UUID profileId, 
+	                                                        @RequestParam(defaultValue = "0") int page, 
+	                                                        @RequestParam(defaultValue = "10") int size) {
+	    Pageable pageable = PageRequest.of(page, size);
+	    Page<ReturnFilmDTO> filmsPage = filmService.findAll(pageable, profileId);
+	    return new ResponseEntity<>(filmsPage, HttpStatus.OK);
 	}
 
 	@PutMapping

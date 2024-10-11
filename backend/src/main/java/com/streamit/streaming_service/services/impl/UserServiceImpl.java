@@ -1,18 +1,19 @@
 package com.streamit.streaming_service.services.impl;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.streamit.streaming_service.dtos.payment.CreditCardDTO;
 import com.streamit.streaming_service.dtos.renew.RenewDTO;
 import com.streamit.streaming_service.dtos.user.CreateUserDTO;
+import com.streamit.streaming_service.dtos.user.CreateUserDTOWithCreditCard;
 import com.streamit.streaming_service.dtos.user.ReturnUserDTO;
 import com.streamit.streaming_service.dtos.user.UpdateUserDTO;
 import com.streamit.streaming_service.enums.UserRole;
@@ -50,15 +51,15 @@ public class UserServiceImpl implements IUserService {
 
     @Transactional
     @Override
-    public ReturnUserDTO registerWithCreditCard(CreateUserDTO userDto, CreditCardDTO creditCardDto) {
-        if (userRepository.findByEmail(userDto.getEmail()).isPresent()) {
-            throw new ResourceAlreadyExistsException("Email " + userDto.getEmail() + " já cadastrado.");
+    public ReturnUserDTO registerWithCreditCard(CreateUserDTOWithCreditCard userDto) {
+        if (userRepository.findByEmail(userDto.getUserDto().getEmail()).isPresent()) {
+            throw new ResourceAlreadyExistsException("Email " + userDto.getUserDto().getEmail() + " já cadastrado.");
         }
 
         LocalDateTime currentDate = LocalDateTime.now();
 
-        PersonModel person = PersonMapper.toModel(userDto); 
-        person.setSenha(passwordEncoder.encode(userDto.getSenha()));
+        PersonModel person = PersonMapper.toModel(userDto.getUserDto()); 
+        person.setSenha(passwordEncoder.encode(userDto.getUserDto().getSenha()));
         person.setRole(UserRole.USER);
 
         UserModel user = new UserModel();
@@ -66,7 +67,7 @@ public class UserServiceImpl implements IUserService {
         user.setCreatedDate(currentDate);
 
         SubscriptionModel subscription = subscriptionService.createSubscription(user, currentDate);
-        PaymentModel payment = paymentService.createPayment(user, userDto, currentDate);
+        PaymentModel payment = paymentService.createPayment(user, userDto.getUserDto(), currentDate);
 
         user.setSubscription(subscription);
         user.setPayment(payment);
@@ -74,10 +75,10 @@ public class UserServiceImpl implements IUserService {
         UserModel savedUser = userRepository.save(user);
         
         String token = tokenizationService.generateTokenFromCardData(
-                creditCardDto.getCardNumber(),
-                creditCardDto.getCardHolder(),
-                creditCardDto.getExpiryDate(),
-                creditCardDto.getCvv());
+        		userDto.getCreditCardDto().getCardNumber(),
+        		userDto.getCreditCardDto().getCardHolder(),
+        		userDto.getCreditCardDto().getExpiryDate(),
+        		userDto.getCreditCardDto().getCvv());
         
         CreditCardTokenModel cct = new CreditCardTokenModel();
         cct.setUser(savedUser);
@@ -122,13 +123,14 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public List<ReturnUserDTO> findAll(Pageable pageable) {
+    public Page<ReturnUserDTO> findAll(Pageable pageable) {
         Page<UserModel> entities = userRepository.findAll(pageable);
-        List<ReturnUserDTO> dtos = new ArrayList<>();
-        for(UserModel entity : entities) {
-            dtos.add(UserMapper.toDtoReturn(entity));
-        }
-        return dtos;
+
+        List<ReturnUserDTO> dtos = entities.getContent().stream()
+            .map(UserMapper::toDtoReturn) 
+            .collect(Collectors.toList());
+
+        return new PageImpl<>(dtos, pageable, entities.getTotalElements());
     }
 
     @Override

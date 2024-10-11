@@ -1,8 +1,9 @@
 package com.streamit.streaming_service.controllers;
 
-import java.util.List;
 import java.util.UUID;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -50,7 +51,7 @@ public class SeriesController {
 		ReturnSeriesDTO series = seriesService.findById(id);
 		return new ResponseEntity<>(series, HttpStatus.OK);
 	}
-	
+
 	@GetMapping("/media/{mediaId}")
 	public ResponseEntity<ReturnSeriesDTO> getFilmByMediaId(@PathVariable UUID mediaId) {
 		ReturnSeriesDTO series = seriesService.findByMedia(mediaId);
@@ -58,15 +59,18 @@ public class SeriesController {
 	}
 
 	@GetMapping("/genre/{profileId}")
-	public ResponseEntity<List<ReturnSeriesDTO>> getSeriesByGenre(@RequestParam("genre") String genre,
-			Pageable pageable, UUID profileId) {
-		List<ReturnSeriesDTO> seriesList = seriesService.findByGenre(genre, pageable, profileId);
+	public ResponseEntity<Page<ReturnSeriesDTO>> getSeriesByGenre(UUID profileId, @RequestParam("genre") String genre,
+			@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
+		Pageable pageable = PageRequest.of(page, size);
+		Page<ReturnSeriesDTO> seriesList = seriesService.findByGenre(profileId, genre, pageable);
 		return new ResponseEntity<>(seriesList, HttpStatus.OK);
 	}
 
 	@GetMapping("/{profileId}")
-	public ResponseEntity<List<ReturnSeriesDTO>> getAllSeries(Pageable pageable, UUID profileId) {
-		List<ReturnSeriesDTO> seriesList = seriesService.findAll(pageable, profileId);
+	public ResponseEntity<Page<ReturnSeriesDTO>> getAllSeries(UUID profileId,
+			@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
+		Pageable pageable = PageRequest.of(page, size);
+		Page<ReturnSeriesDTO> seriesList = seriesService.findAll(profileId, pageable);
 		return new ResponseEntity<>(seriesList, HttpStatus.OK);
 	}
 
@@ -77,28 +81,24 @@ public class SeriesController {
 				ApiConstants.MESSAGE_RESOURCE_UPDATED, ApiConstants.HTTP_STATUS_OK, ApiConstants.PATH_SERIES);
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
-	
-    @PutMapping("/{id}/season")
-    public ResponseEntity<ApiResponse<ReturnSeriesDTO>> addSeason(@PathVariable UUID id, 
-    		@Valid @RequestBody CreateSeasonDTO seasonDto) {
-    	ReturnSeriesDTO updatedSeries = seriesService.addSeason(id, seasonDto);
-    	ApiResponse<ReturnSeriesDTO> response = ResponseUtil.success(updatedSeries, 
-    			ApiConstants.MESSAGE_RESOURCE_ADDED, 
-    			ApiConstants.HTTP_STATUS_OK, 
-    			ApiConstants.PATH_SERIES_ID_SEASON);
-    	return new ResponseEntity<>(response, HttpStatus.OK);
-    }
-	
-    @PutMapping("/{id}/actor")
-    public ResponseEntity<ApiResponse<ReturnSeriesDTO>> addActor(@PathVariable UUID id, 
-    		@Valid @RequestBody CreateActorDTO actorDto) {
-    	ReturnSeriesDTO updatedSeries = seriesService.addActor(id, actorDto);
-    	ApiResponse<ReturnSeriesDTO> response = ResponseUtil.success(updatedSeries, 
-    			ApiConstants.MESSAGE_RESOURCE_ADDED, 
-    			ApiConstants.HTTP_STATUS_OK, 
-    			ApiConstants.PATH_SERIES_ID_ACTOR);
-    	return new ResponseEntity<>(response, HttpStatus.OK);
-    }
+
+	@PutMapping("/{id}/season")
+	public ResponseEntity<ApiResponse<ReturnSeriesDTO>> addSeason(@PathVariable UUID id,
+			@Valid @RequestBody CreateSeasonDTO seasonDto) {
+		ReturnSeriesDTO updatedSeries = seriesService.addSeason(id, seasonDto);
+		ApiResponse<ReturnSeriesDTO> response = ResponseUtil.success(updatedSeries, ApiConstants.MESSAGE_RESOURCE_ADDED,
+				ApiConstants.HTTP_STATUS_OK, ApiConstants.PATH_SERIES_ID_SEASON);
+		return new ResponseEntity<>(response, HttpStatus.OK);
+	}
+
+	@PutMapping("/{id}/actor")
+	public ResponseEntity<ApiResponse<ReturnSeriesDTO>> addActor(@PathVariable UUID id,
+			@Valid @RequestBody CreateActorDTO actorDto) {
+		ReturnSeriesDTO updatedSeries = seriesService.addActor(id, actorDto);
+		ApiResponse<ReturnSeriesDTO> response = ResponseUtil.success(updatedSeries, ApiConstants.MESSAGE_RESOURCE_ADDED,
+				ApiConstants.HTTP_STATUS_OK, ApiConstants.PATH_SERIES_ID_ACTOR);
+		return new ResponseEntity<>(response, HttpStatus.OK);
+	}
 
 	@DeleteMapping("/{id}")
 	public ResponseEntity<ApiResponse<Void>> deleteSeries(@PathVariable UUID id) {

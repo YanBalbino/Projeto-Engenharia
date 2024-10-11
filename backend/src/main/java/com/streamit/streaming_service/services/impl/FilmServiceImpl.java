@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.UUID;
 
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -92,52 +93,57 @@ public class FilmServiceImpl implements IFilmService {
 				.orElseThrow(() -> new ResourceNotFoundException("Filme não encontrado com id " + id));
 	}
 
-    @Override
-    public List<ReturnFilmDTO> findByGenre(String genre, Pageable pageable, UUID profileId) {
-        ProfileModel profile = profileService.findProfileModelById(profileId);
-        AgeRestrictionStrategy ageRestrictionStrategy;
+	@Override
+	public Page<ReturnFilmDTO> findByGenre(String genre, Pageable pageable, UUID profileId) {
+	    ProfileModel profile = profileService.findProfileModelById(profileId);
+	    AgeRestrictionStrategy ageRestrictionStrategy;
 
-        if (profile.isPerfilInfantil()) {
-            ageRestrictionStrategy = new ChildProfileStrategy();
-        } else {
-            ageRestrictionStrategy = new RegularProfileStrategy();
-        }
+	    if (profile.isPerfilInfantil()) {
+	        ageRestrictionStrategy = new ChildProfileStrategy();
+	    } else {
+	        ageRestrictionStrategy = new RegularProfileStrategy();
+	    }
 
-        Page<FilmModel> filmPage = filmRepository.findFilmsByGenre(genre, pageable);
-        List<ReturnFilmDTO> dtos = new ArrayList<>();
+	    Page<FilmModel> filmPage = filmRepository.findFilmsByGenre(genre, pageable);
+	    List<ReturnFilmDTO> dtos = new ArrayList<>();
 
-        for (FilmModel entity : filmPage.getContent()) {
-            ReturnFilmDTO entityDto = FilmMapper.toDto(entity);
-            dtos.add(entityDto);
-        }
-        
-        // Aplicar filtro de restrição de idade
-        return ageRestrictionStrategy.filterFilm(dtos);
-    }
+	    for (FilmModel entity : filmPage.getContent()) {
+	        ReturnFilmDTO entityDto = FilmMapper.toDto(entity);
+	        dtos.add(entityDto);
+	    }
+	    
+	    // Aplicar filtro de restrição de idade
+	    List<ReturnFilmDTO> filteredDtos = ageRestrictionStrategy.filterFilm(dtos);
 
-    // Verificação de perfil infantil para todos os filmes
-    @Override
-    public List<ReturnFilmDTO> findAll(Pageable pageable, UUID profileId) {
-        ProfileModel profile = profileService.findProfileModelById(profileId);
-        AgeRestrictionStrategy ageRestrictionStrategy;
+	    // Criar um Page de ReturnFilmDTO
+	    return new PageImpl<>(filteredDtos, pageable, filmPage.getTotalElements());
+	}
 
-        if (profile.isPerfilInfantil()) {
-            ageRestrictionStrategy = new ChildProfileStrategy();
-        } else {
-            ageRestrictionStrategy = new RegularProfileStrategy();
-        }
+	@Override
+	public Page<ReturnFilmDTO> findAll(Pageable pageable, UUID profileId) {
+	    ProfileModel profile = profileService.findProfileModelById(profileId);
+	    AgeRestrictionStrategy ageRestrictionStrategy;
 
-        Page<FilmModel> filmPage = filmRepository.findAll(pageable);
-        List<ReturnFilmDTO> dtos = new ArrayList<>();
+	    if (profile.isPerfilInfantil()) {
+	        ageRestrictionStrategy = new ChildProfileStrategy();
+	    } else {
+	        ageRestrictionStrategy = new RegularProfileStrategy();
+	    }
 
-        for (FilmModel entity : filmPage.getContent()) {
-            ReturnFilmDTO entityDto = FilmMapper.toDto(entity);
-            dtos.add(entityDto);
-        }
+	    Page<FilmModel> filmPage = filmRepository.findAll(pageable);
+	    List<ReturnFilmDTO> dtos = new ArrayList<>();
 
-        // Aplicar filtro de restrição de idade
-        return ageRestrictionStrategy.filterFilm(dtos);
-    }
+	    for (FilmModel entity : filmPage.getContent()) {
+	        ReturnFilmDTO entityDto = FilmMapper.toDto(entity);
+	        dtos.add(entityDto);
+	    }
+
+	    // Aplicar filtro de restrição de idade
+	    List<ReturnFilmDTO> filteredDtos = ageRestrictionStrategy.filterFilm(dtos);
+
+	    // Criar um Page de ReturnFilmDTO
+	    return new PageImpl<>(filteredDtos, pageable, filmPage.getTotalElements());
+	}
 
 	@Override
 	public ReturnFilmDTO update(UpdateFilmDTO filmDto) {

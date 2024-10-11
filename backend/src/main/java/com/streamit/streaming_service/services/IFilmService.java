@@ -1,8 +1,8 @@
 package com.streamit.streaming_service.services;
 
-import java.util.List;
 import java.util.UUID;
 
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import com.streamit.streaming_service.dtos.actor.CreateActorDTO;
@@ -17,8 +17,8 @@ public interface IFilmService {
 
 	ReturnFilmDTO create(CreateFilmDTO filmDto);
 	ReturnFilmDTO findById(UUID id);
-	List<ReturnFilmDTO> findByGenre(String genre, Pageable pageable, UUID profileId);
-	List<ReturnFilmDTO> findAll(Pageable pageable, UUID profileId);
+	Page<ReturnFilmDTO> findByGenre(String genre, Pageable pageable, UUID profileId);
+	Page<ReturnFilmDTO> findAll(Pageable pageable, UUID profileId);
 	ReturnFilmDTO findByMedia(UUID mediaId);
 	ReturnFilmDTO update(UpdateFilmDTO filmDto);
 	ReturnFilmDTO addAudio(UUID id, CreateAudioDTO audioDto);

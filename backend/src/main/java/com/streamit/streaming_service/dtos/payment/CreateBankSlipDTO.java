@@ -11,7 +11,7 @@ import lombok.ToString;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-public class CreateBankSlipDTO extends CreatePaymentDTO{
+public class CreateBankSlipDTO{
     private String payerName;
     private String payerCpf;
 }
