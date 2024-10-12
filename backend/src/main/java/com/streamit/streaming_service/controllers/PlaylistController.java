@@ -8,12 +8,17 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import lombok.AllArgsConstructor;
 
 import java.net.MalformedURLException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+@RestController
 @RequestMapping("/api/streaming")
+@AllArgsConstructor
 public class PlaylistController {
 
     private final String baseDir = "caminho/Playlists";
