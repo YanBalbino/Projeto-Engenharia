@@ -25,5 +25,8 @@ spring:
             enable: true
 api:
  streamit:
-   token:
-     secret: ${JWT_SECRET:default-secret-key}
+  imdb:
+   key: 11ae7592
+  token:
+   secret: ${JWT_SECRET:default-secret-key}
+

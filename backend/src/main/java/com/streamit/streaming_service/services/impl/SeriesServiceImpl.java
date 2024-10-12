@@ -24,8 +24,10 @@ import com.streamit.streaming_service.model.ActorModel;
 import com.streamit.streaming_service.model.ProfileModel;
 import com.streamit.streaming_service.model.SeasonModel;
 import com.streamit.streaming_service.model.SeriesModel;
+import com.streamit.streaming_service.omdb.MediaOMDB;
 import com.streamit.streaming_service.repositories.SeriesRepository;
 import com.streamit.streaming_service.services.IActorService;
+import com.streamit.streaming_service.services.IMediaOMDBService;
 import com.streamit.streaming_service.services.IProfileService;
 import com.streamit.streaming_service.services.ISeriesService;
 import com.streamit.streaming_service.strategy.profile.AgeRestrictionStrategy;
@@ -41,13 +43,17 @@ public class SeriesServiceImpl implements ISeriesService {
     private SeriesRepository seriesRepository;
     private IActorService actorService;
     private final IProfileService profileService;
+    private IMediaOMDBService omdbService;
 
     @Override
-    public ReturnSeriesDTO create(CreateSeriesDTO seriesDto) {
-        if (seriesRepository.existsByTitle(seriesDto.getMedia().getTitulo())) {
+    public ReturnSeriesDTO create(String titulo, CreateSeriesDTO seriesDto) {
+        if (seriesRepository.existsByTitle(titulo)) {
             throw new ResourceAlreadyExistsException("Série já cadastrada.");
         }
-        SeriesModel entity = SeriesMapper.toEntity(seriesDto, new SeriesModel());
+        
+        MediaOMDB omdb = omdbService.getMedia(titulo);
+        
+        SeriesModel entity = SeriesMapper.toEntity(seriesDto, new SeriesModel(), omdb);
     	// lógica para adicionar atores que já existem no bd
     	List<UUID> actorIds = seriesDto.getMedia().getActorIds();
     	if(!actorIds.isEmpty()) {

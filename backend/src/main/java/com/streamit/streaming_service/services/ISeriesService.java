@@ -14,7 +14,7 @@ import com.streamit.streaming_service.model.SeriesModel;
 
 public interface ISeriesService {
 
-	ReturnSeriesDTO create(CreateSeriesDTO seriesDto);
+	ReturnSeriesDTO create(String titulo, CreateSeriesDTO seriesDto);
 	ReturnSeriesDTO findById(UUID id);
 	Page<ReturnSeriesDTO> findByGenre(UUID profileId, String genre, Pageable pageable);
 	Page<ReturnSeriesDTO> findAll(UUID profileId, Pageable pageable);

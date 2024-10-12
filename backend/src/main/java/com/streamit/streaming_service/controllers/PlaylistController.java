@@ -28,15 +28,41 @@ public class PlaylistController {
         String playlistFileName;
         String subtitleFileName;
 
-        // Definindo os nomes dos arquivos com base na linguagem
-        if (language.equalsIgnoreCase("pt")) {
-            playlistFileName = String.format("playlist_pt%d.ts", number);
-            subtitleFileName = String.format("legenda_pt%d.vtt", number);
-        } else if (language.equalsIgnoreCase("eng")) {
-            playlistFileName = String.format("playlist_eng%d.ts", number);
-            subtitleFileName = String.format("legenda_eng%d.vtt", number);
-        } else {
-            return new ResponseEntity<>("Idioma inválido.", HttpStatus.BAD_REQUEST);
+        switch (language.toLowerCase()) {
+            case "pt": // Português
+                playlistFileName = String.format("playlist_pt%d.ts", number);
+                subtitleFileName = String.format("legenda_pt%d.vtt", number);
+                break;
+            case "eng": // Inglês
+                playlistFileName = String.format("playlist_eng%d.ts", number);
+                subtitleFileName = String.format("legenda_eng%d.vtt", number);
+                break;
+            case "es": // Espanhol
+                playlistFileName = String.format("playlist_es%d.ts", number);
+                subtitleFileName = String.format("legenda_es%d.vtt", number);
+                break;
+            case "fr": // Francês
+                playlistFileName = String.format("playlist_fr%d.ts", number);
+                subtitleFileName = String.format("legenda_fr%d.vtt", number);
+                break;
+            case "de": // Alemão
+                playlistFileName = String.format("playlist_de%d.ts", number);
+                subtitleFileName = String.format("legenda_de%d.vtt", number);
+                break;
+            case "zh": // Chinês
+                playlistFileName = String.format("playlist_zh%d.ts", number);
+                subtitleFileName = String.format("legenda_zh%d.vtt", number);
+                break;
+            case "jp": // Japonês
+                playlistFileName = String.format("playlist_jp%d.ts", number);
+                subtitleFileName = String.format("legenda_jp%d.vtt", number);
+                break;
+            case "it": // Italiano
+                playlistFileName = String.format("playlist_it%d.ts", number);
+                subtitleFileName = String.format("legenda_it%d.vtt", number);
+                break;
+            default:
+                return new ResponseEntity<>("Idioma inválido.", HttpStatus.BAD_REQUEST);
         }
 
         // Construindo o caminho da pasta

@@ -37,7 +37,7 @@ public class MediaModel implements Serializable {
 	private UUID id;
 	@Column(unique = true)
 	private String titulo;
-	private int anoProducao;
+	private String anoProducao;
 	private String genero;
 	private String descricao;
 	private String diretor;

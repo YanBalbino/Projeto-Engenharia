@@ -21,7 +21,7 @@ public class UpdateMediaDTO {
 
 	private UUID id;
 	private String titulo;
-	private Integer anoProducao;
+	private String anoProducao;
 	private String genero;
 	private String descricao;
 	private String diretor;

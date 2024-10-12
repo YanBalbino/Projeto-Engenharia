@@ -37,10 +37,10 @@ public class SeriesController {
 
 	private final ISeriesService seriesService;
 
-	@PostMapping
+	@PostMapping("/{titulo}")
 	public ResponseEntity<ApiResponse<ReturnSeriesDTO>> createSeries(
-			@Valid @RequestBody CreateSeriesDTO createSeriesDTO) {
-		ReturnSeriesDTO createdSeries = seriesService.create(createSeriesDTO);
+			@PathVariable String titulo, @Valid @RequestBody CreateSeriesDTO createSeriesDTO) {
+		ReturnSeriesDTO createdSeries = seriesService.create(titulo, createSeriesDTO);
 		ApiResponse<ReturnSeriesDTO> response = ResponseUtil.success(createdSeries,
 				ApiConstants.MESSAGE_RESOURCE_CREATED, ApiConstants.HTTP_STATUS_CREATED, ApiConstants.PATH_SERIES);
 		return new ResponseEntity<>(response, HttpStatus.CREATED);

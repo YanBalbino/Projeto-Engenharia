@@ -26,9 +26,11 @@ import com.streamit.streaming_service.model.AudioModel;
 import com.streamit.streaming_service.model.FilmModel;
 import com.streamit.streaming_service.model.ProfileModel;
 import com.streamit.streaming_service.model.SubtitleModel;
+import com.streamit.streaming_service.omdb.MediaOMDB;
 import com.streamit.streaming_service.repositories.FilmRepository;
 import com.streamit.streaming_service.services.IActorService;
 import com.streamit.streaming_service.services.IFilmService;
+import com.streamit.streaming_service.services.IMediaOMDBService;
 import com.streamit.streaming_service.services.IProfileService;
 import com.streamit.streaming_service.strategy.profile.AgeRestrictionStrategy;
 import com.streamit.streaming_service.strategy.profile.ChildProfileStrategy;
@@ -42,25 +44,28 @@ public class FilmServiceImpl implements IFilmService {
 
     private FilmRepository filmRepository;
     private IActorService actorService;
-    private final IProfileService profileService;
-
-    //supor que filmes sem atores podem ser criados, usando IA, por exemplo
+    private IProfileService profileService;
+    private IMediaOMDBService omdbService;
+    
+    //supor que filmes sem atores podem ser criados
     @Override
-    public ReturnFilmDTO create(CreateFilmDTO filmDto) {
+    public ReturnFilmDTO create(String titulo, CreateFilmDTO filmDto) {
     	StringBuilder sb = new StringBuilder();
-    	if (filmRepository.existsByTitle(filmDto.getMedia().getTitulo())) {
-    	    sb.append("Filme já cadastrado com o título: ").append(filmDto.getMedia().getTitulo()).append(". ");
+    	if (filmRepository.existsByTitle(titulo)) {
+    	    sb.append("Filme já cadastrado com o título: ").append(titulo).append(". ");
     	}
 
     	if (filmRepository.existsByUrl(filmDto.getVideoUrl())) {
     	    sb.append("Filme já cadastrado com a URL: ").append(filmDto.getVideoUrl()).append(". ");
     	}
+    	
+    	MediaOMDB omdb = omdbService.getMedia(titulo);
 
     	if (sb.length() > 0) {
     	    throw new ResourceAlreadyExistsException(sb.toString().trim());
     	}
     	
-    	FilmModel entityMapped = FilmMapper.toEntity(filmDto, new FilmModel());
+    	FilmModel entityMapped = FilmMapper.toEntity(filmDto, new FilmModel(), omdb);
     	
     	// lógica para adicionar atores que já existem no bd
     	List<UUID> actorIds = filmDto.getMedia().getActorIds();

@@ -38,9 +38,9 @@ public class FilmController {
 
 	private final IFilmService filmService;
 
-	@PostMapping
-	public ResponseEntity<ApiResponse<ReturnFilmDTO>> createFilm(@Valid @RequestBody CreateFilmDTO createFilmDTO) {
-		ReturnFilmDTO createdFilm = filmService.create(createFilmDTO);
+	@PostMapping("/{titulo}")
+	public ResponseEntity<ApiResponse<ReturnFilmDTO>> createFilm(@PathVariable String titulo, @Valid @RequestBody CreateFilmDTO createFilmDTO) {
+		ReturnFilmDTO createdFilm = filmService.create(titulo, createFilmDTO);
 		ApiResponse<ReturnFilmDTO> response = ResponseUtil.success(createdFilm, ApiConstants.MESSAGE_RESOURCE_CREATED,
 				ApiConstants.HTTP_STATUS_CREATED, ApiConstants.PATH_FILMS);
 		return new ResponseEntity<>(response, HttpStatus.CREATED);

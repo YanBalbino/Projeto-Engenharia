@@ -11,6 +11,7 @@ import com.streamit.streaming_service.dtos.media.ReturnMediaDTO;
 import com.streamit.streaming_service.dtos.media.UpdateMediaDTO;
 import com.streamit.streaming_service.model.ActorModel;
 import com.streamit.streaming_service.model.MediaModel;
+import com.streamit.streaming_service.omdb.MediaOMDB;
 
 public class MediaMapper {
 	
@@ -33,13 +34,13 @@ public class MediaMapper {
         }
     }
 	
-    public static void toEntity(CreateMediaDTO dto, MediaModel media) {
-        media.setTitulo(dto.getTitulo());
-        media.setAnoProducao(dto.getAnoProducao());
-        media.setGenero(dto.getGenero());
-        media.setDescricao(dto.getDescricao());
-        media.setDiretor(dto.getDiretor());
-        media.setImgUrl(dto.getImgUrl());
+    public static void toEntity(CreateMediaDTO dto, MediaModel media, MediaOMDB omdb) {
+        media.setTitulo(omdb.getTitle());
+        media.setAnoProducao(omdb.getYear());
+        media.setGenero(omdb.getGenre());
+        media.setDescricao(omdb.getPlot());
+        media.setDiretor(omdb.getDirector());
+        media.setImgUrl(omdb.getPoster());
         media.setFaixaEtaria(dto.getFaixaEtaria());
         
         if (dto.getAtores() != null) {

@@ -15,7 +15,7 @@ import com.streamit.streaming_service.model.FilmModel;
 
 public interface IFilmService {
 
-	ReturnFilmDTO create(CreateFilmDTO filmDto);
+	ReturnFilmDTO create(String titulo, CreateFilmDTO filmDto);
 	ReturnFilmDTO findById(UUID id);
 	Page<ReturnFilmDTO> findByGenre(String genre, Pageable pageable, UUID profileId);
 	Page<ReturnFilmDTO> findAll(Pageable pageable, UUID profileId);
