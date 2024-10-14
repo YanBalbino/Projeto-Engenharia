@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { ArrowLeftOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
-import { Checkbox } from "antd";
-import type { CheckboxProps } from 'antd';
+
 import './checkbox.css'
 
 const genders = [ 
