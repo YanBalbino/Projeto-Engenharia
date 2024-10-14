@@ -77,7 +77,7 @@ public class FilmController {
 	    return new ResponseEntity<>(filmsPage, HttpStatus.OK);
 	}
 
-	@PutMapping
+	@PutMapping("/update")
 	public ResponseEntity<ApiResponse<ReturnFilmDTO>> updateFilm(@RequestBody UpdateFilmDTO createFilmDTO) {
 		ReturnFilmDTO updatedFilm = filmService.update(createFilmDTO);
 		ApiResponse<ReturnFilmDTO> response = ResponseUtil.success(updatedFilm, ApiConstants.MESSAGE_RESOURCE_UPDATED,
@@ -85,7 +85,7 @@ public class FilmController {
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 	
-    @PutMapping("/{id}/audio")
+    @PutMapping("/update/{id}/audio")
     public ResponseEntity<ApiResponse<ReturnFilmDTO>> addAudio(@PathVariable UUID id, 
                                                                    @Valid @RequestBody CreateAudioDTO audioDTO) {
     	ReturnFilmDTO updatedFilm = filmService.addAudio(id, audioDTO);
@@ -96,7 +96,7 @@ public class FilmController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @PutMapping("/{id}/subtitle")
+    @PutMapping("/update/{id}/subtitle")
     public ResponseEntity<ApiResponse<ReturnFilmDTO>> addSubtitle(@PathVariable UUID id, 
                                                                       @Valid @RequestBody CreateSubtitleDTO subtitleDTO) {
     	ReturnFilmDTO updatedFilm = filmService.addSubtitle(id, subtitleDTO);
@@ -107,7 +107,7 @@ public class FilmController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
     
-    @PutMapping("/{id}/actor")
+    @PutMapping("/update/{id}/actor")
     public ResponseEntity<ApiResponse<ReturnFilmDTO>> addActor(@PathVariable UUID id, 
     		@Valid @RequestBody CreateActorDTO actorDto) {
     	ReturnFilmDTO updatedFilm = filmService.addActor(id, actorDto);
@@ -118,7 +118,7 @@ public class FilmController {
     	return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-	@DeleteMapping("/{id}")
+	@DeleteMapping("/delete/{id}")
 	public ResponseEntity<ApiResponse<Void>> deleteFilm(@PathVariable UUID id) {
 		filmService.delete(id);
 		ApiResponse<Void> response = ResponseUtil.success(null, ApiConstants.MESSAGE_RESOURCE_DELETED,

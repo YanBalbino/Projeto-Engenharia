@@ -48,7 +48,7 @@ public class AudioController {
         return new ResponseEntity<>(audioDto, HttpStatus.OK);
     }
 
-    @PutMapping
+    @PutMapping("/update")
     public ResponseEntity<ApiResponse<ReturnAudioDTO>> updateAudio(@Valid @RequestBody UpdateAudioDTO audioDto) {
 
         ReturnAudioDTO updatedAudio = audioService.update(audioDto);
@@ -61,7 +61,7 @@ public class AudioController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
     
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<ApiResponse<Void>> deleteActor(@PathVariable UUID id) {
     	audioService.delete(id);
         ApiResponse<Void> response = ResponseUtil.success(null, 

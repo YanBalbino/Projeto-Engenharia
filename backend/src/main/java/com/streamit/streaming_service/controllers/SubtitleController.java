@@ -48,7 +48,7 @@ public class SubtitleController {
     	return new ResponseEntity<>(subtitleDto, HttpStatus.OK);
     }
 
-    @PutMapping
+    @PutMapping("/update")
     public ResponseEntity<ApiResponse<ReturnSubtitleDTO>> updateSubtitle(@Valid @RequestBody UpdateSubtitleDTO subtitleDto) {
 
         ReturnSubtitleDTO updatedSubtitle = subtitleService.update(subtitleDto);
@@ -61,7 +61,7 @@ public class SubtitleController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
     
-	@DeleteMapping("/{id}")
+	@DeleteMapping("/delete/{id}")
 	public ResponseEntity<ApiResponse<Void>> deleteActor(@PathVariable UUID id) {
 		subtitleService.delete(id);
 		ApiResponse<Void> response = ResponseUtil.success(null, ApiConstants.MESSAGE_RESOURCE_DELETED,

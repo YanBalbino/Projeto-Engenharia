@@ -55,7 +55,7 @@ public class ProfileController {
         return new ResponseEntity<>(profiles, HttpStatus.OK);
     }
 
-    @PutMapping
+    @PutMapping("/update")
     public ResponseEntity<ApiResponse<ReturnProfileDTO>> updateProfile(@RequestBody UpdateProfileDTO profileDTO) {
     	ReturnProfileDTO updatedProfile = profileService.updateProfile(profileDTO);
         ApiResponse<ReturnProfileDTO> response = ResponseUtil.success(updatedProfile, 
@@ -65,7 +65,7 @@ public class ProfileController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<ApiResponse<Void>> deleteProfile(@PathVariable UUID id) {
         profileService.delete(id);
         ApiResponse<Void> response = ResponseUtil.success(null, 

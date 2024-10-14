@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.streamit.streaming_service.dtos.login.LoginDTO;
+import com.streamit.streaming_service.dtos.login.LoginResponseDTO;
 import com.streamit.streaming_service.services.IAuthenticationService;
 import com.streamit.streaming_service.services.ITokenJWTService;
 
@@ -28,12 +29,12 @@ public class AuthenticationController {
 	private final ITokenJWTService tokenService;
 	
 	@PostMapping("/login")
-	public ResponseEntity<String> login(@Valid @RequestBody LoginDTO loginDto) {
-		String token = authenticationService.login(loginDto);
-		return new ResponseEntity<>(token, HttpStatus.OK);
+	public ResponseEntity<LoginResponseDTO> login(@Valid @RequestBody LoginDTO loginDto) {
+		LoginResponseDTO responseDto = authenticationService.login(loginDto);
+		return new ResponseEntity<>(responseDto, HttpStatus.OK);
 	}
 	
-    @GetMapping("/recover-id")
+    @GetMapping("/recover-id") // remover
     public ResponseEntity<String> validateToken(@RequestHeader("Authorization") String token) {
         try {
             String cleanedToken = token.startsWith("Bearer ") ? token.substring(7) : token;

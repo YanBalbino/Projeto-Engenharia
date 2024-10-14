@@ -54,7 +54,7 @@ public class SeasonController {
         return new ResponseEntity<>(seasonsList, HttpStatus.OK);
     }
 
-    @PutMapping
+    @PutMapping("/update")
     public ResponseEntity<ApiResponse<ReturnSeasonDTO>> updateSeason(@RequestBody UpdateSeasonDTO updateSeasonDTO) {
         ReturnSeasonDTO updatedSeason = seasonService.update(updateSeasonDTO);
         ApiResponse<ReturnSeasonDTO> response = ResponseUtil.success(updatedSeason, ApiConstants.MESSAGE_RESOURCE_UPDATED,
@@ -62,7 +62,7 @@ public class SeasonController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
     
-    @PutMapping("/{id}/episode")
+    @PutMapping("/update/{id}/episode")
     public ResponseEntity<ApiResponse<ReturnSeasonDTO>> addEpisode(@PathVariable UUID id, 
     		@Valid @RequestBody CreateEpisodeDTO episodeDto) {
     	ReturnSeasonDTO updatedFilm = seasonService.addEpisode(id, episodeDto);
@@ -73,7 +73,7 @@ public class SeasonController {
     	return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<ApiResponse<Void>> deleteSeason(@PathVariable UUID id) {
         seasonService.delete(id);
         ApiResponse<Void> response = ResponseUtil.success(null, ApiConstants.MESSAGE_RESOURCE_DELETED,

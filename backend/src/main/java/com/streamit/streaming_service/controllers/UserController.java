@@ -63,14 +63,14 @@ public class UserController {
 		return new ResponseEntity<>(user, HttpStatus.OK);
 	}
 
-	@GetMapping
+	@GetMapping("/get-all")
 	public ResponseEntity<Page<ReturnUserDTO>> getAllUsers(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
 		Pageable pageable = PageRequest.of(page, size);
 		Page<ReturnUserDTO> users = userService.findAll(pageable);
 		return new ResponseEntity<>(users, HttpStatus.OK);
 	}
 
-	@PutMapping("/renew")
+	@PutMapping("/update/renew")
 	public ResponseEntity<ApiResponse<ReturnUserDTO>> renovarInscricao(@Valid @RequestBody RenewDTO renewDto) {
 
 		ReturnUserDTO createdUser = userService.renovarInscricao(renewDto);
@@ -80,7 +80,7 @@ public class UserController {
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 
-	@PutMapping
+	@PutMapping("/update")
 	public ResponseEntity<ApiResponse<ReturnUserDTO>> updateUser(@Valid @RequestBody UpdateUserDTO userDto) {
 		ReturnUserDTO createdUser = userService.updateName(userDto);
 
@@ -89,7 +89,7 @@ public class UserController {
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 
-	@DeleteMapping("/{id}")
+	@DeleteMapping("/delete/{id}")
 	public ResponseEntity<ApiResponse<Void>> deleteUser(@PathVariable UUID id) {
 		userService.delete(id);
 		ApiResponse<Void> response = ResponseUtil.success(null, ApiConstants.MESSAGE_RESOURCE_DELETED,

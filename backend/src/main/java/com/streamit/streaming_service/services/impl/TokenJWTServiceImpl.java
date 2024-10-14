@@ -25,7 +25,7 @@ public class TokenJWTServiceImpl implements ITokenJWTService{
         Algorithm algorithm = Algorithm.HMAC256(secret);
         String token = JWT.create()
                 .withIssuer("streamit-api")
-                .withSubject(user.getId().toString()) 
+                .withSubject(user.getEmail().toString()) 
                 .withExpiresAt(generateExpirationDate())
                 .sign(algorithm);
         return token;

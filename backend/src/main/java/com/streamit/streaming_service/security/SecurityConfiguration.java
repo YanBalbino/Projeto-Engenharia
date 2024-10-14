@@ -49,20 +49,37 @@ public class SecurityConfiguration {
 	                }
 	            }))
 	            .authorizeHttpRequests(authorize -> authorize
-	                    .requestMatchers(HttpMethod.POST, "/api/login").permitAll()
-	                    .requestMatchers(HttpMethod.POST, "/api/users/register/credit-card").permitAll()
-	                    .anyRequest().permitAll()
+	                    .requestMatchers(HttpMethod.POST, "/api/login", "/api/users/register/**").permitAll()
+	                    /*.requestMatchers(HttpMethod.PUT, "/api/profiles/update", "/api/medias/update", "/api/films/update", "/api/films/update/{id}/audio", "/api/films/update/{id}/subtitle", 
+	                    		"/api/films/update/{id}/actor", "/api/actors/update", "/api/audios/update", "/api/episodes/update", "/api/episodes/update/{id}/audio", 
+	                    		"/api/episodes/update/{id}/subtitle", "/api/seasons", "/api/series").hasRole("ADMIN")
+	                    .requestMatchers(HttpMethod.DELETE, "/api/profiles/delete/{id}", "/api/films/delete/{id}", "/api/actors/delete/{id}", "/api/audios/delete/{id}", 
+	                    		"/api/episodes/delete/{id}", "/api/medias/delete/{id}", "/api/seasons/delete/{id}", "/api/series/delete/{id}", "/api/users/delete/{id}").hasRole("ADMIN")
+	                    .requestMatchers(HttpMethod.POST, "/api/films/{titulo}", "/api/medias/update", "/api/profiles/user/{idUser}", "/api/seasons/{seriesId}", "/api/series/{titulo}", 
+                                "/api/subtitles/update", "/api/subtitles/delete/{id}").hasRole("ADMIN") 
+	                    .requestMatchers(HttpMethod.GET,"/api/users/get-all").hasRole("ADMIN")
+	                    .requestMatchers(HttpMethod.PUT, "api/users/update/renew", "api/users/update").hasRole("USER")
+	                    .requestMatchers(HttpMethod.POST, "/api/users/solicitar-alteracao-senha", "/api/users/verificar-codigo", "/api/users/alterar-senha").hasRole("USER")
+	                    .requestMatchers(HttpMethod.GET, "/api/actors/media/{mediaId}", "/api/actors/{id}", "/api/actors/name", "/api/audios/{id}", "/api/audios/films/{filmId}", 
+                                "/api/audios/episodes/{episodeId}", "/api/episodes/{id}", "/api/episodes/seasons/{seasonId}", "/api/episodes/series/{seriesId}",
+                                "/api/films/{id}", "/api/films/media/{mediaId}", "/api/films/genre/{profileId}", "/api/films/{profileId}",
+                                "/api/medias/profiles/{profileId}", "/api/medias/actor/profiles/{profileId}", "/api/medias/title/profiles/{profileId}",
+                                "/api/medias/genre/profiles/{profileId}", "/api/medias/director/profiles/{profileId}",
+                                "/api/profiles/{id}", "/api/profiles/user/{idUser}", "/api/seasons/{id}", "/api/seasons", 
+                                "/api/series/{id}", "/api/series/media/{mediaId}", "/api/series/genre/{profileId}", "/api/series/{profileId}", 
+                                "/api/subtitles/{id}", "/api/subtitles/films/{filmId}", "/api/subtitles/episodes/{episodeId}", "/api/payments/{userId}", "/api/streaming/playlists",
+                                "/api/subscriptions", "/api/users/{id}", "/api/users/max-profiles-quantity/{id}").hasRole("USER")*/
+	                    .anyRequest().permitAll() // mudar para authenticate
 	            )
 	            .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
 	            .build();
 	}
 	
-	//h2-console
+	// h2-console, tirar depois
 	@Bean
 	WebSecurityCustomizer webSecurityCustomizer() {
 	    return (web) -> web.ignoring().requestMatchers(new AntPathRequestMatcher("/h2-console/**"));
 	}
-
 
 	@Bean
 	AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {

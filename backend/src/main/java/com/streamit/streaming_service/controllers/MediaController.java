@@ -41,7 +41,7 @@ public class MediaController {
 	}
 
 	// Busca por ator com paginação
-	@GetMapping("/search/actor/profiles/{profileId}")
+	@GetMapping("/actor/profiles/{profileId}")
 	public ResponseEntity<Page<ReturnMediaDTO>> searchByActor(@RequestParam("nomeAtor") String nomeAtor,
 	        @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size, UUID profileId) {
 
@@ -51,7 +51,7 @@ public class MediaController {
 	}
 
 	// Busca por título com paginação
-	@GetMapping("/search/title/profiles/{profileId}")
+	@GetMapping("/title/profiles/{profileId}")
 	public ResponseEntity<Page<ReturnMediaDTO>> searchByTitle(@RequestParam("titulo") String titulo,
 			@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size, UUID profileId) {
 
@@ -61,7 +61,7 @@ public class MediaController {
 	}
 
 	// Busca por gênero com paginação
-	@GetMapping("/search/genre/profiles/{profileId}")
+	@GetMapping("/genre/profiles/{profileId}")
 	public ResponseEntity<Page<ReturnMediaDTO>> searchByGenre(@RequestParam("genero") String genero,
 			@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size, UUID profileId) {
 
@@ -71,7 +71,7 @@ public class MediaController {
 	}
 
 	// Busca por diretor com paginação
-	@GetMapping("/search/director/profiles/{profileId}")
+	@GetMapping("/director/profiles/{profileId}")
 	public ResponseEntity<Page<ReturnMediaDTO>> searchByDirector(@RequestParam("diretor") String diretor,
 			@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size, UUID profileId) {
 
@@ -86,7 +86,7 @@ public class MediaController {
 		return new ResponseEntity<>(mediaDto, HttpStatus.OK);
 	}
 
-	@PutMapping
+	@PutMapping("/update")
 	public ResponseEntity<ApiResponse<ReturnMediaDTO>> updateMedia(@Valid @RequestBody UpdateMediaDTO mediaDto) {
 
 		ReturnMediaDTO updatedMedia = mediaService.update(mediaDto);

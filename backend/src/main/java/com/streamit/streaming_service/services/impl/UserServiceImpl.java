@@ -92,7 +92,6 @@ public class UserServiceImpl implements IUserService {
     @Override
     public ReturnUserDTO registerWithBankSlip(CreateUserDTO userDto) {
         UserModel savedUser = processUserRegistration(userDto);
-        //gerar um qr code
         return UserMapper.toDtoReturn(savedUser);
     }
     
@@ -115,7 +114,6 @@ public class UserServiceImpl implements IUserService {
 
         return userRepository.save(user);
     }
-
 
     @Override
     public ReturnUserDTO findUserDtoById(UUID id) {

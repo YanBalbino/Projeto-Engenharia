@@ -48,7 +48,7 @@ public class PersonModel implements Serializable, UserDetails {
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		if(this.role == UserRole.ADMIN) {
-			return List.of(new SimpleGrantedAuthority("ROLE_ADM"));
+			return List.of(new SimpleGrantedAuthority("ROLE_ADM"), new SimpleGrantedAuthority("ROLE_USER"));
 		}
 		return List.of(new SimpleGrantedAuthority("ROLE_USER"));
 	}

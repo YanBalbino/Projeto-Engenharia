@@ -74,7 +74,7 @@ public class SeriesController {
 		return new ResponseEntity<>(seriesList, HttpStatus.OK);
 	}
 
-	@PutMapping
+	@PutMapping("/update")
 	public ResponseEntity<ApiResponse<ReturnSeriesDTO>> updateSeries(@RequestBody UpdateSeriesDTO createSeriesDTO) {
 		ReturnSeriesDTO updatedSeries = seriesService.update(createSeriesDTO);
 		ApiResponse<ReturnSeriesDTO> response = ResponseUtil.success(updatedSeries,
@@ -82,7 +82,7 @@ public class SeriesController {
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 
-	@PutMapping("/{id}/season")
+	@PutMapping("/update/{id}/season")
 	public ResponseEntity<ApiResponse<ReturnSeriesDTO>> addSeason(@PathVariable UUID id,
 			@Valid @RequestBody CreateSeasonDTO seasonDto) {
 		ReturnSeriesDTO updatedSeries = seriesService.addSeason(id, seasonDto);
@@ -91,7 +91,7 @@ public class SeriesController {
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 
-	@PutMapping("/{id}/actor")
+	@PutMapping("/update/{id}/actor")
 	public ResponseEntity<ApiResponse<ReturnSeriesDTO>> addActor(@PathVariable UUID id,
 			@Valid @RequestBody CreateActorDTO actorDto) {
 		ReturnSeriesDTO updatedSeries = seriesService.addActor(id, actorDto);
@@ -100,7 +100,7 @@ public class SeriesController {
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 
-	@DeleteMapping("/{id}")
+	@DeleteMapping("/delete/{id}")
 	public ResponseEntity<ApiResponse<Void>> deleteSeries(@PathVariable UUID id) {
 		seriesService.delete(id);
 		ApiResponse<Void> response = ResponseUtil.success(null, ApiConstants.MESSAGE_RESOURCE_DELETED,

@@ -57,7 +57,7 @@ public class ActorController {
         return new ResponseEntity<>(actorDto, HttpStatus.OK);
     }
 
-    @PutMapping
+    @PutMapping("/update")
     public ResponseEntity<ApiResponse<ReturnActorDTO>> updateActor(@Valid @RequestBody UpdateActorDTO actorDto) {
 
         ReturnActorDTO updatedActor = actorService.update(actorDto);
@@ -70,7 +70,7 @@ public class ActorController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
     
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<ApiResponse<Void>> deleteActor(@PathVariable UUID id) {
     	actorService.delete(id);
         ApiResponse<Void> response = ResponseUtil.success(null, 
