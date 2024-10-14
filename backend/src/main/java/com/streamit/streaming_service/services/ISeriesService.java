@@ -1,8 +1,8 @@
 package com.streamit.streaming_service.services;
 
-import java.util.List;
 import java.util.UUID;
 
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import com.streamit.streaming_service.dtos.actor.CreateActorDTO;
@@ -14,10 +14,10 @@ import com.streamit.streaming_service.model.SeriesModel;
 
 public interface ISeriesService {
 
-	ReturnSeriesDTO create(CreateSeriesDTO seriesDto);
+	ReturnSeriesDTO create(String titulo, CreateSeriesDTO seriesDto);
 	ReturnSeriesDTO findById(UUID id);
-	List<ReturnSeriesDTO> findByGenre(String genre, Pageable pageable, UUID profileId);
-	List<ReturnSeriesDTO> findAll(Pageable pageable, UUID profileId);
+	Page<ReturnSeriesDTO> findByGenre(UUID profileId, String genre, Pageable pageable);
+	Page<ReturnSeriesDTO> findAll(UUID profileId, Pageable pageable);
 	ReturnSeriesDTO findByMedia(UUID mediaId);
 	ReturnSeriesDTO update(UpdateSeriesDTO seriesDto);
 	ReturnSeriesDTO addSeason(UUID id, CreateSeasonDTO seasonDto);

@@ -1,23 +1,23 @@
 package com.streamit.streaming_service.services;
 
-import java.util.List;
 import java.util.UUID;
 
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-import com.streamit.streaming_service.dtos.payment.CreditCardDTO;
 import com.streamit.streaming_service.dtos.renew.RenewDTO;
 import com.streamit.streaming_service.dtos.user.CreateUserDTO;
+import com.streamit.streaming_service.dtos.user.CreateUserDTOWithCreditCard;
 import com.streamit.streaming_service.dtos.user.ReturnUserDTO;
 import com.streamit.streaming_service.dtos.user.UpdateUserDTO;
 import com.streamit.streaming_service.model.UserModel;
 
 public interface IUserService {
 
-	ReturnUserDTO registerWithCreditCard(CreateUserDTO userPaymentDto, CreditCardDTO creditCardDto);
+	ReturnUserDTO registerWithCreditCard(CreateUserDTOWithCreditCard userDTOWithCreditCard);
 	ReturnUserDTO registerWithBankSlip(CreateUserDTO userPaymentDto);
 	ReturnUserDTO findUserDtoById(UUID id);
-	List<ReturnUserDTO> findAll(Pageable pageable);
+	Page<ReturnUserDTO> findAll(Pageable pageable);
 	ReturnUserDTO updateName(UpdateUserDTO userDto);
 	void delete(UUID id);
 	ReturnUserDTO renovarInscricao(RenewDTO renewDto);

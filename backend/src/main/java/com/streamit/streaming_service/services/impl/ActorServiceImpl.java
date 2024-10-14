@@ -3,8 +3,10 @@ package com.streamit.streaming_service.services.impl;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -39,16 +41,16 @@ public class ActorServiceImpl implements IActorService {
 		return entityDto;
 	}
 	
-    @Override
-    public List<ReturnActorDTO> findByName(String nome, Pageable pageable) {
-        Page<ActorModel> actorList = actorRepository.findByNomeContainingIgnoreCase(nome, pageable);
-        List<ReturnActorDTO> dtoList = new ArrayList<>();
-        for (ActorModel actor : actorList.getContent()) {
-            ReturnActorDTO dto = ActorMapper.toDto(actor);
-            dtoList.add(dto);
-        }
-        return dtoList;
-    }
+	@Override
+	public Page<ReturnActorDTO> findByName(String nome, Pageable pageable) {
+	    Page<ActorModel> actorPage = actorRepository.findByNomeContainingIgnoreCase(nome, pageable);
+	    
+	    List<ReturnActorDTO> dtoList = actorPage.getContent().stream()
+	        .map(ActorMapper::toDto)  // Mapeia cada ActorModel para ReturnActorDTO
+	        .collect(Collectors.toList());
+
+	    return new PageImpl<>(dtoList, pageable, actorPage.getTotalElements());
+	}
 
 	@Override
 	public ReturnActorDTO update(UpdateActorDTO actorDto) {

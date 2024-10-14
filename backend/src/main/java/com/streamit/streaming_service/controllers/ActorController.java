@@ -3,6 +3,8 @@ package com.streamit.streaming_service.controllers;
 import java.util.List;
 import java.util.UUID;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -39,10 +41,13 @@ public class ActorController {
     }
     
     @GetMapping("/name")
-    public ResponseEntity<List<ReturnActorDTO>> gedActorsByName(
+    public ResponseEntity<Page<ReturnActorDTO>> gedActorsByName(
             @RequestParam String nome, 
-            Pageable pageable) {
-        List<ReturnActorDTO> actors = actorService.findByName(nome, pageable);
+            @RequestParam(defaultValue = "0") int page, 
+            @RequestParam(defaultValue = "10") int size) {
+        
+        Pageable pageable = PageRequest.of(page, size);
+        Page<ReturnActorDTO> actors = actorService.findByName(nome, pageable);
         return ResponseEntity.ok(actors);
     }
     
@@ -52,7 +57,7 @@ public class ActorController {
         return new ResponseEntity<>(actorDto, HttpStatus.OK);
     }
 
-    @PutMapping
+    @PutMapping("/update")
     public ResponseEntity<ApiResponse<ReturnActorDTO>> updateActor(@Valid @RequestBody UpdateActorDTO actorDto) {
 
         ReturnActorDTO updatedActor = actorService.update(actorDto);
@@ -65,7 +70,7 @@ public class ActorController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
     
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<ApiResponse<Void>> deleteActor(@PathVariable UUID id) {
     	actorService.delete(id);
         ApiResponse<Void> response = ResponseUtil.success(null, 

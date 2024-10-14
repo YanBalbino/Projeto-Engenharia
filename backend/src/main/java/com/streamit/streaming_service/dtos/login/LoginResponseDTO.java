@@ -1,4 +1,6 @@
-package com.streamit.streaming_service.dtos.payment;
+package com.streamit.streaming_service.dtos.login;
+
+import java.util.UUID;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,7 +13,8 @@ import lombok.ToString;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-public class CreateBankSlipDTO{
-    private String payerName;
-    private String payerCpf;
+public class LoginResponseDTO {
+
+	private String token;
+	private UUID idUser;
 }

@@ -12,13 +12,14 @@ import com.streamit.streaming_service.dtos.series.UpdateSeriesDTO;
 import com.streamit.streaming_service.model.MediaModel;
 import com.streamit.streaming_service.model.SeasonModel;
 import com.streamit.streaming_service.model.SeriesModel;
+import com.streamit.streaming_service.omdb.MediaOMDB;
 
 public class SeriesMapper {
 	
 
-    public static SeriesModel toEntity(CreateSeriesDTO dto, SeriesModel series) {
+    public static SeriesModel toEntity(CreateSeriesDTO dto, SeriesModel series, MediaOMDB omdb) {
         MediaModel media = new MediaModel();
-        MediaMapper.toEntity(dto.getMedia(), media);
+        MediaMapper.toEntity(dto.getMedia(), media, omdb);
         series.setMedia(media);
 
         List<SeasonModel> seasons = new ArrayList<>();

@@ -1,8 +1,9 @@
 package com.streamit.streaming_service.controllers;
 
-import java.util.List;
 import java.util.UUID;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,9 +19,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.streamit.streaming_service.constants.ApiConstants;
-import com.streamit.streaming_service.dtos.payment.CreditCardDTO;
 import com.streamit.streaming_service.dtos.renew.RenewDTO;
 import com.streamit.streaming_service.dtos.user.CreateUserDTO;
+import com.streamit.streaming_service.dtos.user.CreateUserDTOWithCreditCard;
 import com.streamit.streaming_service.dtos.user.ReturnUserDTO;
 import com.streamit.streaming_service.dtos.user.UpdateUserDTO;
 import com.streamit.streaming_service.response.ApiResponse;
@@ -41,8 +42,8 @@ public class UserController {
 	private final IUserService userService;
 
 	@PostMapping("/register/credit-card")
-	public ResponseEntity<ApiResponse<ReturnUserDTO>> register(@Valid @RequestBody CreateUserDTO userPaymentDto, CreditCardDTO creditCardDto) {
-		ReturnUserDTO createdUser = userService.registerWithCreditCard(userPaymentDto, creditCardDto);
+	public ResponseEntity<ApiResponse<ReturnUserDTO>> register(@Valid @RequestBody CreateUserDTOWithCreditCard userDTOWithCreditCard) {
+		ReturnUserDTO createdUser = userService.registerWithCreditCard(userDTOWithCreditCard);
 		ApiResponse<ReturnUserDTO> response = ResponseUtil.success(createdUser, ApiConstants.MESSAGE_RESOURCE_CREATED,
 				ApiConstants.HTTP_STATUS_CREATED, ApiConstants.PATH_USERS_REGISTER_CREDIT_CARD);
 		return new ResponseEntity<>(response, HttpStatus.CREATED);
@@ -62,13 +63,14 @@ public class UserController {
 		return new ResponseEntity<>(user, HttpStatus.OK);
 	}
 
-	@GetMapping
-	public ResponseEntity<List<ReturnUserDTO>> getAllUsers(Pageable pageable) {
-		List<ReturnUserDTO> users = userService.findAll(pageable);
+	@GetMapping("/get-all")
+	public ResponseEntity<Page<ReturnUserDTO>> getAllUsers(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
+		Pageable pageable = PageRequest.of(page, size);
+		Page<ReturnUserDTO> users = userService.findAll(pageable);
 		return new ResponseEntity<>(users, HttpStatus.OK);
 	}
 
-	@PutMapping("/renew")
+	@PutMapping("/update/renew")
 	public ResponseEntity<ApiResponse<ReturnUserDTO>> renovarInscricao(@Valid @RequestBody RenewDTO renewDto) {
 
 		ReturnUserDTO createdUser = userService.renovarInscricao(renewDto);
@@ -78,7 +80,7 @@ public class UserController {
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 
-	@PutMapping
+	@PutMapping("/update")
 	public ResponseEntity<ApiResponse<ReturnUserDTO>> updateUser(@Valid @RequestBody UpdateUserDTO userDto) {
 		ReturnUserDTO createdUser = userService.updateName(userDto);
 
@@ -87,7 +89,7 @@ public class UserController {
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 
-	@DeleteMapping("/{id}")
+	@DeleteMapping("/delete/{id}")
 	public ResponseEntity<ApiResponse<Void>> deleteUser(@PathVariable UUID id) {
 		userService.delete(id);
 		ApiResponse<Void> response = ResponseUtil.success(null, ApiConstants.MESSAGE_RESOURCE_DELETED,

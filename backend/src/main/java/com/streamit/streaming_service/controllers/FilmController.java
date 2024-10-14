@@ -1,8 +1,9 @@
 package com.streamit.streaming_service.controllers;
 
-import java.util.List;
 import java.util.UUID;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -37,9 +38,9 @@ public class FilmController {
 
 	private final IFilmService filmService;
 
-	@PostMapping
-	public ResponseEntity<ApiResponse<ReturnFilmDTO>> createFilm(@Valid @RequestBody CreateFilmDTO createFilmDTO) {
-		ReturnFilmDTO createdFilm = filmService.create(createFilmDTO);
+	@PostMapping("/{titulo}")
+	public ResponseEntity<ApiResponse<ReturnFilmDTO>> createFilm(@PathVariable String titulo, @Valid @RequestBody CreateFilmDTO createFilmDTO) {
+		ReturnFilmDTO createdFilm = filmService.create(titulo, createFilmDTO);
 		ApiResponse<ReturnFilmDTO> response = ResponseUtil.success(createdFilm, ApiConstants.MESSAGE_RESOURCE_CREATED,
 				ApiConstants.HTTP_STATUS_CREATED, ApiConstants.PATH_FILMS);
 		return new ResponseEntity<>(response, HttpStatus.CREATED);
@@ -58,18 +59,25 @@ public class FilmController {
 	}
 
 	@GetMapping("/genre/{profileId}")
-	public ResponseEntity<List<ReturnFilmDTO>> getFilmsByGenre(@RequestParam("genre") String genre, Pageable pageable, UUID profileId) {
-		List<ReturnFilmDTO> filmsList = filmService.findByGenre(genre, pageable, profileId);
-		return new ResponseEntity<>(filmsList, HttpStatus.OK);
+	public ResponseEntity<Page<ReturnFilmDTO>> getFilmsByGenre(@RequestParam("genre") String genre, 
+	                                                            @PathVariable UUID profileId,
+	                                                            @RequestParam(defaultValue = "0") int page, 
+	                                                            @RequestParam(defaultValue = "10") int size) {
+	    Pageable pageable = PageRequest.of(page, size);
+	    Page<ReturnFilmDTO> filmsPage = filmService.findByGenre(genre, pageable, profileId);
+	    return new ResponseEntity<>(filmsPage, HttpStatus.OK);
 	}
 
 	@GetMapping("/{profileId}")
-	public ResponseEntity<List<ReturnFilmDTO>> getAllFilms(Pageable pageable, UUID profileId) {
-		List<ReturnFilmDTO> filmsList = filmService.findAll(pageable, profileId);
-		return new ResponseEntity<>(filmsList, HttpStatus.OK);
+	public ResponseEntity<Page<ReturnFilmDTO>> getAllFilms(@PathVariable UUID profileId, 
+	                                                        @RequestParam(defaultValue = "0") int page, 
+	                                                        @RequestParam(defaultValue = "10") int size) {
+	    Pageable pageable = PageRequest.of(page, size);
+	    Page<ReturnFilmDTO> filmsPage = filmService.findAll(pageable, profileId);
+	    return new ResponseEntity<>(filmsPage, HttpStatus.OK);
 	}
 
-	@PutMapping
+	@PutMapping("/update")
 	public ResponseEntity<ApiResponse<ReturnFilmDTO>> updateFilm(@RequestBody UpdateFilmDTO createFilmDTO) {
 		ReturnFilmDTO updatedFilm = filmService.update(createFilmDTO);
 		ApiResponse<ReturnFilmDTO> response = ResponseUtil.success(updatedFilm, ApiConstants.MESSAGE_RESOURCE_UPDATED,
@@ -77,7 +85,7 @@ public class FilmController {
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 	
-    @PutMapping("/{id}/audio")
+    @PutMapping("/update/{id}/audio")
     public ResponseEntity<ApiResponse<ReturnFilmDTO>> addAudio(@PathVariable UUID id, 
                                                                    @Valid @RequestBody CreateAudioDTO audioDTO) {
     	ReturnFilmDTO updatedFilm = filmService.addAudio(id, audioDTO);
@@ -88,7 +96,7 @@ public class FilmController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @PutMapping("/{id}/subtitle")
+    @PutMapping("/update/{id}/subtitle")
     public ResponseEntity<ApiResponse<ReturnFilmDTO>> addSubtitle(@PathVariable UUID id, 
                                                                       @Valid @RequestBody CreateSubtitleDTO subtitleDTO) {
     	ReturnFilmDTO updatedFilm = filmService.addSubtitle(id, subtitleDTO);
@@ -99,7 +107,7 @@ public class FilmController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
     
-    @PutMapping("/{id}/actor")
+    @PutMapping("/update/{id}/actor")
     public ResponseEntity<ApiResponse<ReturnFilmDTO>> addActor(@PathVariable UUID id, 
     		@Valid @RequestBody CreateActorDTO actorDto) {
     	ReturnFilmDTO updatedFilm = filmService.addActor(id, actorDto);
@@ -110,7 +118,7 @@ public class FilmController {
     	return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-	@DeleteMapping("/{id}")
+	@DeleteMapping("/delete/{id}")
 	public ResponseEntity<ApiResponse<Void>> deleteFilm(@PathVariable UUID id) {
 		filmService.delete(id);
 		ApiResponse<Void> response = ResponseUtil.success(null, ApiConstants.MESSAGE_RESOURCE_DELETED,

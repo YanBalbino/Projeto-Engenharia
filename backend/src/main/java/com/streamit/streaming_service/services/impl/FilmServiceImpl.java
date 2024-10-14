@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.UUID;
 
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -25,9 +26,11 @@ import com.streamit.streaming_service.model.AudioModel;
 import com.streamit.streaming_service.model.FilmModel;
 import com.streamit.streaming_service.model.ProfileModel;
 import com.streamit.streaming_service.model.SubtitleModel;
+import com.streamit.streaming_service.omdb.MediaOMDB;
 import com.streamit.streaming_service.repositories.FilmRepository;
 import com.streamit.streaming_service.services.IActorService;
 import com.streamit.streaming_service.services.IFilmService;
+import com.streamit.streaming_service.services.IMediaOMDBService;
 import com.streamit.streaming_service.services.IProfileService;
 import com.streamit.streaming_service.strategy.profile.AgeRestrictionStrategy;
 import com.streamit.streaming_service.strategy.profile.ChildProfileStrategy;
@@ -41,25 +44,28 @@ public class FilmServiceImpl implements IFilmService {
 
     private FilmRepository filmRepository;
     private IActorService actorService;
-    private final IProfileService profileService;
-
-    //supor que filmes sem atores podem ser criados, usando IA, por exemplo
+    private IProfileService profileService;
+    private IMediaOMDBService omdbService;
+    
+    //supor que filmes sem atores podem ser criados
     @Override
-    public ReturnFilmDTO create(CreateFilmDTO filmDto) {
+    public ReturnFilmDTO create(String titulo, CreateFilmDTO filmDto) {
     	StringBuilder sb = new StringBuilder();
-    	if (filmRepository.existsByTitle(filmDto.getMedia().getTitulo())) {
-    	    sb.append("Filme já cadastrado com o título: ").append(filmDto.getMedia().getTitulo()).append(". ");
+    	if (filmRepository.existsByTitle(titulo)) {
+    	    sb.append("Filme já cadastrado com o título: ").append(titulo).append(". ");
     	}
 
     	if (filmRepository.existsByUrl(filmDto.getVideoUrl())) {
     	    sb.append("Filme já cadastrado com a URL: ").append(filmDto.getVideoUrl()).append(". ");
     	}
+    	
+    	MediaOMDB omdb = omdbService.getMedia(titulo);
 
     	if (sb.length() > 0) {
     	    throw new ResourceAlreadyExistsException(sb.toString().trim());
     	}
     	
-    	FilmModel entityMapped = FilmMapper.toEntity(filmDto, new FilmModel());
+    	FilmModel entityMapped = FilmMapper.toEntity(filmDto, new FilmModel(), omdb);
     	
     	// lógica para adicionar atores que já existem no bd
     	List<UUID> actorIds = filmDto.getMedia().getActorIds();
@@ -92,52 +98,57 @@ public class FilmServiceImpl implements IFilmService {
 				.orElseThrow(() -> new ResourceNotFoundException("Filme não encontrado com id " + id));
 	}
 
-    @Override
-    public List<ReturnFilmDTO> findByGenre(String genre, Pageable pageable, UUID profileId) {
-        ProfileModel profile = profileService.findProfileModelById(profileId);
-        AgeRestrictionStrategy ageRestrictionStrategy;
+	@Override
+	public Page<ReturnFilmDTO> findByGenre(String genre, Pageable pageable, UUID profileId) {
+	    ProfileModel profile = profileService.findProfileModelById(profileId);
+	    AgeRestrictionStrategy ageRestrictionStrategy;
 
-        if (profile.isPerfilInfantil()) {
-            ageRestrictionStrategy = new ChildProfileStrategy();
-        } else {
-            ageRestrictionStrategy = new RegularProfileStrategy();
-        }
+	    if (profile.isPerfilInfantil()) {
+	        ageRestrictionStrategy = new ChildProfileStrategy();
+	    } else {
+	        ageRestrictionStrategy = new RegularProfileStrategy();
+	    }
 
-        Page<FilmModel> filmPage = filmRepository.findFilmsByGenre(genre, pageable);
-        List<ReturnFilmDTO> dtos = new ArrayList<>();
+	    Page<FilmModel> filmPage = filmRepository.findFilmsByGenre(genre, pageable);
+	    List<ReturnFilmDTO> dtos = new ArrayList<>();
 
-        for (FilmModel entity : filmPage.getContent()) {
-            ReturnFilmDTO entityDto = FilmMapper.toDto(entity);
-            dtos.add(entityDto);
-        }
-        
-        // Aplicar filtro de restrição de idade
-        return ageRestrictionStrategy.filterFilm(dtos);
-    }
+	    for (FilmModel entity : filmPage.getContent()) {
+	        ReturnFilmDTO entityDto = FilmMapper.toDto(entity);
+	        dtos.add(entityDto);
+	    }
+	    
+	    // Aplicar filtro de restrição de idade
+	    List<ReturnFilmDTO> filteredDtos = ageRestrictionStrategy.filterFilm(dtos);
 
-    // Verificação de perfil infantil para todos os filmes
-    @Override
-    public List<ReturnFilmDTO> findAll(Pageable pageable, UUID profileId) {
-        ProfileModel profile = profileService.findProfileModelById(profileId);
-        AgeRestrictionStrategy ageRestrictionStrategy;
+	    // Criar um Page de ReturnFilmDTO
+	    return new PageImpl<>(filteredDtos, pageable, filmPage.getTotalElements());
+	}
 
-        if (profile.isPerfilInfantil()) {
-            ageRestrictionStrategy = new ChildProfileStrategy();
-        } else {
-            ageRestrictionStrategy = new RegularProfileStrategy();
-        }
+	@Override
+	public Page<ReturnFilmDTO> findAll(Pageable pageable, UUID profileId) {
+	    ProfileModel profile = profileService.findProfileModelById(profileId);
+	    AgeRestrictionStrategy ageRestrictionStrategy;
 
-        Page<FilmModel> filmPage = filmRepository.findAll(pageable);
-        List<ReturnFilmDTO> dtos = new ArrayList<>();
+	    if (profile.isPerfilInfantil()) {
+	        ageRestrictionStrategy = new ChildProfileStrategy();
+	    } else {
+	        ageRestrictionStrategy = new RegularProfileStrategy();
+	    }
 
-        for (FilmModel entity : filmPage.getContent()) {
-            ReturnFilmDTO entityDto = FilmMapper.toDto(entity);
-            dtos.add(entityDto);
-        }
+	    Page<FilmModel> filmPage = filmRepository.findAll(pageable);
+	    List<ReturnFilmDTO> dtos = new ArrayList<>();
 
-        // Aplicar filtro de restrição de idade
-        return ageRestrictionStrategy.filterFilm(dtos);
-    }
+	    for (FilmModel entity : filmPage.getContent()) {
+	        ReturnFilmDTO entityDto = FilmMapper.toDto(entity);
+	        dtos.add(entityDto);
+	    }
+
+	    // Aplicar filtro de restrição de idade
+	    List<ReturnFilmDTO> filteredDtos = ageRestrictionStrategy.filterFilm(dtos);
+
+	    // Criar um Page de ReturnFilmDTO
+	    return new PageImpl<>(filteredDtos, pageable, filmPage.getTotalElements());
+	}
 
 	@Override
 	public ReturnFilmDTO update(UpdateFilmDTO filmDto) {

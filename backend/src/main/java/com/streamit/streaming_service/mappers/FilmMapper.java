@@ -16,12 +16,13 @@ import com.streamit.streaming_service.model.AudioModel;
 import com.streamit.streaming_service.model.FilmModel;
 import com.streamit.streaming_service.model.MediaModel;
 import com.streamit.streaming_service.model.SubtitleModel;
+import com.streamit.streaming_service.omdb.MediaOMDB;
 
 public class FilmMapper {
 	
-    public static FilmModel toEntity(CreateFilmDTO dto, FilmModel film) {
+    public static FilmModel toEntity(CreateFilmDTO dto, FilmModel film, MediaOMDB omdb) {
         MediaModel media = new MediaModel();
-        MediaMapper.toEntity(dto.getMedia(), media);
+        MediaMapper.toEntity(dto.getMedia(), media, omdb);
         film.setMedia(media);
 
         if (dto.getLegendasDisponiveis() != null) {

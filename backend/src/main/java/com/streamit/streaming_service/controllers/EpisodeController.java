@@ -63,7 +63,7 @@ public class EpisodeController {
         return new ResponseEntity<>(episodes, HttpStatus.OK);
     }
 
-    @PutMapping
+    @PutMapping("/update")
     public ResponseEntity<ApiResponse<ReturnEpisodeDTO>> updateEpisode(@Valid @RequestBody UpdateEpisodeDTO updateEpisodeDTO) {
         ReturnEpisodeDTO updatedEpisode = episodeService.update(updateEpisodeDTO);
         ApiResponse<ReturnEpisodeDTO> response = ResponseUtil.success(updatedEpisode, 
@@ -73,7 +73,7 @@ public class EpisodeController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
     
-    @PutMapping("/{id}/audio")
+    @PutMapping("/update/{id}/audio")
     public ResponseEntity<ApiResponse<ReturnEpisodeDTO>> addAudio(@PathVariable UUID id, 
                                                                    @Valid @RequestBody CreateAudioDTO audioDTO) {
         ReturnEpisodeDTO updatedEpisode = episodeService.addAudio(id, audioDTO);
@@ -84,7 +84,7 @@ public class EpisodeController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @PutMapping("/{id}/subtitle")
+    @PutMapping("/update/{id}/subtitle")
     public ResponseEntity<ApiResponse<ReturnEpisodeDTO>> addSubtitle(@PathVariable UUID id, 
                                                                       @Valid @RequestBody CreateSubtitleDTO subtitleDTO) {
         ReturnEpisodeDTO updatedEpisode = episodeService.addSubtitle(id, subtitleDTO);
@@ -95,7 +95,7 @@ public class EpisodeController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<ApiResponse<Void>> deleteEpisode(@PathVariable UUID id) {
         episodeService.delete(id);
         ApiResponse<Void> response = ResponseUtil.success(null, 
