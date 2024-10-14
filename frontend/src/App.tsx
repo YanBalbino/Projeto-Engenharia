@@ -6,6 +6,7 @@ import Catalog from './pages/catalog';
 import Config from './pages/config';
 import ConfigProfile from './pages/config/profile';
 import ConfigPayment from './pages/config/payment';
+import Player from './pages/player';
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
         <Route path = '/config' element={<Config/>}></Route>
         <Route path = '/config/profile' element={<ConfigProfile/>}></Route>
         <Route path = '/config/payment' element={<ConfigPayment/>}></Route>
+        <Route path='/player' element={<Player/>} />
       </Routes>
     </Router>
   );
