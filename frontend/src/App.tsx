@@ -7,12 +7,13 @@ import Config from './pages/config';
 import ConfigProfile from './pages/config/profile';
 import ConfigPayment from './pages/config/payment';
 import Player from './pages/player';
+import LandingPage from './pages/landingPage';
 
 function App() {
   return (
     <Router> 
       <Routes>
-        {/*<Route path = '/' element={<Login/>}></Route>*/}
+        <Route path = '/' element={<LandingPage/>}></Route>
         <Route path='/login' element={<Login />}></Route>
         <Route path ='/cadastro' element={<Register />}> </Route>
         <Route path = '/catalogo' element={<Catalog/>}></Route>
