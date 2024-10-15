@@ -42,7 +42,7 @@ public class SeriesController {
 			@PathVariable String titulo, @Valid @RequestBody CreateSeriesDTO createSeriesDTO) {
 		ReturnSeriesDTO createdSeries = seriesService.create(titulo, createSeriesDTO);
 		ApiResponse<ReturnSeriesDTO> response = ResponseUtil.success(createdSeries,
-				ApiConstants.MESSAGE_RESOURCE_CREATED, ApiConstants.HTTP_STATUS_CREATED, ApiConstants.PATH_SERIES);
+				ApiConstants.MESSAGE_RESOURCE_CREATED, ApiConstants.HTTP_STATUS_CREATED, ApiConstants.PATH_SERIES_TITULO);
 		return new ResponseEntity<>(response, HttpStatus.CREATED);
 	}
 
@@ -78,7 +78,7 @@ public class SeriesController {
 	public ResponseEntity<ApiResponse<ReturnSeriesDTO>> updateSeries(@RequestBody UpdateSeriesDTO createSeriesDTO) {
 		ReturnSeriesDTO updatedSeries = seriesService.update(createSeriesDTO);
 		ApiResponse<ReturnSeriesDTO> response = ResponseUtil.success(updatedSeries,
-				ApiConstants.MESSAGE_RESOURCE_UPDATED, ApiConstants.HTTP_STATUS_OK, ApiConstants.PATH_SERIES);
+				ApiConstants.MESSAGE_RESOURCE_UPDATED, ApiConstants.HTTP_STATUS_OK, ApiConstants.PATH_SERIES_UPDATE);
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 
@@ -87,7 +87,7 @@ public class SeriesController {
 			@Valid @RequestBody CreateSeasonDTO seasonDto) {
 		ReturnSeriesDTO updatedSeries = seriesService.addSeason(id, seasonDto);
 		ApiResponse<ReturnSeriesDTO> response = ResponseUtil.success(updatedSeries, ApiConstants.MESSAGE_RESOURCE_ADDED,
-				ApiConstants.HTTP_STATUS_OK, ApiConstants.PATH_SERIES_ID_SEASON);
+				ApiConstants.HTTP_STATUS_OK, ApiConstants.PATH_SERIES_UPDATE_ID_SEASON);
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 
@@ -96,7 +96,7 @@ public class SeriesController {
 			@Valid @RequestBody CreateActorDTO actorDto) {
 		ReturnSeriesDTO updatedSeries = seriesService.addActor(id, actorDto);
 		ApiResponse<ReturnSeriesDTO> response = ResponseUtil.success(updatedSeries, ApiConstants.MESSAGE_RESOURCE_ADDED,
-				ApiConstants.HTTP_STATUS_OK, ApiConstants.PATH_SERIES_ID_ACTOR);
+				ApiConstants.HTTP_STATUS_OK, ApiConstants.PATH_SERIES_UPDATE_ID_ACTOR);
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 
@@ -104,7 +104,7 @@ public class SeriesController {
 	public ResponseEntity<ApiResponse<Void>> deleteSeries(@PathVariable UUID id) {
 		seriesService.delete(id);
 		ApiResponse<Void> response = ResponseUtil.success(null, ApiConstants.MESSAGE_RESOURCE_DELETED,
-				ApiConstants.HTTP_STATUS_OK, ApiConstants.PATH_SERIES_ID);
+				ApiConstants.HTTP_STATUS_OK, ApiConstants.PATH_SERIES_DELETE_ID);
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 }
