@@ -64,7 +64,7 @@ const ConfigProfile = () => {
     }
 
     return (
-        <div className="w-screen h-screen bg-gradient-to-b from-black to-cyan-950 text-white flex flex-col items-center flex-wrap">
+        <div className="w-screen h-screen bg-gradient-to-b from-[#000713] to-[#2C4167] text-white flex flex-col items-center flex-wrap">
             <h1 className="relative mt-12 text-5xl">Detalhes da conta</h1>
             <div className="rounded-xl bg-gray-800 w-2/5 mt-10">
                 {optionGenerator()}
