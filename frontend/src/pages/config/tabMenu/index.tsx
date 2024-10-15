@@ -13,7 +13,7 @@ const configList = [
       },
       {
         name: 'Pagamento',
-        desc: 'Adicione ou remova métodos de pagamento',
+        desc: 'Altere métodos de pagamento ou cancele sua inscrição',
       },
       {
         name: 'Idioma de exibição',
@@ -104,7 +104,7 @@ const TabMenu = () => {
             <TabList>
                 {configNames}
             </TabList>
-            <TabPanels className="rounded-xl mt-3 bg-gray-800 px-2 py-2 mr-20">
+            <TabPanels className="rounded-xl mt-3 bg-gray-800 px-3 pt-2 pb-4 mr-20">
                 {configOps}
             </TabPanels>
         </TabGroup>
