@@ -65,7 +65,7 @@ public class ActorController {
                 updatedActor,
                 ApiConstants.MESSAGE_RESOURCE_UPDATED,
                 ApiConstants.HTTP_STATUS_OK,
-                ApiConstants.PATH_ACTORS
+                ApiConstants.PATH_ACTORS_UPDATE
         );
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -76,7 +76,7 @@ public class ActorController {
         ApiResponse<Void> response = ResponseUtil.success(null, 
                 ApiConstants.MESSAGE_RESOURCE_DELETED, 
                 ApiConstants.HTTP_STATUS_OK, 
-                ApiConstants.PATH_ACTORS_ID);
+                ApiConstants.PATH_ACTORS_DELETE_ID);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }

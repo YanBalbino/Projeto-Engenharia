@@ -76,7 +76,7 @@ public class UserController {
 		ReturnUserDTO createdUser = userService.renovarInscricao(renewDto);
 
 		ApiResponse<ReturnUserDTO> response = ResponseUtil.success(createdUser, ApiConstants.MESSAGE_RESOURCE_UPDATED,
-				ApiConstants.HTTP_STATUS_OK, ApiConstants.PATH_USERS_RENEW);
+				ApiConstants.HTTP_STATUS_OK, ApiConstants.PATH_USERS_UPDATE_RENEW);
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 
@@ -85,7 +85,7 @@ public class UserController {
 		ReturnUserDTO createdUser = userService.updateName(userDto);
 
 		ApiResponse<ReturnUserDTO> response = ResponseUtil.success(createdUser, ApiConstants.MESSAGE_RESOURCE_UPDATED,
-				ApiConstants.HTTP_STATUS_OK, ApiConstants.PATH_USERS);
+				ApiConstants.HTTP_STATUS_OK, ApiConstants.PATH_USERS_UPDATE);
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 
@@ -93,7 +93,7 @@ public class UserController {
 	public ResponseEntity<ApiResponse<Void>> deleteUser(@PathVariable UUID id) {
 		userService.delete(id);
 		ApiResponse<Void> response = ResponseUtil.success(null, ApiConstants.MESSAGE_RESOURCE_DELETED,
-				ApiConstants.HTTP_STATUS_OK, ApiConstants.PATH_USER_BY_ID);
+				ApiConstants.HTTP_STATUS_OK, ApiConstants.PATH_USERS_DELETE_ID);
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 

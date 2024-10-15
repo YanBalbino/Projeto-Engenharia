@@ -34,11 +34,11 @@ public class SeasonController {
 
     private final ISeasonService seasonService;
 
-    @PostMapping("/{seriesId}")
+    @PostMapping("/series/{seriesId}")
     public ResponseEntity<ApiResponse<ReturnSeasonDTO>> createSeason(@Valid @RequestBody CreateSeasonDTO createSeasonDTO, @PathVariable("seriesId") UUID seriesId) {
         ReturnSeasonDTO createdSeason = seasonService.create(createSeasonDTO, seriesId);
         ApiResponse<ReturnSeasonDTO> response = ResponseUtil.success(createdSeason, ApiConstants.MESSAGE_RESOURCE_CREATED,
-                ApiConstants.HTTP_STATUS_CREATED, ApiConstants.PATH_SEASONS);
+                ApiConstants.HTTP_STATUS_CREATED, ApiConstants.PATH_SEASONS_SERIES_ID);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
@@ -58,7 +58,7 @@ public class SeasonController {
     public ResponseEntity<ApiResponse<ReturnSeasonDTO>> updateSeason(@RequestBody UpdateSeasonDTO updateSeasonDTO) {
         ReturnSeasonDTO updatedSeason = seasonService.update(updateSeasonDTO);
         ApiResponse<ReturnSeasonDTO> response = ResponseUtil.success(updatedSeason, ApiConstants.MESSAGE_RESOURCE_UPDATED,
-                ApiConstants.HTTP_STATUS_OK, ApiConstants.PATH_SEASONS);
+                ApiConstants.HTTP_STATUS_OK, ApiConstants.PATH_SEASONS_UPDATE);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
     
@@ -69,7 +69,7 @@ public class SeasonController {
     	ApiResponse<ReturnSeasonDTO> response = ResponseUtil.success(updatedFilm, 
     			ApiConstants.MESSAGE_RESOURCE_ADDED, 
     			ApiConstants.HTTP_STATUS_OK, 
-    			ApiConstants.PATH_SEASONS_ID_EPISODE);
+    			ApiConstants.PATH_SEASONS_UPDATE_ID_EPISODE);
     	return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
@@ -77,7 +77,7 @@ public class SeasonController {
     public ResponseEntity<ApiResponse<Void>> deleteSeason(@PathVariable UUID id) {
         seasonService.delete(id);
         ApiResponse<Void> response = ResponseUtil.success(null, ApiConstants.MESSAGE_RESOURCE_DELETED,
-                ApiConstants.HTTP_STATUS_OK, ApiConstants.PATH_SEASONS_ID);
+                ApiConstants.HTTP_STATUS_OK, ApiConstants.PATH_SEASONS_DELETE_ID);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }

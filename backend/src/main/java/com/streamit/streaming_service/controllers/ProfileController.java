@@ -39,7 +39,7 @@ public class ProfileController {
         ApiResponse<ReturnProfileDTO> response = ResponseUtil.success(createdProfile, 
                 ApiConstants.MESSAGE_RESOURCE_CREATED, 
                 ApiConstants.HTTP_STATUS_OK, 
-                ApiConstants.PATH_PROFILES);
+                ApiConstants.PATH_PROFILES_USER_ID);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
@@ -61,7 +61,7 @@ public class ProfileController {
         ApiResponse<ReturnProfileDTO> response = ResponseUtil.success(updatedProfile, 
                 ApiConstants.MESSAGE_RESOURCE_UPDATED, 
                 ApiConstants.HTTP_STATUS_OK, 
-                ApiConstants.PATH_PROFILES);
+                ApiConstants.PATH_PROFILES_UPDATE);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
@@ -71,7 +71,7 @@ public class ProfileController {
         ApiResponse<Void> response = ResponseUtil.success(null, 
                 ApiConstants.MESSAGE_RESOURCE_DELETED, 
                 ApiConstants.HTTP_STATUS_OK, 
-                ApiConstants.PATH_PROFILE_BY_ID);
+                ApiConstants.PATH_PROFILES_DELETE_ID);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
     

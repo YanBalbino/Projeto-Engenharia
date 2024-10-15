@@ -69,7 +69,7 @@ public class EpisodeController {
         ApiResponse<ReturnEpisodeDTO> response = ResponseUtil.success(updatedEpisode, 
                                                                       ApiConstants.MESSAGE_RESOURCE_UPDATED, 
                                                                       ApiConstants.HTTP_STATUS_OK, 
-                                                                      ApiConstants.PATH_EPISODES_ID);
+                                                                      ApiConstants.PATH_EPISODES_UPDATE_ID);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
     
@@ -80,7 +80,7 @@ public class EpisodeController {
         ApiResponse<ReturnEpisodeDTO> response = ResponseUtil.success(updatedEpisode, 
                                                                       ApiConstants.MESSAGE_RESOURCE_ADDED, 
                                                                       ApiConstants.HTTP_STATUS_OK, 
-                                                                      ApiConstants.PATH_EPISODES_ID_AUDIO);
+                                                                      ApiConstants.PATH_EPISODES_UPDATE_ID_AUDIO);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
@@ -91,7 +91,7 @@ public class EpisodeController {
         ApiResponse<ReturnEpisodeDTO> response = ResponseUtil.success(updatedEpisode, 
                                                                       ApiConstants.MESSAGE_RESOURCE_ADDED, 
                                                                       ApiConstants.HTTP_STATUS_OK, 
-                                                                      ApiConstants.PATH_EPISODES_ID_SUBTITLE);
+                                                                      ApiConstants.PATH_EPISODES_UPDATE_ID_SUBTITLE);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
@@ -101,7 +101,7 @@ public class EpisodeController {
         ApiResponse<Void> response = ResponseUtil.success(null, 
                                                           ApiConstants.MESSAGE_RESOURCE_DELETED, 
                                                           ApiConstants.HTTP_STATUS_OK, 
-                                                          ApiConstants.PATH_EPISODES_ID);
+                                                          ApiConstants.PATH_EPISODES_DELETE_ID);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }

@@ -42,7 +42,7 @@ public class FilmController {
 	public ResponseEntity<ApiResponse<ReturnFilmDTO>> createFilm(@PathVariable String titulo, @Valid @RequestBody CreateFilmDTO createFilmDTO) {
 		ReturnFilmDTO createdFilm = filmService.create(titulo, createFilmDTO);
 		ApiResponse<ReturnFilmDTO> response = ResponseUtil.success(createdFilm, ApiConstants.MESSAGE_RESOURCE_CREATED,
-				ApiConstants.HTTP_STATUS_CREATED, ApiConstants.PATH_FILMS);
+				ApiConstants.HTTP_STATUS_CREATED, ApiConstants.PATH_FILMS_TITULO);
 		return new ResponseEntity<>(response, HttpStatus.CREATED);
 	}
 
@@ -81,7 +81,7 @@ public class FilmController {
 	public ResponseEntity<ApiResponse<ReturnFilmDTO>> updateFilm(@RequestBody UpdateFilmDTO createFilmDTO) {
 		ReturnFilmDTO updatedFilm = filmService.update(createFilmDTO);
 		ApiResponse<ReturnFilmDTO> response = ResponseUtil.success(updatedFilm, ApiConstants.MESSAGE_RESOURCE_UPDATED,
-				ApiConstants.HTTP_STATUS_OK, ApiConstants.PATH_FILMS_ID);
+				ApiConstants.HTTP_STATUS_OK, ApiConstants.PATH_FILMS_UPDATE_ID);
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 	
@@ -92,7 +92,7 @@ public class FilmController {
         ApiResponse<ReturnFilmDTO> response = ResponseUtil.success(updatedFilm, 
                                                                       ApiConstants.MESSAGE_RESOURCE_ADDED, 
                                                                       ApiConstants.HTTP_STATUS_OK, 
-                                                                      ApiConstants.PATH_FILMS_ID_AUDIO);
+                                                                      ApiConstants.PATH_FILMS_UPDATE_ID_AUDIO);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
@@ -103,7 +103,7 @@ public class FilmController {
         ApiResponse<ReturnFilmDTO> response = ResponseUtil.success(updatedFilm, 
                                                                       ApiConstants.MESSAGE_RESOURCE_ADDED, 
                                                                       ApiConstants.HTTP_STATUS_OK, 
-                                                                      ApiConstants.PATH_FILMS_ID_SUBTITLE);
+                                                                      ApiConstants.PATH_FILMS_UPDATE_ID_SUBTITLE);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
     
@@ -114,7 +114,7 @@ public class FilmController {
     	ApiResponse<ReturnFilmDTO> response = ResponseUtil.success(updatedFilm, 
     			ApiConstants.MESSAGE_RESOURCE_ADDED, 
     			ApiConstants.HTTP_STATUS_OK, 
-    			ApiConstants.PATH_FILMS_ID_ACTOR);
+    			ApiConstants.PATH_FILMS_UPDATE_ID_ACTOR);
     	return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
@@ -122,7 +122,7 @@ public class FilmController {
 	public ResponseEntity<ApiResponse<Void>> deleteFilm(@PathVariable UUID id) {
 		filmService.delete(id);
 		ApiResponse<Void> response = ResponseUtil.success(null, ApiConstants.MESSAGE_RESOURCE_DELETED,
-				ApiConstants.HTTP_STATUS_OK, ApiConstants.PATH_FILMS_ID);
+				ApiConstants.HTTP_STATUS_OK, ApiConstants.PATH_FILMS_DELETE_ID);
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 }
