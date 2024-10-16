@@ -37,7 +37,7 @@ const PaymentCard  = () => {
     const navigate = useNavigate();
 
     return(
-        <div id="card" className="bg-black p-8 rounded-xl gap-3 border">
+        <div id="card" className="bg-zinc-700 bg-opacity-40 p-8 rounded-xl gap-3 border">
             <div className="flex flex-row gap-2 py-2">
                 <input type="radio" checked disabled></input>
                 <label>Cartão de crédito</label>
@@ -99,11 +99,11 @@ const PaymentCard  = () => {
             <div id="botoes" className="pt-5 flex flex-row justify-evenly">
                 <button 
                     type="button" 
-                    className="bg-cyan-600 my-4 px-10 py-1 rounded-md">Editar
+                    className="bg-[#216EAD] hover:bg-sky-600 my-4 px-10 py-1 rounded-md">Editar
                 </button>
                 <button 
                     type="button" 
-                    className="bg-cyan-600 my-4 px-10 py-1 rounded-md" 
+                    className="bg-[#216EAD] hover:bg-sky-600 my-4 px-10 py-1 rounded-md" 
                     onClick={() => navigate('../config')}>Confirmar
                 </button>
             </div>

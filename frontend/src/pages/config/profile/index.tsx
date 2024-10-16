@@ -48,7 +48,7 @@ const ConfigProfile = () => {
                             onChange={(event) => handleInputChange(index, event)}/>
                     </div>
                     <div className="flex flex-col items-center">
-                        <button type="button" className="relative bg-gray-600 my-2 px-10 py-1 rounded-md" 
+                        <button type="button" className="relative bg-gray-600 hover:bg-gray-500 my-2 px-10 py-1 rounded-md" 
                             onClick={() => editField(index)}>{option.disabled ? 'Editar' : 'Salvar'}
                         </button>
                     </div>
@@ -66,10 +66,10 @@ const ConfigProfile = () => {
     return (
         <div className="w-screen h-screen bg-gradient-to-b from-[#000713] to-[#2C4167] text-white flex flex-col items-center flex-wrap">
             <h1 className="relative mt-12 text-5xl">Detalhes da conta</h1>
-            <div className="rounded-xl bg-gray-800 w-2/5 mt-10">
+            <div className="rounded-xl bg-zinc-700 bg-opacity-40 w-2/5 mt-10">
                 {optionGenerator()}
             </div>
-            <button type="submit" className="relative bg-cyan-600 my-4 px-10 py-1 rounded-md" onClick={() => handleSubmit()}>Concluir</button>
+            <button type="submit" className="relative bg-[#216EAD] hover:bg-sky-600 my-4 px-10 py-1 rounded-md" onClick={() => handleSubmit()}>Concluir</button>
         </div>
     );
     }
