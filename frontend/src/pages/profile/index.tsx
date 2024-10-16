@@ -118,8 +118,8 @@ const Profile = () => {
   }, []);
 
   return (
-    <div className="flex flex-col flex-wrap items-center gap-20">
-      <h1 className="text-[64px] mt-[50px]">Perfis de Usuário</h1>
+    <div className="flex flex-col flex-wrap items-center gap-20 pt-10">
+      <h1 className="text-5xl">Perfis de Usuário</h1>
       <div className="flex flex-row gap-24">
         {userProfiles.map((profile, index) => (
           <div className="flex flex-col items-center gap-5 hover:cursor-pointer" key={profile.id}>
@@ -134,19 +134,19 @@ const Profile = () => {
         ))}
         <div onClick={() => setModal(!modal)} className="flex flex-col items-center gap-5 hover:cursor-pointer">
           <p className="text-[25px]">Novo Perfil</p>
-          <img className="w-40" src={`${process.env.PUBLIC_URL}/adicionar_perfil.png`} alt="icone de perfil" />
+          <img className="w-24" src={`${process.env.PUBLIC_URL}/adicionar_perfil.png`} alt="icone de perfil" />
         </div>
       </div>
 
       {modal && (
-        <div className="w-1/3 absolute left-1/3 flex flex-col border-2 border-white rounded-xl bg-black p-10 gap-5 items-center">
+        <div className="w-1/3 absolute top left-1/3 flex flex-col border border-gray-500 rounded-xl bg-slate-800 p-10 gap-5 items-center">
           <ArrowLeftOutlined onClick={() => setModal(!modal)} className="absolute scale-125 left-5 top-5 hover:cursor-pointer transition-transform transform hover:scale-150" />
           <h2 className="text-3xl">Criar perfil</h2>
 
           <div className="flex flex-row gap-1 w-full">
             <div className="w-full flex flex-col gap-1">
               <label htmlFor="nomePerfil">Nome do perfil</label>
-              <input type="text" onChange={handleInput} name="nomePerfil" id="nomePerfil" className="h-10 rounded-lg text-black p-2" />
+              <input type="text" onChange={handleInput} name="nomePerfil" id="nomePerfil" className="h-8 rounded-lg text-black p-2" />
             </div>
           </div>
 
@@ -168,13 +168,13 @@ const Profile = () => {
           </div>
 
           {/* Checkbox para perfil infantil */}
-          <div className="w-full flex items-center gap-2 mt-4">
+          <div className="w-full flex items-center gap-2 mt-2">
             <Checkbox onChange={handleInfantilCheckbox} checked={isInfantilProfile} className="custom-checkbox text-white">
               Perfil Infantil?
             </Checkbox>
           </div>
 
-          <button type="button" onClick={newProfile} className="w-11/12 mt-10 h-10 rounded-lg bg-cyan-600 hover:bg-cyan-400">Criar Perfil</button>
+          <button type="button" onClick={newProfile} className="w-11/12 h-10 rounded-lg bg-[#216EAD] hover:bg-sky-600">Criar Perfil</button>
         </div>
       )}
     </div>
