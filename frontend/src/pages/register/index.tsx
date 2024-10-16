@@ -148,11 +148,11 @@ const Register = () => {
   };
 
   return (
-    <div className="text-white font-inter w-screen h-screen bg-gradient-to-b from-black to-cyan-950 flex flex-col pt-5 items-center gap-4 ">
-      <h1 className="text-6xl">StreamIt!</h1>
+    <div className="text-white font-inter w-screen h-screen bg-gradient-to-b from-[#000713] to-[#2C4167] flex flex-col pt-5 items-center gap-4 ">
+      <h1 className="text-4xl font-bold">StreamIt!</h1>
       
         {currentForm == 1 && (
-          <div className="w-1/3 flex flex-col border-2 border-white rounded-xl bg-black p-10 gap-5 items-center">
+          <div className="w-1/3 flex flex-col border border-gray-500 rounded-xl bg-zinc-700 bg-opacity-40 p-10 gap-5 items-center">
             <ArrowLeftOutlined onClick={() => navigate('/login')} className="absolute scale-125 left-5 top-5 hover:cursor-pointer transition-transform transform hover:scale-150 " />
             <h2 className="text-3xl">Criar conta</h2>
             <div className=" w-11/12 flex flex-col">
@@ -170,11 +170,11 @@ const Register = () => {
                 <input type="password" name="senha" id="senha" onChange={handleInput} className=" h-10 rounded-lg text-black p-2" value={formData.senha}/>
                 {errors.senha && <p className="text-red-500">{errors.senha}</p>}
             </div>
-            <button onClick={() => handleCurrentForm(2)} type="button" className="w-11/12 mt-10 h-10 rounded-lg bg-cyan-600 hover:bg-cyan-400">Continuar</button>
+            <button onClick={() => handleCurrentForm(2)} type="button" className="w-11/12 mt-10 h-10 rounded-lg bg-[#216EAD] hover:bg-sky-600">Continuar</button>
           </div>
         )}
         {currentForm == 2 && (
-          <div className="w-1/3 flex flex-col border-2 border-white rounded-xl bg-black p-10 gap-5 items-center">
+          <div className="w-1/3 flex flex-col border border-gray-500 rounded-xl bg-zinc-700 bg-opacity-40 p-10 gap-5 items-center">
             <ArrowLeftOutlined onClick={() => handleCurrentForm(1)} className="absolute scale-125 left-5 top-5 hover:cursor-pointer transition-transform transform hover:scale-150 " />
             <h2 className="text-3xl">Forma de pagamento</h2>
             {errors.pagamento && <p className="text-red-500">{errors.pagamento}</p>}
@@ -215,7 +215,7 @@ const Register = () => {
                 <p className="ml-2 text-sm">*Será enviado o pdf do boleto para o email cadastrado</p>
               </div>
             </div>
-            <button onClick={handleSubmit} type="button" className="w-11/12 mt-10 h-10 rounded-lg bg-cyan-600 hover:bg-cyan-400">Criar conta</button>
+            <button onClick={handleSubmit} type="button" className="w-11/12 mt-10 h-10 rounded-lg bg-[#216EAD] hover:bg-sky-600">Criar conta</button>
           </div>
         )}
 

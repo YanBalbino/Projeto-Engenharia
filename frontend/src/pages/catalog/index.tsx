@@ -173,13 +173,15 @@ const Catalog = () => {
          {/* filmes */}
         {navbarSelect == 2 && (
             <div>
-                <h1>uau</h1>
+                <h1>foto grande de filme</h1>
+                <h2>rows de filmes menores</h2>
             </div>)}
         
-         {/* series */}
+         {/* séries */}
         {navbarSelect == 3 && (
             <div>
-                <h1>uau</h1>
+                <h1>foto grande de série</h1>
+                <h2>rows de séries menores</h2>
             </div>)}
         
          {/* busca */}
@@ -192,7 +194,7 @@ const Catalog = () => {
          {/* menu hamburguer */}
         {navbarSelect == 5 && (
             <div>
-                <h1>uau</h1>
+                <h1>Grid de gêneros pra escolher</h1>
             </div>)}
         
          {/* watchlist */}

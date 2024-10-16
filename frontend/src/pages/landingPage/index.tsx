@@ -15,7 +15,7 @@ const LandingPage = () => {
                 <h1 className="text-4xl">Stream it!</h1>
                 <button 
                     type="button" 
-                    className=" bg-cyan-600 py-1 px-3 rounded-md hover:bg-cyan-400" 
+                    className=" bg-[#216EAD] py-1 px-3 rounded-md hover:bg-sky-600" 
                     onClick={() => navigate('/login')}>Entrar
                 </button>
             </header>
@@ -30,7 +30,7 @@ const LandingPage = () => {
                     <label className="relative text-base">Quer assistir? Experimente 30 dias grátis!</label>
                     <button 
                         type="button" 
-                        className="relative bg-cyan-600 mt-10 py-3 px-20 rounded-md hover:bg-cyan-400"
+                        className="relative bg-[#216EAD] mt-10 py-3 px-20 rounded-md hover:bg-sky-600"
                         onClick={() => navigate('/cadastro')}>Cadastrar-se</button>
                 </div>
             </div>

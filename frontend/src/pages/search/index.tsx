@@ -1,5 +1,4 @@
 import CatalogCard from '../catalog/catalogCard'
-import { useState } from 'react';
 
 
 const Search = () => {
@@ -90,7 +89,7 @@ const Search = () => {
                 {filters.map(filter => {
                     return (
                         <div id={filter.name} className="flex flex-col">
-                            <select className="rounded-xl bg-gray-400 h-10 pl-3 text-black text-base">
+                            <select className="rounded-xl bg-slate-800 opacity-90 h-10 pl-3 text-white text-base">
                                 {filter.options.map(option => {
                                     return <option key={option.id} value={option.id}>{option.name}</option>
                                 })}
