@@ -18,10 +18,6 @@ const configList = [
       {
         name: 'Idioma de exibição',
         desc: 'Escolha o idioma de exibição do aplicativo',
-      },
-      {
-        name: 'Perfis conectados',
-        desc: 'Gerencie os perfis conectados à sua conta',
       }
     ]
   },
@@ -35,23 +31,6 @@ const configList = [
       {
         name: 'Áudio',
         desc: 'Escolha a qualidade de áudio padrão',
-      }
-    ]
-  },
-  {
-    name: 'Controle parental',
-    options: [
-      {
-        name: 'Bloqueio de conteúdo',
-        desc: 'Bloqueie conteúdos impróprios',
-      },
-      {
-        name: 'Restrição de horário',
-        desc: 'Defina horários para assistir',
-      },
-      {
-        name: 'Restrição de idade',
-        desc: 'Defina a faixa etária de conteúdos permitidos',
       }
     ]
   },
@@ -91,10 +70,6 @@ const TabMenu = () => {
     }
     if(name === 'Pagamento') {
       navigate('/config/payment');
-    }
-    if (name === 'Perfis conectados'){
-      navigate('/catalogo');
-      // alterar isso daqui
     }
   };
 

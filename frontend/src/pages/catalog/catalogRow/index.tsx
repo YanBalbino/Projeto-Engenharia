@@ -35,7 +35,7 @@ const CatalogRow: React.FC<CatalogRowProps> = ({gender,movies}) => {
    
     
     return (
-        <div className='relative  flex flex-col mr-22'>
+        <div className='relative  flex flex-col mr-22 z-10'>
             <h1 className=" ml-5 text-4xl" >{gender}</h1> 
             <div className='flex flex-row gap-5 items-center'>
                 <ArrowLeftOutlined onClick={scrollLeft} className={`${right >0 ? 'opacity-100' : 'opacity-0'} ml-2 transform -translate-y-1/2 scale-125 rounded-full  hover:cursor-pointer transition-transform hover:scale-150  hover:bg-white hover:text-black`} />
