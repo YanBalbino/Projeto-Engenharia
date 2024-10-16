@@ -4,6 +4,7 @@ import CatalogRow from "./catalogRow";
 import { Movie } from "./types";
 import WatchList from './watchList/index';
 import Profile from '../profile';
+import Search from '../search';
 
 const moviesAcao: Movie[] = [
     {
@@ -156,9 +157,15 @@ const Catalog = () => {
     setNavbarSelect(n);
   };
 
+  const closeDialog = () => {
+    setNavbarSelect(1);
+  };
+
   return (
-    <div className="pt-5 text-white font-inter w-screen h-screen bg-gradient-to-b from-black to-cyan-950 flex flex-col gap-4 overflow-x-hidden ">
-        <Navbar navbarSelect={navbarSelect} onNavbarSelect={handleNavbar} />
+    <div id="background" className="pt-5 text-white font-inter w-screen h-screen bg-gradient-to-b from-[#000713] to-[#2C4167] flex flex-col gap-10 overflow-x-hidden ">
+        <Navbar navbarSelect={navbarSelect} onNavbarSelect={handleNavbar} /> 
+
+        {/* home */}
         {navbarSelect == 1 && (
         <div>
             <CatalogRow gender="Ação" movies={moviesAcao} />
@@ -166,11 +173,40 @@ const Catalog = () => {
             <CatalogRow gender="Romance" movies={moviesAcao} />
         </div>
         )}
+
+         {/* filmes */}
+        {navbarSelect == 2 && (
+            <div>
+                <h1>uau</h1>
+            </div>)}
+        
+         {/* series */}
+        {navbarSelect == 3 && (
+            <div>
+                <h1>uau</h1>
+            </div>)}
+        
+         {/* busca */}
+        {navbarSelect == 4 && (
+            <div>
+                <Search/>
+            </div>
+            )}
+        
+         {/* menu hamburguer */}
+        {navbarSelect == 5 && (
+            <div>
+                <h1>uau</h1>
+            </div>)}
+        
+         {/* watchlist */}
         {navbarSelect == 6 &&(
             <div>
                 <WatchList gender = "Watchlist" movies={moviesAcao}/>
             </div>
         )}
+
+         {/* configs */}
         {navbarSelect == 7 && (
             <Profile/>
         )}

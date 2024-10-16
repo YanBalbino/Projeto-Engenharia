@@ -13,7 +13,7 @@ const configList = [
       },
       {
         name: 'Pagamento',
-        desc: 'Altere métodos de pagamento ou cancele sua inscrição',
+        desc: 'Altere métodos de pagamento',
       },
       {
         name: 'Idioma de exibição',

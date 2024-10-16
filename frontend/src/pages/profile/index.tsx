@@ -57,7 +57,7 @@ const Profile = () => {
         setModal(!modal)
       }
     return(
-        <div className="w-screen h-screen bg-gradient-to-b from-black to-cyan-950 text-white flex flex-col flex-wrap items-center gap-20">
+        <div className="flex flex-col flex-wrap items-center gap-20">
             <h1 className="text-[64px] mt-[50px]">Perfis de Usuário</h1>
             <div className="flex flex-row gap-24">
                 {profiles.map((profile,index) => {

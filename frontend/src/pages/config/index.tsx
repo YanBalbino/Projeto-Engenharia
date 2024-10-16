@@ -11,6 +11,7 @@ const Config = () => {
                 className="self-start justify-self-start pl-16 pt-5 text-5xl hover:cursor-pointer" 
                 onClick={() => navigate('/catalogo')}>Stream it!
             </h1>
+
             <div className="text-left pt-10 pl-16">
                 <h1 className="text-3xl">Conta e configurações</h1>
                 <TabMenu/>
