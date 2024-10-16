@@ -39,28 +39,12 @@ const Login = () => {
             
         }
      
-        const response = await loginService(data)
+        const response = await loginService(data,setErrors)
 
         if(response){
-            if(!response.ok){
-                const errorData = await response.json()
-                setErrors(prevErrors => ({
-                    ...prevErrors,
-                    senha: errorData.errors.find((msg: string) => msg.toLowerCase().includes('senha')) || '',
-                    email: errorData.errors.find((msg: string) => msg.toLowerCase().includes('email')) || '',
-                }));
-            }
-            else{
-                const responseText = await response.text(); 
-                const data = JSON.parse(responseText);
-                const token = data.token;
-                const idUser = data.idUser;
-                localStorage.setItem('token', token); 
-                localStorage.setItem('idUser', idUser);
-                navigate('/catalog');
-               
-            }
+            navigate('/catalog');
         }
+        
     }
 
    
