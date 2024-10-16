@@ -127,6 +127,7 @@ const Register = () => {
 
     if (!response.ok) {
         const errorData = await response.json();
+        console.log(errorData)
 
         setErrors({
           nome: errorData.errors.find((msg:string) => msg.includes('Nome')) || '',

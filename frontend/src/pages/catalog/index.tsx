@@ -155,8 +155,9 @@ const Catalog = () => {
   const handleNavbar = (n: number) => {
     setNavbarSelect(n);
   };
-
+  
   return (
+    
     <div className="pt-5 text-white font-inter w-screen h-screen bg-gradient-to-b from-black to-cyan-950 flex flex-col gap-4 overflow-x-hidden ">
         <Navbar navbarSelect={navbarSelect} onNavbarSelect={handleNavbar} />
         {navbarSelect == 1 && (
