@@ -4,11 +4,7 @@ const MediaRegister = () =>{
 
     const [formData, setFormData] = useState({
         titulo: '',
-        ano: '',
-        genero:'',
-        descricao: '',
-        diretor: '',
-        img: '',
+
       });
 
       const handleInput = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -22,16 +18,59 @@ const MediaRegister = () =>{
       const handleSubmit = async () => {
     
         const data = {
-            titulo: formData.titulo,
-            ano: formData.ano,
-            genero: formData.genero,
-            descricao: formData.descricao,
-            diretor: formData.diretor,
-            img: formData.img,
+              "media":{
+                "faixaEtaria": "DEZOITO",
+                "actorIds": [
+                ],
+                "atores": [
+                  {
+                    "imagemUrl": "https://exemplo.com/leonardo.jpg",
+                    "nome": "Leonardo DiCaprio"
+                  },
+                  {
+                    "imagemUrl": "https://exemplo.com/joseph.jpg",
+                    "nome": "Joseph Gordon-Levitt"
+                  }
+                ]
+              },
+                "duracao": 148,
+                "videoUrl": "/videos/playlists_rickandmorty/RickAndMortyS01E01_legenda.vtt",
+                "legendasDisponiveis": [
+                  {
+                    "legendaUrl": "https://example.com/subtitles/en",
+                    "idioma": "English"
+                  },
+                  {
+                    "legendaUrl": "https://example.com/subtitles/es",
+                    "idioma": "Spanish"
+                  }
+                ],
+                "audiosDisponiveis": [
+                  {
+                    "audioUrl": "https://example.com/audio/en",
+                    "idioma": "English"
+                  },
+                  {
+                    "audioUrl": "https://example.com/audio/fr",
+                    "idioma": "French"
+                  }
+                ],
+                "atores": [
+                  {
+                    "nome": "Tom Hardy",
+                    "imagemUrl": "https://example.com/images/tom_hardy.jpg"
+                  },
+                  {
+                    "nome": "Ellen Page",
+                    "imagemUrl": "https://example.com/images/ellen_page.jpg"
+                  }
+                ],
+                "actorIds": []
         };
     
         try {
-        const response = await fetch('http://localhost:8080/api/medias', {
+          const formattedTitle = encodeURIComponent(formData.titulo);
+          const response = await fetch(`http://localhost:8080/api/films/${formattedTitle}`, {
             method: 'POST',
             headers: {
             'Content-Type': 'application/json',
@@ -40,12 +79,13 @@ const MediaRegister = () =>{
         });
     
         if (!response.ok) {
-          
+          const error = await response.json()
+          console.log(error)
         } else {
-    
+          console.log(response.json())
         }
         } catch (error) {
-        console.error('Erro ao criar o usuário:', error);
+          console.error(error);
         }
         
       };
@@ -53,17 +93,6 @@ const MediaRegister = () =>{
         <div className="flex flex-col">
             <label htmlFor="">título</label>
             <input type="text" name= "titulo" className="text-white bg-black" onChange={handleInput}/>
-            <label htmlFor="">ano de producao</label>
-            <input type="text" name= "anoProducao" className="text-white bg-black" onChange={handleInput}/>
-            <label htmlFor="">gênero</label>
-            <input type="text" name= "genero" className="text-white bg-black" onChange={handleInput}/>
-            <label htmlFor="">descrição</label>
-            <input type="text" name= "descricao" className="text-white bg-black" onChange={handleInput}/>
-            <label htmlFor="">diretor</label>
-            <input type="text" name= "diretor" className="text-white bg-black" onChange={handleInput}/>
-            <label htmlFor="">img</label>
-            <input type="text" name= "imgurl"className="text-white bg-black" onChange={handleInput}/>
-
             <button onClick={handleSubmit}>cadastrar</button>
         </div>
     )
