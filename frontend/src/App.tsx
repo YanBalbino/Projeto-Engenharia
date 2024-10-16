@@ -9,6 +9,7 @@ import ConfigPayment from './pages/config/payment';
 import Player from './pages/player';
 import LandingPage from './pages/landingPage';
 import ProtectedRoute from './utils/protectedRoute';
+import MediaRegister from './pages/mediaRegister';
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
         <Route path="/config/profile"element={<ProtectedRoute><ConfigProfile/></ProtectedRoute>}/>
         <Route path="/config/payment"element={<ProtectedRoute><ConfigPayment/></ProtectedRoute>}/>
         <Route path="/player"element={<ProtectedRoute><Player/></ProtectedRoute>}/>
+        <Route path="/mediaRegister"element={<ProtectedRoute><MediaRegister/></ProtectedRoute>}/>
       </Routes>
     </Router>
   );
