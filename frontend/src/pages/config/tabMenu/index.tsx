@@ -18,10 +18,6 @@ const configList = [
       {
         name: 'Idioma de exibição',
         desc: 'Escolha o idioma de exibição do aplicativo',
-      },
-      {
-        name: 'Perfis conectados',
-        desc: 'Gerencie os perfis conectados à sua conta',
       }
     ]
   },
@@ -91,10 +87,6 @@ const TabMenu = () => {
     }
     if(name === 'Pagamento') {
       navigate('/config/payment');
-    }
-    if (name === 'Perfis conectados'){
-      navigate('/catalogo');
-      // alterar isso daqui
     }
   };
 
