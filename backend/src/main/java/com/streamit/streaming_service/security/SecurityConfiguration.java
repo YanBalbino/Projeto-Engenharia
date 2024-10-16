@@ -55,11 +55,11 @@ public class SecurityConfiguration {
 	                    		"/api/episodes/update/{id}/subtitle", "/api/seasons", "/api/series").hasRole("ADMIN")
 	                    .requestMatchers(HttpMethod.DELETE, "/api/profiles/delete/{id}", "/api/films/delete/{id}", "/api/actors/delete/{id}", "/api/audios/delete/{id}", 
 	                    		"/api/episodes/delete/{id}", "/api/medias/delete/{id}", "/api/seasons/delete/{id}", "/api/series/delete/{id}", "/api/users/delete/{id}").hasRole("ADMIN")
-	                    .requestMatchers(HttpMethod.POST, "/api/films/{titulo}", "/api/medias/update", "/api/profiles/user/{idUser}", "/api/seasons/series/{seriesId}", "/api/series/{titulo}", 
+	                    .requestMatchers(HttpMethod.POST, "/api/films/{titulo}", "/api/medias/update", "/api/seasons/series/{seriesId}", "/api/series/{titulo}", 
                                 "/api/subtitles/update", "/api/subtitles/delete/{id}").hasRole("ADMIN") 
 	                    .requestMatchers(HttpMethod.GET,"/api/users/get-all").hasRole("ADMIN")
 	                    .requestMatchers(HttpMethod.PUT, "api/users/update/renew", "api/users/update").hasRole("USER")
-	                    .requestMatchers(HttpMethod.POST, "/api/users/solicitar-alteracao-senha", "/api/users/verificar-codigo", "/api/users/alterar-senha").hasRole("USER")
+	                    .requestMatchers(HttpMethod.POST, "/api/users/solicitar-alteracao-senha", "/api/users/verificar-codigo", "/api/users/alterar-senha", "/api/profiles/user/{idUser}").hasRole("USER")
 	                    .requestMatchers(HttpMethod.GET, "/api/actors/media/{mediaId}", "/api/actors/{id}", "/api/actors/name", "/api/audios/{id}", "/api/audios/films/{filmId}", 
                                 "/api/audios/episodes/{episodeId}", "/api/episodes/{id}", "/api/episodes/seasons/{seasonId}", "/api/episodes/series/{seriesId}",
                                 "/api/films/{id}", "/api/films/media/{mediaId}", "/api/films/genre/{profileId}", "/api/films/{profileId}",
