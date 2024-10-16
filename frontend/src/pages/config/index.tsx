@@ -9,7 +9,7 @@ const Config = () => {
         <div className="w-screen h-screen bg-gradient-to-b from-[#000713] to-[#2C4167] text-white flex flex-col flex-wrap">
             <h1 
                 className="self-start justify-self-start pl-16 pt-5 text-5xl hover:cursor-pointer" 
-                onClick={() => navigate('/catalogo')}>Stream it!
+                onClick={() => navigate('/catalog')}>Stream it!
             </h1>
 
             <div className="text-left pt-10 pl-16">

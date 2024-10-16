@@ -1,4 +1,6 @@
 import CatalogCard from '../catalog/catalogCard'
+import { useState } from 'react';
+
 
 const Search = () => {
 
@@ -49,19 +51,75 @@ const Search = () => {
             first: false
         }];
 
+    const filters = [
+        {
+            name: "Gênero",
+            options: [
+                {id: 0, name: "Gênero"},
+                {id: 1, name: "Ação"},
+                {id: 2, name: "Aventura"},
+                {id: 3, name: "Comédia"},
+                {id: 4, name: "Drama"},
+                {id: 5, name: "Ficção Científica"},
+                {id: 6, name: "Terror"},
+                {id: 7, name: "Suspense"}
+            ]
+        },
+        {
+            name: "Qualidade",
+            options: [
+                {id: 0, name: "Qualidade"},
+                {id: 1, name: "HD"},
+                {id: 2, name: "Full HD"},
+                {id: 3, name: "4K"}
+            ]
+        },
+        {
+            name: "Tipo de conteúdo",
+            options: [
+                {id: 0, name: "Tipo de conteúdo"},
+                {id: 1, name: "Filme"},
+                {id: 2, name: "Série"}
+            ]
+        }
+    ]
+
+    const generateFilters = () => {
+        return(
+            <div id="filters" className="flex flex-row gap-5">
+                {filters.map(filter => {
+                    return (
+                        <div id={filter.name} className="flex flex-col">
+                            <select className="rounded-xl bg-gray-400 h-10 pl-3 text-black text-base">
+                                {filter.options.map(option => {
+                                    return <option key={option.id} value={option.id}>{option.name}</option>
+                                })}
+                            </select>
+                        </div>
+                    )
+                })}
+            </div>
+        )
+    }
 
     return (
-        <div id="content" className="pl-9 pt-6 flex flex-col gap-8">
+        <div id="content" className="pl-5 flex flex-col gap-10">
             <div id="searchContent" className="flex flex-col gap-4">
-                <h1 className="text-5xl">Pesquisar no catálogo</h1>
+                <h1 className="text-4xl">Pesquisar no catálogo</h1>
                 <input 
                     type="text" 
                     autoFocus
                     placeholder="Pesquisar" 
-                    className="rounded-3xl bg-gray-300 w-3/4 h-12 pl-3 text-black text-lg"/>
+                    className="rounded-xl bg-gray-300 w-3/4 h-12 pl-3 text-black text-lg"/>
+                <div id="filters" className="flex flex-row gap-10">
+                    {generateFilters()}
+            </div>    
             </div>
             
-                <div id="searchCards" className="flex flex-row gap-10">
+            
+
+            <div id="searchCards" className="flex flex-row gap-5 justify-evenly">
+                    {/* cards exemplo, os filtros devem ser aplicados com base no input de pesquisa */}
                     <CatalogCard 
                     title={cardInfos[0].title} 
                     description={cardInfos[0].description} 
@@ -102,7 +160,7 @@ const Search = () => {
                     pictureUrl={cardInfos[4].pictureUrl} 
                     last={cardInfos[4].last} 
                     first={cardInfos[4].first}/>
-                </div>
+            </div>
         </div>
     )
 }
