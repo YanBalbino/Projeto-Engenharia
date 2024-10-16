@@ -47,9 +47,11 @@ public class AuthenticationServiceImpl implements IAuthenticationService {
             if(person.getRole().equals(UserRole.USER)) {
             	UserModel user = userService.findUserModelByEmail(loginDto.getEmail());
             	responseDto.setIdUser(user.getId());
+            	responseDto.setRole(UserRole.USER);
             }else {
             	AdminModel admin = adminService.findAdminModelByEmail(loginDto.getEmail());
             	responseDto.setIdUser(admin.getId());
+            	responseDto.setRole(UserRole.ADMIN);
             }
             responseDto.setToken(token);
             return responseDto;

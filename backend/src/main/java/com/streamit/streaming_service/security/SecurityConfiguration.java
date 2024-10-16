@@ -50,7 +50,7 @@ public class SecurityConfiguration {
 	            }))
 	            .authorizeHttpRequests(authorize -> authorize
 	                    .requestMatchers(HttpMethod.POST, "/api/login", "/api/users/register/**").permitAll()
-	                    /*.requestMatchers(HttpMethod.PUT, "/api/profiles/update", "/api/medias/update", "/api/films/update", "/api/films/update/{id}/audio", "/api/films/update/{id}/subtitle", 
+	                    .requestMatchers(HttpMethod.PUT, "/api/profiles/update", "/api/medias/update", "/api/films/update", "/api/films/update/{id}/audio", "/api/films/update/{id}/subtitle", 
 	                    		"/api/films/update/{id}/actor", "/api/actors/update", "/api/audios/update", "/api/episodes/update", "/api/episodes/update/{id}/audio", 
 	                    		"/api/episodes/update/{id}/subtitle", "/api/seasons", "/api/series").hasRole("ADMIN")
 	                    .requestMatchers(HttpMethod.DELETE, "/api/profiles/delete/{id}", "/api/films/delete/{id}", "/api/actors/delete/{id}", "/api/audios/delete/{id}", 
@@ -68,8 +68,8 @@ public class SecurityConfiguration {
                                 "/api/profiles/{id}", "/api/profiles/user/{idUser}", "/api/seasons/{id}", "/api/seasons", 
                                 "/api/series/{id}", "/api/series/media/{mediaId}", "/api/series/genre/{profileId}", "/api/series/{profileId}", 
                                 "/api/subtitles/{id}", "/api/subtitles/films/{filmId}", "/api/subtitles/episodes/{episodeId}", "/api/payments/{userId}", "/api/streaming/playlists",
-                                "/api/subscriptions", "/api/users/{id}", "/api/users/max-profiles-quantity/{id}").hasRole("USER")*/
-	                    .anyRequest().permitAll() // mudar para authenticate
+                                "/api/subscriptions", "/api/users/{id}", "/api/users/max-profiles-quantity/{id}").hasRole("USER")
+	                    .anyRequest().authenticated() // mudar para authenticate
 	            )
 	            .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
 	            .build();
