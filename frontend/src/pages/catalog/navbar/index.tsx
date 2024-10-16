@@ -1,16 +1,23 @@
 import React from 'react';
-import { SearchOutlined, MenuOutlined, UserOutlined } from "@ant-design/icons";
+import { SearchOutlined, MenuOutlined, UserOutlined, PoweroffOutlined, SettingOutlined } from "@ant-design/icons";
 import { Image } from 'antd';
-import SearchBar from '../../search';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+
 
 interface NavbarProps {
     navbarSelect: number;
     onNavbarSelect: (n: number) => void;
   }
 
-  
-
   const Navbar: React.FC<NavbarProps> = ({ navbarSelect, onNavbarSelect }) => {
+
+    const [accountModal, setAccountModal] = useState(false);
+    const handleAccountModal = () => { 
+      setAccountModal(!accountModal);
+    }
+    const navigate = useNavigate();
+
   return (
     <div className="mt-5 ml-5 flex flex-row justify-between">
       <ul className="flex flex-row gap-5 text-xl">
@@ -62,8 +69,40 @@ interface NavbarProps {
           className={`w-8 h-8 p-1 rounded-lg hover:cursor-pointer hover:bg-cyan-800 ${
             navbarSelect === 7 ? 'bg-cyan-800' : ''
           }`}
-          onClick={() => onNavbarSelect(7)}
+          onClick={() => handleAccountModal()}
         />
+
+        {/* modal de vários menus */}
+        <li>
+          {accountModal && (
+              <div>
+                <div className="absolute top-0 right-0 bottom-0 left-0" onClick={() => handleAccountModal()}>
+                  <div className="absolute top-16 right-20 bg-gray-800 bg-opacity-30 rounded-lg flex flex-col p-3 gap-2 z-20">
+                    <div className="flex flex-row gap-2 hover:cursor-pointer" onClick={() => onNavbarSelect(7)}>
+                      <UserOutlined></UserOutlined>
+                      <p className="text-sm">Perfis</p>
+                    </div>
+                    
+                    <hr className="border-gray-700"></hr>
+
+                    <div className="flex flex-row gap-2 hover:cursor-pointer" onClick={() => onNavbarSelect(8)}>
+                      <SettingOutlined />
+                      <p className="text-sm">Configurações</p>
+                    </div>
+                    
+                    <hr className="border-gray-700"></hr>
+
+                    <div className="flex flex-row gap-2 hover:cursor-pointer" onClick={() => navigate('../../login')}>
+                      <PoweroffOutlined />
+                      <p className="text-sm">Logout</p>
+                    </div>
+                    
+                  </div>
+                </div>
+                
+              </div>
+            )}
+        </li>
       </ul>
     </div>
   );

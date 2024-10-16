@@ -60,7 +60,7 @@ const ConfigProfile = () => {
     const navigate = useNavigate();
     
     const handleSubmit = () => {
-        navigate('/config');
+        navigate('/catalog');
     }
 
     return (

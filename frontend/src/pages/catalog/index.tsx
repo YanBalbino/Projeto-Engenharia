@@ -3,8 +3,9 @@ import Navbar from "./navbar";
 import CatalogRow from "./catalogRow";
 import { Movie } from "./types";
 import WatchList from './watchList/index';
-import Profile from '../profile';
 import Search from '../search';
+import Profile from '../profile';
+import Config from '../config';
 
 const moviesAcao: Movie[] = [
     {
@@ -204,11 +205,15 @@ const Catalog = () => {
             </div>
         )}
 
-         {/* configs */}
+         {/* perfis */}
         {navbarSelect == 7 && (
             <Profile/>
         )}
-      
+
+        {/* config */}
+        {navbarSelect == 8 && (
+            <Config/>
+        )}
       
     </div>
   );

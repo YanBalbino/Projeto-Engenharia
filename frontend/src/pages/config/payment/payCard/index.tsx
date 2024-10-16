@@ -104,7 +104,7 @@ const PaymentCard  = () => {
                 <button 
                     type="button" 
                     className="bg-[#216EAD] hover:bg-sky-600 my-4 px-10 py-1 rounded-md" 
-                    onClick={() => navigate('../config')}>Confirmar
+                    onClick={() => navigate('../catalog')}>Confirmar
                 </button>
             </div>
             
