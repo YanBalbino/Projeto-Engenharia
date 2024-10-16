@@ -26,4 +26,5 @@ public interface IUserService {
 	public boolean verificarCodigo(String email, String codigo);
 	public void alterarSenha(String email, String novaSenha);
 	UserModel findUserModelById(UUID idUser);
+	UserModel findUserModelByEmail(String email);
 }

@@ -157,10 +157,6 @@ const Catalog = () => {
     setNavbarSelect(n);
   };
 
-  const closeDialog = () => {
-    setNavbarSelect(1);
-  };
-
   return (
     <div id="background" className="pt-5 text-white font-inter w-screen h-screen bg-gradient-to-b from-[#000713] to-[#2C4167] flex flex-col gap-10 overflow-x-hidden ">
         <Navbar navbarSelect={navbarSelect} onNavbarSelect={handleNavbar} /> 

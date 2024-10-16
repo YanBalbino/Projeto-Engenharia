@@ -8,6 +8,7 @@ import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -36,10 +37,10 @@ public class ProfileModel implements Serializable{
     private String iconUrl;
     private boolean perfilInfantil; // true para perfil infantil, false para perfil comum
     
-	@ElementCollection
+	@ElementCollection(fetch = FetchType.EAGER)
 	@CollectionTable(name = "profiles_genre", joinColumns = @JoinColumn(name = "profile_id"))
 	@Column(name = "genres")
-    private List<String> generosPreferidos; // Ex: "Ação", "Comédia", etc. QUAL A NECESSIDADE 
+    private List<String> generosPreferidos; 
 	
 	@ManyToOne
 	@JoinColumn(name = "user_id")

@@ -8,6 +8,7 @@ import ConfigProfile from './pages/config/profile';
 import ConfigPayment from './pages/config/payment';
 import Player from './pages/player';
 import LandingPage from './pages/landingPage';
+import ProtectedRoute from './utils/protectedRoute';
 
 function App() {
   return (
@@ -16,11 +17,11 @@ function App() {
         <Route path = '/' element={<LandingPage/>}></Route>
         <Route path='/login' element={<Login />}></Route>
         <Route path ='/cadastro' element={<Register />}> </Route>
-        <Route path = '/catalogo' element={<Catalog/>}></Route>
-        <Route path = '/config' element={<Config/>}></Route>
-        <Route path = '/config/profile' element={<ConfigProfile/>}></Route>
-        <Route path = '/config/payment' element={<ConfigPayment/>}></Route>
-        <Route path='/player' element={<Player/>} />
+        <Route path="/catalog"element={<ProtectedRoute><Catalog/></ProtectedRoute>}/>
+        <Route path="/config"element={<ProtectedRoute><Config/></ProtectedRoute>}/>
+        <Route path="/config/profile"element={<ProtectedRoute><ConfigProfile/></ProtectedRoute>}/>
+        <Route path="/config/payment"element={<ProtectedRoute><ConfigPayment/></ProtectedRoute>}/>
+        <Route path="/player"element={<ProtectedRoute><Player/></ProtectedRoute>}/>
       </Routes>
     </Router>
   );

@@ -202,6 +202,7 @@ public class UserServiceImpl implements IUserService {
                 .orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado com id " + id));
     }
     
+    @Override
     public UserModel findUserModelByEmail(String email) {
     	return userRepository.findByEmail(email)
     			.orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado com email " + email));
