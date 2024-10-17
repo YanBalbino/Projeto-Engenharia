@@ -1,26 +1,17 @@
 spring:
-  application:
-    name: streamit
-
   datasource:
-    url: jdbc:postgresql://localhost:5432/streamit
-    username: postgres
-    password: root
-
+    url: jdbc:h2:mem:testdb
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
   jpa:
     hibernate:
       ddl-auto: update
-      properties:
-        hibernate:
-          jdbc:
-            lab:
-              non_contextual_creation: true
-    open-in-view: false
-    show-sql: true
-    properties:
-      hibernate:
-        format_sql: true
-
+    show-sql: false
   mail:
     host: smtp.gmail.com
     port: 587
@@ -32,16 +23,9 @@ spring:
           auth: true
           starttls:
             enable: true
-
 api:
-  streamit:
-    imdb:
-      key: chave
-    token:
-      secret: ${JWT_SECRET:default-secret-key}
-
-logging:
-  level:
-    org:
-      hibernate:
-        SQL: DEBUG
+ streamit:
+  imdb:
+   key: 11ae7592
+  token:
+   secret: ${JWT_SECRET:default-secret-key}
