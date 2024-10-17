@@ -49,13 +49,13 @@ public class SecurityConfiguration {
 	                }
 	            }))
 	            .authorizeHttpRequests(authorize -> authorize
-	                    .requestMatchers(HttpMethod.POST, "/api/login", "/api/users/register/**").permitAll()
+	                    .requestMatchers(HttpMethod.POST, "/api/login", "/api/users/register/**","/api/films/{titulo}").permitAll()
 	                    .requestMatchers(HttpMethod.PUT, "/api/profiles/update", "/api/medias/update", "/api/films/update", "/api/films/update/{id}/audio", "/api/films/update/{id}/subtitle", 
 	                    		"/api/films/update/{id}/actor", "/api/actors/update", "/api/audios/update", "/api/episodes/update", "/api/episodes/update/{id}/audio", 
 	                    		"/api/episodes/update/{id}/subtitle", "/api/seasons", "/api/series").hasRole("ADMIN")
 	                    .requestMatchers(HttpMethod.DELETE, "/api/profiles/delete/{id}", "/api/films/delete/{id}", "/api/actors/delete/{id}", "/api/audios/delete/{id}", 
 	                    		"/api/episodes/delete/{id}", "/api/medias/delete/{id}", "/api/seasons/delete/{id}", "/api/series/delete/{id}", "/api/users/delete/{id}").hasRole("ADMIN")
-	                    .requestMatchers(HttpMethod.POST, "/api/films/{titulo}", "/api/medias/update", "/api/seasons/series/{seriesId}", "/api/series/{titulo}", 
+	                    .requestMatchers(HttpMethod.POST,  "/api/medias/update", "/api/seasons/series/{seriesId}", "/api/series/{titulo}", 
                                 "/api/subtitles/update", "/api/subtitles/delete/{id}").hasRole("ADMIN") 
 	                    .requestMatchers(HttpMethod.GET,"/api/users/get-all").hasRole("ADMIN")
 	                    .requestMatchers(HttpMethod.PUT, "api/users/update/renew", "api/users/update").hasRole("USER")
