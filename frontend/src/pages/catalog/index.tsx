@@ -6,6 +6,9 @@ import WatchList from './watchList/index';
 import Search from '../search';
 import Profile from '../profile';
 import Config from '../config';
+import Films from '../films';
+import Series from '../series';
+
 
 const moviesAcao: Movie[] = [
     {
@@ -173,17 +176,11 @@ const Catalog = () => {
 
          {/* filmes */}
         {navbarSelect == 2 && (
-            <div>
-                <h1>foto grande de filme</h1>
-                <h2>rows de filmes menores</h2>
-            </div>)}
+            <Films/>)}
         
          {/* séries */}
         {navbarSelect == 3 && (
-            <div>
-                <h1>foto grande de série</h1>
-                <h2>rows de séries menores</h2>
-            </div>)}
+            <Series/>)}
         
          {/* busca */}
         {navbarSelect == 4 && (
