@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 
-const MediaRegister = () =>{
+const FilmRegister = () =>{
 
     const [formData, setFormData] = useState({
         titulo: '',
-
+        videoUrl: '',
       });
 
       const handleInput = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -34,11 +34,11 @@ const MediaRegister = () =>{
                 ]
               },
                 "duracao": 148,
-                "videoUrl": "/videos/playlists_rickandmorty/RickAndMortyS01E01_legenda.vtt",
+                "videoUrl": formData.videoUrl,
                 "legendasDisponiveis": [
                   {
-                    "legendaUrl": "https://example.com/subtitles/en",
-                    "idioma": "English"
+                    "legendaUrl": "/subs/playlists_rickandmorty/Rica",
+                    "idioma": "Portuguese"
                   },
                   {
                     "legendaUrl": "https://example.com/subtitles/es",
@@ -70,10 +70,12 @@ const MediaRegister = () =>{
     
         try {
           const formattedTitle = encodeURIComponent(formData.titulo);
+          const token = localStorage.getItem('token');
           const response = await fetch(`http://localhost:8080/api/films/${formattedTitle}`, {
             method: 'POST',
             headers: {
-            'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`, 
+              'Content-Type': 'application/json',
             },
             body: JSON.stringify(data),
         });
@@ -82,7 +84,7 @@ const MediaRegister = () =>{
           const error = await response.json()
           console.log(error)
         } else {
-          console.log(response.json())
+          console.log(await response.json())
         }
         } catch (error) {
           console.error(error);
@@ -93,9 +95,11 @@ const MediaRegister = () =>{
         <div className="flex flex-col">
             <label htmlFor="">título</label>
             <input type="text" name= "titulo" className="text-white bg-black" onChange={handleInput}/>
+            <label htmlFor="">videourl</label>
+            <input type="text" name= "videoUrl" className="text-white bg-black" onChange={handleInput}/>
             <button onClick={handleSubmit}>cadastrar</button>
         </div>
     )
 }
 
-export default MediaRegister;
+export default FilmRegister;

@@ -8,6 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.streamit.streaming_service.dtos.actor.CreateActorDTO;
 import com.streamit.streaming_service.dtos.audio.CreateAudioDTO;
@@ -98,6 +99,7 @@ public class FilmServiceImpl implements IFilmService {
 				.orElseThrow(() -> new ResourceNotFoundException("Filme não encontrado com id " + id));
 	}
 
+	@Transactional
 	@Override
 	public Page<ReturnFilmDTO> findByGenre(String genre, Pageable pageable, UUID profileId) {
 	    ProfileModel profile = profileService.findProfileModelById(profileId);
