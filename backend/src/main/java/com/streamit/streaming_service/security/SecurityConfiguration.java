@@ -70,7 +70,7 @@ public class SecurityConfiguration {
                                 "/api/series/{id}", "/api/series/media/{mediaId}", "/api/series/genre/{profileId}", "/api/series/{profileId}", 
                                 "/api/subtitles/{id}", "/api/subtitles/films/{filmId}", "/api/subtitles/episodes/{episodeId}", "/api/payments/{userId}", "/api/streaming/playlists",
                                 "/api/subscriptions", "/api/users/{id}", "/api/users/max-profiles-quantity/{id}").hasRole("USER")
-	                    .anyRequest().authenticated() // mudar para authenticate
+	                    .anyRequest().authenticated() 
 	            )
 	            .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
 	            .build();

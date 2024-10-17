@@ -115,6 +115,7 @@ public class UserServiceImpl implements IUserService {
         return userRepository.save(user);
     }
 
+    @Transactional
     @Override
     public ReturnUserDTO findUserDtoById(UUID id) {
         return UserMapper.toDtoReturn(findUserModelById(id));

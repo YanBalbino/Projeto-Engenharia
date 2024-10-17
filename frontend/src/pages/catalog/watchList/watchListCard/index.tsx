@@ -1,7 +1,7 @@
 import { useState } from "react";
 import {Image } from 'antd';
 import '../.././card.css'
-import { CardProps } from "../.././types";
+import { CardProps } from "../../../../utils/types";
 
 const WatchListCard: React.FC<CardProps> = ({title,description,releaseYear,duration,pictureUrl,last}) => {
     const [selected,setSelected] = useState(false)

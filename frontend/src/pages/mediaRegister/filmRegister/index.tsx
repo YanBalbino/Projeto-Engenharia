@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const MediaRegister = () =>{
+const FilmRegister = () =>{
 
     const [formData, setFormData] = useState({
         titulo: '',
@@ -102,4 +102,4 @@ const MediaRegister = () =>{
     )
 }
 
-export default MediaRegister;
+export default FilmRegister;

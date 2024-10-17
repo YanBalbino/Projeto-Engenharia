@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Navbar from "./navbar";
 import CatalogRow from "./catalogRow";
-import { Movie } from "./types";
+import { Movie } from "../../utils/types";
 import WatchList from './watchList/index';
 import Search from '../search';
 import Profile from '../profile';
@@ -157,6 +157,8 @@ const Catalog = () => {
   // Estado movido para o componente pai
   const [navbarSelect, setNavbarSelect] = useState(1);
 
+
+
   const handleNavbar = (n: number) => {
     setNavbarSelect(n);
   };
@@ -168,9 +170,13 @@ const Catalog = () => {
         {/* home */}
         {navbarSelect == 1 && (
         <div>
-            <CatalogRow gender="Ação" movies={moviesAcao} />
-            <CatalogRow gender="Ficção" movies={moviesAcao} />
-            <CatalogRow gender="Romance" movies={moviesAcao} />
+            
+            <CatalogRow genre="Ação" genre_movie='Action' />
+            <CatalogRow genre="Drama" genre_movie='Drama' />
+            <CatalogRow genre="Romance" genre_movie='Romance' />
+            <CatalogRow genre="Animação" genre_movie='Animation' />
+            <CatalogRow genre="Terror" genre_movie='Horror' />
+            <CatalogRow genre="Comédia" genre_movie='Comedy' />
         </div>
         )}
 
@@ -198,7 +204,7 @@ const Catalog = () => {
          {/* watchlist */}
         {navbarSelect == 6 &&(
             <div>
-                <WatchList gender = "Watchlist" movies={moviesAcao}/>
+                <WatchList genre = "Watchlist" genre_movie='Action'/>
             </div>
         )}
 
