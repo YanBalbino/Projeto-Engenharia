@@ -18,6 +18,13 @@ interface NavbarProps {
     }
     const navigate = useNavigate();
 
+    const handleLogout = () =>{
+      localStorage.removeItem('token');
+      localStorage.removeItem('idUser');
+      localStorage.removeItem('currentProfile');
+      navigate('../../login')
+    }
+
   return (
     <div className="mt-5 ml-5 flex flex-row justify-between">
       <ul className="flex flex-row gap-5 text-xl">
@@ -92,7 +99,7 @@ interface NavbarProps {
                     
                     <hr className="border-gray-700"></hr>
 
-                    <div className="flex flex-row gap-2 hover:cursor-pointer" onClick={() => navigate('../../login')}>
+                    <div className="flex flex-row gap-2 hover:cursor-pointer" onClick={handleLogout}>
                       <PoweroffOutlined />
                       <p className="text-sm">Logout</p>
                     </div>

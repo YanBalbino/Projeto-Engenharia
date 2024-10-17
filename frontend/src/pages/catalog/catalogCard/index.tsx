@@ -2,7 +2,7 @@ import { useState,useRef } from "react";
 import {Image } from 'antd';
 import '.././card.css'
 import cancelIcon from '../../../images/x_cancel.png';
-import { CardProps } from ".././types";
+import { CardProps } from "../../../utils/types";
 import ModalFilme from "./ModalFilme";
 import ModalSerie from "./ModalSerie";
 
@@ -32,26 +32,20 @@ const CatalogCard: React.FC<CardProps> = ({ title, description, releaseYear, dur
                 onMouseEnter={handleSelected}
                 onMouseLeave={handleSelected}
                 onClick={handleClicked}
-                className={`mb-10 h-52 bg-slate-500 border-2 border-red-200 rounded-xl flex flex-row transition-all duration-300 
-                    ${selected ? 'min-w-[400px] max-w-[400px] scale-105 overflow-hidden' : 'min-w-[200px] max-w-[200px]'}`}
+                className={`mb-10 h-52 bg-slate-500 border-2 border-red-200 rounded-xl flex flex-row transition-all duration-300 hover:scale-105`}
             >
                 <div className="cursor-pointer">
                     <Image
                         width='197px'
                         height='204px'
-                        src={`${process.env.PUBLIC_URL}/batPost.jpg`}
+                        src={pictureUrl}
                         alt="a"
                         preview={false}
-                        className={`object-cover ${selected ? 'rounded-l-xl' : 'rounded-xl'}`}
+                        className="rounded-xl"
                     />
                 </div>
 
-                {selected && (
-                    <div className="fade-in">
-                        <h1 className="ml-1">{title}</h1>
-                        <p className="ml-3">{description}</p>
-                    </div>
-                )}
+               
             </div>
 
             {showModal && (

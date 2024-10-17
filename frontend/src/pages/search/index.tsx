@@ -1,8 +1,62 @@
 import CatalogCard from '../catalog/catalogCard'
+import { useState,useEffect } from 'react';
+import fetchFilmsByGenre from '../../services/filmService';
+import { ReturnFilmDTO,Pageable } from '../../utils/types';
 
+const genreTranslations: { [key: number]: string } = {
+    0: "Genre",
+    1: "Action" ,
+    2: "Adventure" ,
+    3: "Comedy" ,
+    4: "Drama" ,
+    5: "Science Fiction" ,
+    6: "Horror" ,
+    7: "Thriller"
+};
 
 const Search = () => {
 
+    const [selectedFilters,setSelectedFilters] = useState({
+        genre: 0,
+        type: 0,
+    })
+    const [media,setMedia] = useState<Pageable<ReturnFilmDTO> | null>(null);
+
+    const handleFilterChange = (filterName:string) => (event: React.ChangeEvent<HTMLSelectElement>) => {
+        const { value } = event.target;
+        
+         setSelectedFilters((prev) => ({
+            ...prev,
+            [filterName]: value 
+        }));
+
+    };
+
+    useEffect(() => {
+        const search = async () => {
+            console.log(selectedFilters);
+
+            if (selectedFilters.type == 1) {
+                if(selectedFilters.genre !=0){
+                    const genre: number = selectedFilters.genre;
+                    const responseData:Pageable<ReturnFilmDTO> = await fetchFilmsByGenre(genreTranslations[genre]);
+                    if(responseData){
+                        setMedia(responseData)
+                    }
+                    
+                }
+            } else if (selectedFilters.type == 2) {
+                
+            } else {
+                setMedia(null)
+            }
+        };
+
+        
+        if (selectedFilters.type) {
+            search();
+        }
+    }, [selectedFilters]);
     const cardInfos = [
         {
             title: "Batman",
@@ -52,7 +106,7 @@ const Search = () => {
 
     const filters = [
         {
-            name: "Gênero",
+            name: "genre",
             options: [
                 {id: 0, name: "Gênero"},
                 {id: 1, name: "Ação"},
@@ -74,7 +128,7 @@ const Search = () => {
             ]
         },
         {
-            name: "Tipo de conteúdo",
+            name: "type",
             options: [
                 {id: 0, name: "Tipo de conteúdo"},
                 {id: 1, name: "Filme"},
@@ -89,7 +143,7 @@ const Search = () => {
                 {filters.map(filter => {
                     return (
                         <div id={filter.name} className="flex flex-col">
-                            <select className="rounded-xl bg-slate-800 opacity-90 h-10 pl-3 text-white text-base">
+                            <select className="rounded-xl bg-slate-800 opacity-90 h-10 pl-3 text-white text-base" onChange={handleFilterChange(filter.name)}>
                                 {filter.options.map(option => {
                                     return <option key={option.id} value={option.id}>{option.name}</option>
                                 })}
@@ -117,48 +171,19 @@ const Search = () => {
             
             
 
-            <div id="searchCards" className="flex flex-row gap-5 justify-evenly">
-                    {/* cards exemplo, os filtros devem ser aplicados com base no input de pesquisa */}
-                    <CatalogCard 
-                    title={cardInfos[0].title} 
-                    description={cardInfos[0].description} 
-                    releaseYear={cardInfos[0].releaseYear} 
-                    duration={cardInfos[0].duration} 
-                    pictureUrl={cardInfos[0].pictureUrl} 
-                    last={cardInfos[0].last} 
-                    first={cardInfos[0].first}/>
-                    <CatalogCard 
-                    title={cardInfos[1].title} 
-                    description={cardInfos[1].description} 
-                    releaseYear={cardInfos[1].releaseYear} 
-                    duration={cardInfos[1].duration} 
-                    pictureUrl={cardInfos[1].pictureUrl} 
-                    last={cardInfos[1].last} 
-                    first={cardInfos[1].first}/>
-                    <CatalogCard 
-                    title={cardInfos[2].title} 
-                    description={cardInfos[2].description} 
-                    releaseYear={cardInfos[2].releaseYear} 
-                    duration={cardInfos[2].duration} 
-                    pictureUrl={cardInfos[2].pictureUrl} 
-                    last={cardInfos[2].last} 
-                    first={cardInfos[2].first}/>
-                    <CatalogCard 
-                    title={cardInfos[3].title} 
-                    description={cardInfos[3].description} 
-                    releaseYear={cardInfos[3].releaseYear} 
-                    duration={cardInfos[3].duration} 
-                    pictureUrl={cardInfos[3].pictureUrl} 
-                    last={cardInfos[3].last} 
-                    first={cardInfos[3].first}/>
-                    <CatalogCard 
-                    title={cardInfos[4].title} 
-                    description={cardInfos[4].description} 
-                    releaseYear={cardInfos[4].releaseYear} 
-                    duration={cardInfos[4].duration} 
-                    pictureUrl={cardInfos[4].pictureUrl} 
-                    last={cardInfos[4].last} 
-                    first={cardInfos[4].first}/>
+            <div id="searchCards" className="flex flex-row  flex-wrap gap-5 justify-evenly">
+                   {media?.content.map((movie,index) =>{
+                    return(
+                        <CatalogCard key ={index} 
+                            title={movie.media.titulo}
+                            description={movie.media.descricao} 
+                            releaseYear={movie.media.anoProducao}
+                            duration={movie.duracao}
+                            pictureUrl={movie.media.imgUrl}
+                            
+                        />
+                    )
+                   })}
             </div>
         </div>
     )
