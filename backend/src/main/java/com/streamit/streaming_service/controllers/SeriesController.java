@@ -53,7 +53,7 @@ public class SeriesController {
 	}
 
 	@GetMapping("/media/{mediaId}")
-	public ResponseEntity<ReturnSeriesDTO> getFilmByMediaId(@PathVariable UUID mediaId) {
+	public ResponseEntity<ReturnSeriesDTO> getSeriesByMediaId(@PathVariable UUID mediaId) {
 		ReturnSeriesDTO series = seriesService.findByMedia(mediaId);
 		return new ResponseEntity<>(series, HttpStatus.OK);
 	}
