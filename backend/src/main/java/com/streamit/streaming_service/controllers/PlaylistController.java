@@ -1,8 +1,5 @@
 package com.streamit.streaming_service.controllers;
 
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.UrlResource;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,7 +9,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import lombok.AllArgsConstructor;
 
-import java.net.MalformedURLException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
@@ -57,23 +53,9 @@ public class PlaylistController {
         }
 
         String folderPath = String.format("%splaylists_%s/", baseDir, mediaName);
+        Path playlistPath = Paths.get(folderPath + playlistFileName);
 
-        try {
-            // Obter a playlist do caminho correspondente
-            Path playlistPath = Paths.get(folderPath + playlistFileName);
-            Resource playlistResource = new UrlResource(playlistPath.toUri());
-
-            if (playlistResource.exists()) {
-                HttpHeaders headers = new HttpHeaders();
-                headers.add(HttpHeaders.CONTENT_TYPE, "application/vnd.apple.mpegurl"); // Tipo MIME para .m3u8
-
-                return new ResponseEntity<>(playlistResource, headers, HttpStatus.OK);
-            } else {
-                return new ResponseEntity<>("Playlist não encontrada.", HttpStatus.NOT_FOUND);
-            }
-        } catch (MalformedURLException e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
+        return new ResponseEntity<>(playlistPath.toString(), HttpStatus.OK);
     }
 
     @GetMapping("/subtitles")
@@ -110,21 +92,8 @@ public class PlaylistController {
         }
 
         String folderPath = String.format("%splaylists_%s/", baseDir, mediaName);
+        Path subtitlePath = Paths.get(folderPath + subtitleFileName);
 
-        try {
-            Path subtitlePath = Paths.get(folderPath + subtitleFileName);
-            Resource subtitleResource = new UrlResource(subtitlePath.toUri());
-
-            if (subtitleResource.exists()) {
-                HttpHeaders headers = new HttpHeaders();
-                headers.add(HttpHeaders.CONTENT_TYPE, "application/vnd.apple.mpegurl"); // Tipo MIME para .m3u8
-
-                return new ResponseEntity<>(subtitleResource, headers, HttpStatus.OK);
-            } else {
-                return new ResponseEntity<>("Legenda não encontrada.", HttpStatus.NOT_FOUND);
-            }
-        } catch (MalformedURLException e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
+        return new ResponseEntity<>(subtitlePath.toString(), HttpStatus.OK);
     }
 }
