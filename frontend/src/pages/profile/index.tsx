@@ -68,8 +68,15 @@ const Profile = () => {
 
   const getUserProfiles = async () => {
     const id = localStorage.getItem('idUser');
+    const token = localStorage.getItem('token');
     try {
-      const response = await fetch(`http://localhost:8080/api/profiles/user/${id}`);
+      const response = await fetch(`http://localhost:8080/api/profiles/user/${id}`, {
+        method: 'GET',  
+        headers: {
+          'Authorization': `Bearer ${token}`,  
+          'Content-Type': 'application/json'   
+        }
+      });
 
       if (!response.ok) {
         const errorData = await response.json();
@@ -85,7 +92,7 @@ const Profile = () => {
 
   const newProfile = async () => {
     const id = localStorage.getItem('idUser');
-
+    const token = localStorage.getItem('token');
     const data = {
       nome: name,
       iconUrl: "",
@@ -96,7 +103,8 @@ const Profile = () => {
       const response = await fetch(`http://localhost:8080/api/profiles/user/${id}`, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`, 
+          'Content-Type': 'application/json'
         },
         body: JSON.stringify(data),
       });

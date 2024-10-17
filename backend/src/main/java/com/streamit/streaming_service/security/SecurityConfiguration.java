@@ -54,7 +54,8 @@ public class SecurityConfiguration {
 	                    		"/api/films/update/{id}/actor", "/api/actors/update", "/api/audios/update", "/api/episodes/update", "/api/episodes/update/{id}/audio", 
 	                    		"/api/episodes/update/{id}/subtitle", "/api/seasons", "/api/series").hasRole("ADMIN")
 	                    .requestMatchers(HttpMethod.DELETE, "/api/profiles/delete/{id}", "/api/films/delete/{id}", "/api/actors/delete/{id}", "/api/audios/delete/{id}", 
-	                    		"/api/episodes/delete/{id}", "/api/medias/delete/{id}", "/api/seasons/delete/{id}", "/api/series/delete/{id}", "/api/users/delete/{id}", "/api/subtitles/delete/{id}").hasRole("ADMIN")
+	                    		"/api/episodes/delete/{id}", "/api/medias/delete/{id}", "/api/seasons/delete/{id}", "/api/series/delete/{id}", "/api/users/delete/{id}"
+	                    		,"/api/subtitles/delete/{id}").hasRole("ADMIN")
 	                    .requestMatchers(HttpMethod.POST, "/api/films/{titulo}", "/api/medias/update", "/api/seasons/series/{seriesId}", "/api/series/{titulo}", 
                                 "/api/subtitles/update").hasRole("ADMIN") 
 	                    .requestMatchers(HttpMethod.GET,"/api/users/get-all").hasRole("ADMIN")
